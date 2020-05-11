@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LaravelSupports\Library\Supports\Http;
+namespace App\LaravelSupports\Library\Supports\Http\Requests;
 
 use App\LaravelSupports\Library\Supports\Data\StringHelper;
 use App\LaravelSupports\Library\Supports\Http\Contracts\RequestValueCastable;

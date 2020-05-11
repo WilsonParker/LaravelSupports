@@ -2,10 +2,8 @@
 
 namespace App\LaravelSupports\Models\Common;
 
-use App\LaravelSupports\Library\Supports\Requests\Contracts\RequestValueCastContract;
-use App\LaravelSupports\Library\Supports\Requests\RequestBinder;
 use Illuminate\Database\Eloquent\Model as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -13,29 +11,45 @@ class BaseModel extends Model
 {
 //    use SoftDeletes;
 
-    // 둘 다 사용하지 않을 경우 timestamps만 꺼주면 된다. (기본값 true)
-    public $timestamps = true;
-//    PK 값을 변경한다. (기본값 id)
-//    protected string $primaryKey = "ix";
-//    테이블 명시
-//    protected string $table = "";
-    // 임의의 생성 필드가 있다면 설정해준다. (기본값 created_at)
-    // const CREATED_AT = 'created_at';
-    // 사용하지 않을 경우 Null로 초기화해주자. (기본값 updated_at)
-    // const UPDATED_AT = updated_at;
-    // PK가 auto increment가 아닐경우 false로 바꿔준다. (기본값 true)
-    public $incrementing = true;
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
 
-    /*protected $guarded = [
-        'ix'
-    ];*/
+    /**
+     * 둘 다 사용하지 않을 경우 false
+     *
+     * @var boolean
+     * @author  dew9163
+     * @added   2020/05/11
+     * @updated 2020/05/11
+     */
+    public $timestamps = true;
+    public $incrementing = true;
+    protected $primaryKey = "ix";
+    protected $table = "";
+
+    const KEY_SEARCH_TYPE = "search_type";
+    const KEY_KEYWORD = "keyword";
     // 이미지, 파일을 저장하는 suffix 경로 입니다
     protected string $path;
     // 이미지, 파일을 저장하는 prefix 경로 입니다
     protected string $uploadPath;
     // 이미지, 파일을 저장하는 table 의 type 입니다
     protected string $tableType;
-    protected int $paginate = 20;
+
+    /**
+     * value of pagination limit
+     *
+     * @var    int
+     * @author  dew9163
+     * @added   2020/05/11
+     * @updated 2020/05/11
+     */
+    protected int $limit = 10;
+    protected array $likeQuery = [
+        "title",
+        "name",
+        "email",
+    ];
 
     /**
      * BaseModel 을 extends 할 경우 __construct 대신 init 을 override 해야됩니다
@@ -48,7 +62,6 @@ class BaseModel extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->paginate = config("constants.pageLimit");
         $this->init();
     }
 
@@ -149,20 +162,11 @@ class BaseModel extends Model
         return $successCallback();
     }
 
-    const KEY_SEARCH_TYPE = "search_type";
-    const KEY_KEYWORD = "keyword";
-    protected $limit = 10;
-    protected $likeQuery = [
-        "title",
-        "name",
-        "email",
-    ];
-
     /**
      * build query
      *
      * @param array $attributes
-     * @return \App\Renewal\Models\Common\BaseModel|mixed
+     * @return Builder
      * @author  dew9163
      * @added   2020/04/29
      * @updated 2020/04/29
@@ -191,7 +195,7 @@ class BaseModel extends Model
      *
      * @param $query
      * @param $where
-     * @return mixed
+     * @return Builder
      * @author  dew9163
      * @added   2020/04/29
      * @updated 2020/04/29
@@ -226,7 +230,7 @@ class BaseModel extends Model
      *
      * @param $query
      * @param $with
-     * @return mixed
+     * @return Builder
      * @author  dew9163
      * @added   2020/04/29
      * @updated 2020/04/29
@@ -248,7 +252,7 @@ class BaseModel extends Model
      *
      * @param $query
      * @param $order
-     * @return mixed
+     * @return Builder
      * @author  dew9163
      * @added   2020/04/29
      * @updated 2020/04/29
