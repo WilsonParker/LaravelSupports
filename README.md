@@ -9,8 +9,8 @@ git config core.sparseCheckout true
 
 git remote add -f origin https://github.com/WilsonParker/LaravelSupports.git
 
-echo "app/Library" >> .git/info/sparse-checkout
-echo "app/Models" >> .git/info/sparse-checkout
+echo "app/LaravelSupports/Library" >> .git/info/sparse-checkout
+echo "app/LaravelSupports/Models" >> .git/info/sparse-checkout
 
 git pull origin master
 
