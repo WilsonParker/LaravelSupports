@@ -16,11 +16,14 @@ use phpDocumentor\Reflection\Types\Boolean;
  *
  * @author  dew9163
  * @added   2020/03/26
- * @updated 2020/03/26
+ * @updated   2020/03/26
+ * set properties public to protected
+ * @updated 2020/05/14
  */
-class ResponseTemplate implements Responsable, Arrayable
+class ResponseTemplate extends Response implements Responsable, Arrayable
 {
     use ResponseTrait;
+
     /*
       *
       * {
@@ -34,12 +37,12 @@ class ResponseTemplate implements Responsable, Arrayable
       *
       */
     // Http code 입니다
-    public $httpCode;
-    public $code;
-    public $message;
-    public $data;
-    public $header;
-    public $option;
+    protected $httpCode;
+    protected $code;
+    protected $message;
+    protected $data;
+    protected $header;
+    protected $option;
 
     public function __construct($httpCode = Response::HTTP_OK, $code = "", $message = "", $data = null, $header = [], $option = 0)
     {
@@ -73,4 +76,53 @@ class ResponseTemplate implements Responsable, Arrayable
             "data" => $this->data,
         ];
     }
+
+    /**
+     * @return int
+     */
+    public function getHttpCode(): int
+    {
+        return $this->httpCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * @return null
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeader(): array
+    {
+        return $this->header;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOption(): int
+    {
+        return $this->option;
+    }
+
 }

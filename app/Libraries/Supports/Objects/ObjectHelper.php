@@ -66,11 +66,28 @@ class ObjectHelper
         }
     }
 
-    public function bindJson($obj, $json)
+    /**
+     * return $def when $val is null
+     * and otherwise return $val
+     *
+     * @param $val
+     * @param $def
+     * @return mixed
+     * @author  dew9163
+     * @added   2020/05/14
+     * @updated 2020/05/14
+     */
+    public static function getValueWithDefault($val, $def)
+    {
+        return is_null($val) ? $def : $val;
+    }
+
+    public static function bindJson($obj, $json)
     {
         $data = json_decode($json, true);
         foreach (self::getProps($obj) as $prop) {
             $obj->{$prop} = $data["$prop"];
         }
     }
+
 }
