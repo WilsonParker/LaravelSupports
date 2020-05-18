@@ -29,9 +29,6 @@ class StringHelper
      * @brief
      * $haystack 에 $neelde 이 포함되는지 찾습니다
      * ex) C|U 에서 C가 포함되는지 찾습니다 = true
-     * @see
-     * @todo
-     * @bug
      * @create  20181227
      * @update  20181227
      **/
@@ -65,5 +62,28 @@ class StringHelper
 
     public static function explodeWithTrim(String $delimiter, String $str) {
         return array_map("trim", explode($delimiter, $str));
+    }
+
+    /**
+     * collection 형태의 search & replace 데이터로
+     * 문자열을 변환 시킵니다
+     *
+     * @param $replace
+     * @param $subject
+     * @return string|string[]
+     * @author  dew9163
+     * @added   2020/05/18
+     * @updated 2020/05/18
+     * @example
+     * $replace
+     * [
+     *  ':name' => 'john',
+     *  ':age' => 25
+     * ]
+     * $subject
+     * ':name 의 나이는 :age 입니다'
+     */
+    public static function replaceWithCollection($replace, $subject) {
+        return str_replace(array_keys($replace), $replace, $subject);
     }
 }

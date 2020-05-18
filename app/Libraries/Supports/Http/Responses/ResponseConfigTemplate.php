@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 class ResponseConfigTemplate extends ResponseTemplate
 {
 
-    public function __construct($httpCode = Response::HTTP_OK, $prefix = "", $code = "", $message = "", $data = null, $header = [], $option = 0)
+    public function __construct($httpCode = Response::HTTP_OK, $prefix = "", $code = "code", $message = "message", $data = null, $header = [], $option = 0)
     {
         $this->httpCode = $httpCode;
         $this->code = config($prefix.".".$code);

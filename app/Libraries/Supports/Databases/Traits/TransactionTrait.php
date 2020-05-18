@@ -4,12 +4,11 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Traits;
 
 
-use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
-use LaravelSupports\Libraries\Supports\Http\JsonObject;
-use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
+use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
 
 trait TransactionTrait
 {
@@ -19,7 +18,8 @@ trait TransactionTrait
      * @param callable $callback
      * @param callable $errorCallback
      * @param callable|null $validationCallback
-     * @return \App\Renewal\Response\ResponseTemplate
+     * @return ResponseTemplate
+     * @throws \ReflectionException
      * @author  TaehyunJeong
      * @added   2019-08-27
      * @updated 2020-04-27

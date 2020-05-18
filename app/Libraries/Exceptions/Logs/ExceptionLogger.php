@@ -29,8 +29,9 @@ class ExceptionLogger
     /**
      * $recordable 을 이용하여 Exception 을 기록합니다
      *
-     * @param   \Exception $exception
+     * @param \Exception $exception
      * @return  Void
+     * @throws \ReflectionException
      * @author  WilsonParker
      * @added   2019.03.04
      * @updated 2019.03.04

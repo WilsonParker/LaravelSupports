@@ -52,6 +52,11 @@ class ResponseTemplate extends Response implements Responsable, Arrayable
         $this->data = $data;
         $this->header = $header;
         $this->option = $option;
+        $this->init();
+    }
+
+    protected function init() {
+
     }
 
     /**
