@@ -18,6 +18,7 @@ trait TransactionTrait
      * @param callable $callback
      * @param callable $errorCallback
      * @param callable|null $validationCallback
+     * @param bool $loggable
      * @return ResponseTemplate
      * @throws \ReflectionException
      * @author  TaehyunJeong
@@ -27,7 +28,7 @@ trait TransactionTrait
      * $validationCallback is not working
      * @updated 2020-04-27
      */
-    function runTransaction(callable $callback, callable $errorCallback = null, callable $validationCallback = null)
+    function runTransaction(callable $callback, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
     {
         $result = true;
         try {
@@ -42,8 +43,10 @@ trait TransactionTrait
         } catch (\Throwable $e) {
             // DB rollback 을 실행합니다
             DB::rollback();
-            $logger = new ExceptionLogger();
-            $logger->report($e);
+            if($loggable) {
+                $logger = new ExceptionLogger();
+                $logger->report($e);
+            }
 
             // not working
             if (is_callable($validationCallback) && $e instanceof ValidationException) {
