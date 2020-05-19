@@ -39,7 +39,7 @@ class ExceptionLogDB implements ExceptionRecordable
             $data = [
                 ExceptionModel::KEY_CODE => (string)$exception->getCode(),
                 ExceptionModel::KEY_MESSAGE => $exception->getMessage(),
-                ExceptionModel::KEY_URL => Request::fullUrl(),
+                ExceptionModel::KEY_URL => request()->fullUrl(),
                 ExceptionModel::KEY_FILE => $exception->getFile(),
                 ExceptionModel::KEY_CLASS => get_class($exception),
                 ExceptionModel::KEY_TRACE => $exception->err_trace
