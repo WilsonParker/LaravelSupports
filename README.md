@@ -18,7 +18,7 @@ git pull origin master
 "autoload": {
         "psr-4": {
                     "App\\": "app/",
-                    "LaravelSupports\\": "app/Library/LaravelSupports/App"
+                    "LaravelSupports\\": "app/Library/LaravelSupports/app"
                 },
     ...
 ```
