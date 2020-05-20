@@ -2,12 +2,13 @@
 
 namespace LaravelSupports\Models\Common;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
-class BaseModel extends Model
+abstract class BaseModel extends Model
 {
 //    use SoftDeletes;
 
@@ -70,11 +71,68 @@ class BaseModel extends Model
      *
      * @author  WilsonParker
      * @added   2019-08-23
-     * @updated 2019-08-23
+     * @updated 2020-05-20
      */
     protected function init()
     {
+        $this->buildSelectScope();
+        $this->addSelectScope();
+    }
 
+    /**
+     * add global select scope
+     *
+     * @return void
+     * @author  dew9163
+     * @added   2020/05/14
+     * @updated 2020/05/14
+     */
+    protected function addSelectScope()
+    {
+        static::addGlobalScope('selectScope', function (\Illuminate\Database\Eloquent\Builder $builder) {
+            $builder->select($this->selectScope);
+            $this->buildOrderScope($builder);
+        });
+    }
+
+    /**
+     * set global scope's order
+     *
+     * @param
+     * @return
+     * @author  dew9163
+     * @added   2020/05/20
+     * @updated 2020/05/20
+     */
+    protected function buildOrderScope(Builder $builder) {
+
+    }
+
+    /**
+     * build array $selectScope
+     *
+     * @return void
+     * @author  dew9163
+     * @added   2020/05/14
+     * @updated 2020/05/14
+     */
+    abstract protected function buildSelectScope();
+
+    /**
+     * return a collection of $selectScope data
+     *
+     * @return Collection
+     * @author  dew9163
+     * @added   2020/05/14
+     * @updated 2020/05/14
+     */
+    public function getSelectData(): Collection
+    {
+        $data = collect();
+        foreach ($this->selectScope as $select) {
+            $data->put($select, $this->{$select});
+        }
+        return $data;
     }
 
     /**
