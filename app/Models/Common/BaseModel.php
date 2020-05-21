@@ -98,13 +98,26 @@ abstract class BaseModel extends Model
     /**
      * set global scope's order
      *
-     * @param
-     * @return
+     * @param Builder $builder
+     * @return void
      * @author  dew9163
      * @added   2020/05/20
      * @updated 2020/05/20
      */
     protected function buildOrderScope(Builder $builder) {
+
+    }
+
+    /**
+     * set global scope's where clause
+     *
+     * @param Builder $builder
+     * @return void
+     * @author  dew9163
+     * @added   2020/05/20
+     * @updated 2020/05/21
+     */
+    protected function buildWhereScope(Builder $builder) {
 
     }
 

@@ -20,7 +20,6 @@ trait TransactionTrait
      * @param callable|null $validationCallback
      * @param bool $loggable
      * @return ResponseTemplate
-     * @throws \ReflectionException
      * @author  TaehyunJeong
      * @added   2019-08-27
      * @updated 2020-04-27

@@ -31,7 +31,6 @@ class ExceptionLogger
      *
      * @param \Exception $exception
      * @return  Void
-     * @throws \ReflectionException
      * @author  WilsonParker
      * @added   2019.03.04
      * @updated 2019.03.04
@@ -40,16 +39,20 @@ class ExceptionLogger
      */
     public function report($exception)
     {
-        $recordable = ObjectHelper::createInstance($this->recordableClass);
-        $exception->err_trace = $this->jTraceEx($exception);
-        $recordable->record($exception);
+        try {
+            $recordable = ObjectHelper::createInstance($this->recordableClass);
+            $exception->err_trace = $this->jTraceEx($exception);
+            $recordable->record($exception);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
      * Exception StackTrace 를 가공합니다
      *
-     * @param   \Exception $e
-     * @param   String $seen
+     * @param \Exception $e
+     * @param String $seen
      * @return  String
      * @author  WilsonParker
      * @added   2019.03.04

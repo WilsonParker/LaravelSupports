@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\DB;
  * @class   ExceptionLogDB.php
  * @added   2019.03.04
  * @updated 2020.04.22
- * @bug
- * @todo
- * @see
  */
 class ExceptionLogDB implements ExceptionRecordable
 {
@@ -30,8 +27,6 @@ class ExceptionLogDB implements ExceptionRecordable
      * @author  WilsonParker
      * @added   2019.03.04
      * @updated 2020.04.22
-     * @bug
-     * @see
      */
     public function record($exception)
     {
