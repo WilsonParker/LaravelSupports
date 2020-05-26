@@ -93,6 +93,7 @@ abstract class BaseModel extends Model
             $builder->select($this->selectScope);
             $this->buildOrderScope($builder);
             $this->buildWhereScope($builder);
+            $this->buildWithScope($builder);
         });
     }
 
@@ -119,6 +120,19 @@ abstract class BaseModel extends Model
      * @updated 2020/05/21
      */
     protected function buildWhereScope(Builder $builder) {
+
+    }
+
+    /**
+     * set global scope's with clause
+     *
+     * @param Builder $builder
+     * @return void
+     * @author  dew9163
+     * @added   2020/05/26
+     * @updated 2020/05/26
+     */
+    protected function buildWithScope(Builder $builder) {
 
     }
 
