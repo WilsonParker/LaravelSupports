@@ -30,6 +30,7 @@ abstract class BaseModel extends Model
 
     const KEY_SEARCH_TYPE = "search_type";
     const KEY_KEYWORD = "keyword";
+    protected array $selectScope = [];
     // 이미지, 파일을 저장하는 suffix 경로 입니다
     protected string $path;
     // 이미지, 파일을 저장하는 prefix 경로 입니다
@@ -98,6 +99,94 @@ abstract class BaseModel extends Model
     }
 
     /**
+     * build where query
+     *
+     * @param $query
+     * @param $where
+     * @return Builder
+     * @author  dew9163
+     * @added   2020/04/29
+     * @updated 2020/04/29
+     */
+    protected function buildWhereQuery($query, $where)
+    {
+        $builder = function ($query, $where) {
+            if (is_callable($where)) {
+                return $query->where($where);
+            } else {
+                $value = $where['value'];
+                if (empty($value)) {
+                    return $query;
+                }
+                $operator = isset($where['operator']) ? $where['operator'] : '=';
+                return $query->where($where['key'], $operator, $where['value']);
+            }
+        };
+
+        if (is_array($where)) {
+            foreach ($where as $item) {
+                $query = $builder($query, $item);
+            }
+        } else {
+            $query = $builder($query, $where);
+        }
+        return $query;
+    }
+
+    /**
+     * build with query
+     *
+     * @param $query
+     * @param $with
+     * @return Builder
+     * @author  dew9163
+     * @added   2020/04/29
+     * @updated 2020/04/29
+     */
+    protected function buildWithQuery($query, $with)
+    {
+        if (is_array($with)) {
+            foreach ($with as $withItem) {
+                $query = $query->with($withItem);
+            }
+        } else {
+            $query = $query->with($with);
+        }
+        return $query;
+    }
+
+    /**
+     * build order query
+     *
+     * @param $query
+     * @param $order
+     * @return Builder
+     * @author  dew9163
+     * @added   2020/04/29
+     * @updated 2020/04/29
+     */
+    protected function buildOrderQuery($query, $order)
+    {
+        $builder = function ($query, $order) {
+            if (is_callable($order)) {
+                return $query->orderBy($order);
+            } else {
+                $value = isset($order['value']) ? $order['value'] : 'desc';
+                return $query->orderBy($order['key'], $value);
+            }
+        };
+
+        if (is_array($order)) {
+            foreach ($order as $item) {
+                $query = $builder($query, $item);
+            }
+        } else {
+            $query = $builder($query, $order);
+        }
+        return $query;
+    }
+
+    /**
      * set global scope's order
      *
      * @param Builder $builder
@@ -106,7 +195,8 @@ abstract class BaseModel extends Model
      * @added   2020/05/20
      * @updated 2020/05/20
      */
-    protected function buildOrderScope(Builder $builder) {
+    protected function buildOrderScope(Builder $builder)
+    {
 
     }
 
@@ -119,7 +209,8 @@ abstract class BaseModel extends Model
      * @added   2020/05/20
      * @updated 2020/05/21
      */
-    protected function buildWhereScope(Builder $builder) {
+    protected function buildWhereScope(Builder $builder)
+    {
 
     }
 
@@ -132,8 +223,42 @@ abstract class BaseModel extends Model
      * @added   2020/05/26
      * @updated 2020/05/26
      */
-    protected function buildWithScope(Builder $builder) {
+    protected function buildWithScope(Builder $builder)
+    {
 
+    }
+
+    /**
+     * build query
+     *
+     * @param array $attributes
+     * @return Builder
+     * @author  dew9163
+     * @added   2020/04/29
+     * @updated 2020/04/29
+     */
+    public function buildQuery(array $attributes)
+    {
+        $query = $this;
+
+        if (Arr::has($attributes, 'where')) {
+            $query = $this->buildWhereQuery($query, $attributes['where']);
+        }
+
+        if (Arr::has($attributes, 'with')) {
+            $query = $this->buildWithQuery($query, $attributes['with']);
+        }
+
+        if (Arr::has($attributes, 'order')) {
+            $query = $this->buildOrderQuery($query, $attributes['order']);
+        }
+
+        return $query;
+    }
+
+    protected function isLikeSearchType($searchType)
+    {
+        return collect($this->likeQuery)->contains($searchType);
     }
 
     /**
@@ -143,8 +268,10 @@ abstract class BaseModel extends Model
      * @author  dew9163
      * @added   2020/05/14
      * @updated 2020/05/14
+     * @updated 2020/05/27
      */
-    abstract protected function buildSelectScope();
+    protected function buildSelectScope() {
+    }
 
     /**
      * return a collection of $selectScope data
@@ -248,122 +375,6 @@ abstract class BaseModel extends Model
         return $successCallback();
     }
 
-    /**
-     * build query
-     *
-     * @param array $attributes
-     * @return Builder
-     * @author  dew9163
-     * @added   2020/04/29
-     * @updated 2020/04/29
-     */
-    public function buildQuery(array $attributes)
-    {
-        $query = $this;
-
-        if (Arr::has($attributes, 'where')) {
-            $query = $this->buildWhereQuery($query, $attributes['where']);
-        }
-
-        if (Arr::has($attributes, 'with')) {
-            $query = $this->buildWithQuery($query, $attributes['with']);
-        }
-
-        if (Arr::has($attributes, 'order')) {
-            $query = $this->buildOrderQuery($query, $attributes['order']);
-        }
-
-        return $query;
-    }
-
-    /**
-     * build where query
-     *
-     * @param $query
-     * @param $where
-     * @return Builder
-     * @author  dew9163
-     * @added   2020/04/29
-     * @updated 2020/04/29
-     */
-    private function buildWhereQuery($query, $where)
-    {
-        $builder = function ($query, $where) {
-            if (is_callable($where)) {
-                return $query->where($where);
-            } else {
-                $value = $where['value'];
-                if (empty($value)) {
-                    return $query;
-                }
-                $operator = isset($where['operator']) ? $where['operator'] : '=';
-                return $query->where($where['key'], $operator, $where['value']);
-            }
-        };
-
-        if (is_array($where)) {
-            foreach ($where as $item) {
-                $query = $builder($query, $item);
-            }
-        } else {
-            $query = $builder($query, $where);
-        }
-        return $query;
-    }
-
-    /**
-     * build with query
-     *
-     * @param $query
-     * @param $with
-     * @return Builder
-     * @author  dew9163
-     * @added   2020/04/29
-     * @updated 2020/04/29
-     */
-    private function buildWithQuery($query, $with)
-    {
-        if (is_array($with)) {
-            foreach ($with as $withItem) {
-                $query = $query->with($withItem);
-            }
-        } else {
-            $query = $query->with($with);
-        }
-        return $query;
-    }
-
-    /**
-     * build order query
-     *
-     * @param $query
-     * @param $order
-     * @return Builder
-     * @author  dew9163
-     * @added   2020/04/29
-     * @updated 2020/04/29
-     */
-    private function buildOrderQuery($query, $order)
-    {
-        $builder = function ($query, $order) {
-            if (is_callable($order)) {
-                return $query->orderBy($order);
-            } else {
-                $value = isset($order['value']) ? $order['value'] : 'desc';
-                return $query->orderBy($order['key'], $value);
-            }
-        };
-
-        if (is_array($order)) {
-            foreach ($order as $item) {
-                $query = $builder($query, $item);
-            }
-        } else {
-            $query = $builder($query, $order);
-        }
-        return $query;
-    }
-
     public function pagination($page = 0, $query = null)
     {
         return isset($query) ? $query->paginate($page == 0 ? $this->limit : $page) : $this->paginate($page == 0 ? $this->limit : $page);
@@ -395,9 +406,37 @@ abstract class BaseModel extends Model
         return $this->pagination($limit, $this->buildQuery($attributes));
     }
 
-    protected function isLikeSearchType($searchType)
+    /**
+     * create an instance corresponding to the class
+     * using the connection of the called model
+     *
+     * @param string $cls
+     * @return mixed
+     * @author  dew9163
+     * @added   2020/05/27
+     * @updated 2020/05/27
+     */
+    public function createInstanceWithConnectionFromClass(string $cls): Model
     {
-        return collect($this->likeQuery)->contains($searchType);
+        $model = new $cls();
+        $model->setConnection($this->connection);
+        return $model;
+    }
+
+    /**
+     * create an instance using the connection
+     *
+     * @param string $connection
+     * @return Model
+     * @author  dew9163
+     * @added   2020/05/27
+     * @updated 2020/05/27
+     */
+    public static function createInstanceWithConnection(string $connection): Model
+    {
+        $model = new static();
+        $model->setConnection($connection);
+        return $model;
     }
 
     public static function getModel($id)
