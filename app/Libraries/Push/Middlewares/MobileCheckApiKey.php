@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Libraries\Push\Middlewares;
+namespace LaravelSupports\LibrariesPush\Middlewares;
 
 use Closure;
 use Auth;

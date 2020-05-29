@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelSupports\Library\Push\Services;
+namespace LaravelSupports\LibrariesPush\Services;
 
-use LaravelSupports\Library\Push\Helpers\PushHelper;
-use LaravelSupports\Library\Push\Models\AbstractMobilePushModel;
-use LaravelSupports\Library\Push\Models\MobilePushTokenModel;
-use LaravelSupports\Library\Push\Objects\MobileResultObject;
+use LaravelSupports\LibrariesPush\Helpers\PushHelper;
+use LaravelSupports\LibrariesPush\Models\AbstractMobilePushModel;
+use LaravelSupports\LibrariesPush\Models\MobilePushTokenModel;
+use LaravelSupports\LibrariesPush\Objects\MobileResultObject;
 use Illuminate\Support\Arr;
 
 class MobilePushService

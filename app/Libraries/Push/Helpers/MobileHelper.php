@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LaravelSupports\Libraries\Push\Helpers;
+namespace LaravelSupports\LibrariesPush\Helpers;
 
-use LaravelSupports\Libraries\Push\Models\MobileDownloadHistoryModel;
-use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
+use LaravelSupports\LibrariesPush\Models\MobileDownloadHistoryModel;
+use LaravelSupports\LibrariesPush\Models\MobilePushTokenModel;
 use Illuminate\Support\Facades\DB;
 
 class MobileHelper

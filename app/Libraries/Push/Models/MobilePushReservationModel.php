@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelSupports\Libraries\Push\Models;
+namespace LaravelSupports\LibrariesPush\Models;
 
-use LaravelSupports\Models\ImagesModel;
-use LaravelSupports\Libraries\Supports\Data\Traits\FileSaveTrait;
+use App\Models\ImagesModel;
+use LaravelSupports\LibrariesSupports\Data\Traits\FileSaveTrait;
 use Illuminate\Http\Request;
 
 class MobilePushReservationModel extends AbstractMobilePushModel

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace LaravelSupports\Libraries\Push\Helpers;
+namespace LaravelSupports\LibrariesPush\Helpers;
 
 
-use LaravelSupports\Libraries\Push\Models\AbstractMobilePushModel;
-use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
-use LaravelSupports\Libraries\RestCall;
+use LaravelSupports\LibrariesPush\Models\AbstractMobilePushModel;
+use LaravelSupports\LibrariesPush\Models\MobilePushTokenModel;
+use LaravelSupports\LibrariesRestCall;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
 

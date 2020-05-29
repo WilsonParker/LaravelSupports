@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Libraries\Push\Models;
+namespace LaravelSupports\LibrariesPush\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

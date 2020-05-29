@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Libraries\Push\Models;
+namespace LaravelSupports\LibrariesPush\Models;
 
 use Illuminate\Http\Request;
 

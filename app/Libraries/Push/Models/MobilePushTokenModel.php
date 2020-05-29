@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelSupports\Libraries\Push\Models;
+namespace LaravelSupports\LibrariesPush\Models;
 
 use App\Helpers\PushHelper;
-use LaravelSupports\Models\Common\BaseModel;
+use App\Models\Common\BaseModel;
 
 class MobilePushTokenModel extends BaseModel
 {
