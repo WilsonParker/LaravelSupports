@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\LibrariesPush\Listeners;
+namespace LaravelSupports\Libraries\Push\Listeners;
 
 use App\Events\Members\MemberAlimNotificationEvent;
 use App\Events\Members\MemberDetailNotificationEvent;

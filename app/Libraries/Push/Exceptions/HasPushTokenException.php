@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\LibrariesPush\Exceptions;
+namespace LaravelSupports\Libraries\Push\Exceptions;
 
 
 class HasPushTokenException extends \Exception

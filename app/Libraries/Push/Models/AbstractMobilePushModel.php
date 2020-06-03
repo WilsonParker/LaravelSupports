@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\LibrariesPush\Models;
+namespace LaravelSupports\Libraries\Push\Models;
 
 use App\Models\Common\BaseModel;
 use LaravelSupports\LibrariesSupports\Data\Traits\FileSaveTrait;

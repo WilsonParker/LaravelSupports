@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LaravelSupports\LibrariesPush\Abstracts;
+namespace LaravelSupports\Libraries\Push\Abstracts;
 
 
-use LaravelSupports\LibrariesPush\Contracts\HasPushToken;
+use LaravelSupports\Libraries\Push\Contracts\HasPushToken;
 
 abstract class AbstractTokenModel implements HasPushToken
 {
