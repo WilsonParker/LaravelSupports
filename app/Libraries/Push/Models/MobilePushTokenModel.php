@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\LibrariesPush\Models;
+namespace LaravelSupports\Libraries\Push\Models;
 
 use App\Helpers\PushHelper;
 use LaravelSupports\Models\Common\BaseModel;

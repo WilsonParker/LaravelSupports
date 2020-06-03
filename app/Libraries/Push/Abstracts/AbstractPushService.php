@@ -1,12 +1,12 @@
 <?php
 
 
-namespace LaravelSupports\LibrariesPush\Abstracts;
+namespace LaravelSupports\Libraries\Push\Abstracts;
 
 
-use LaravelSupports\LibrariesPush\Contracts\HasPushToken;
-use LaravelSupports\LibrariesPush\Exceptions\HasPushTokenException;
-use LaravelSupports\LibrariesPush\Objects\MobileResultObject;
+use LaravelSupports\Libraries\Push\Contracts\HasPushToken;
+use LaravelSupports\Libraries\Push\Exceptions\HasPushTokenException;
+use LaravelSupports\Libraries\Push\Objects\MobileResultObject;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 

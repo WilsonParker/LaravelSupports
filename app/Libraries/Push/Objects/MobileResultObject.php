@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\LibrariesPush\Objects;
+namespace LaravelSupports\Libraries\Push\Objects;
 
 class MobileResultObject {
     var $multicast_id;

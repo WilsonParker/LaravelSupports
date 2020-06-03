@@ -1,11 +1,11 @@
 <?php
 
 
-namespace LaravelSupports\LibrariesPush\Controllers;
+namespace LaravelSupports\Libraries\Push\Controllers;
 
 use App\Http\Controllers\Controller;
-use LaravelSupports\LibrariesPush\Helpers\MobileHelper;
-use LaravelSupports\LibrariesPush\Models\MobilePushTokenModel;
+use LaravelSupports\Libraries\Push\Helpers\MobileHelper;
+use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

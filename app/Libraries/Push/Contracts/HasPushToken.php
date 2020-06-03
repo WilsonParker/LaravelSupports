@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\LibrariesPush\Contracts;
+namespace LaravelSupports\Libraries\Push\Contracts;
 
 
 interface HasPushToken

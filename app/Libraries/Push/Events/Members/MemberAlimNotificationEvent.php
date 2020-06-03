@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\LibrariesPush\Events\Members;
+namespace LaravelSupports\Libraries\Push\Events\Members;
 
 use App\Events\Members\Abstracts\AbstractMemberEvent;
 

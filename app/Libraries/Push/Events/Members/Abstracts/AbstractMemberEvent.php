@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\LibrariesPush\Events\Members\Abstracts;
+namespace LaravelSupports\Libraries\Push\Events\Members\Abstracts;
 
 
 use App\Models\Push\MemberAlim;

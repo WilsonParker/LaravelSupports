@@ -1,5 +1,5 @@
 <?php
-namespace LaravelSupports\LibrariesPush\Controllers;
+namespace LaravelSupports\Libraries\Push\Controllers;
 
 class MobilePushController extends AdminController
 {
