@@ -10,7 +10,16 @@ use Illuminate\Support\Facades\Schema;
 // php artisan migrate --path='./database/migrations/2020_04_26_033358_create_member_overdue_information.php'
 abstract class BaseMigration extends Migration
 {
-    protected string $table = "";
+    protected string $table;
+
+    public function down()
+    {
+        Schema::table($this->table, function (Blueprint $table) {
+            if (Schema::hasTable($this->table)) {
+                $this->defaultDownTemplate($table);
+            }
+        });
+    }
 
     protected function defaultSet(Blueprint $table)
     {
@@ -19,31 +28,10 @@ abstract class BaseMigration extends Migration
         $table->collation = 'utf8_unicode_ci';
     }
 
-    public function up()
-    {
-        Schema::create($this->table, function (Blueprint $table) {
-            $this->defaultCreateTemplate($table);
-            $this->defaultSet($table);
-        });
-    }
-
-    public function down()
-    {
-        Schema::table($this->table, function (Blueprint $table) {
-            if (Schema::hasTable($this->table)) {
-                $this->defaultDropTemplate($table);
-            }
-        });
-    }
-
-    /**
-     * Run the migrations.
-     * @param Blueprint $table
-     * @return void
-     */
-    function defaultCreateTemplate(Blueprint $table)
-    {
-
+    function defaultTimestampTemplate(Blueprint $table) {
+        $table->timestamp('created_at')->useCurrent();
+        $table->timestamp('updated_at')->useCurrent();
+        $table->softDeletes();
     }
 
     /**
@@ -51,8 +39,8 @@ abstract class BaseMigration extends Migration
      * @param Blueprint $table
      * @return void
      */
-    function defaultDropTemplate(Blueprint $table)
+    function defaultDownTemplate(Blueprint $table)
     {
-        $table->drop();
+        $table->dropIfExists();
     }
 }
