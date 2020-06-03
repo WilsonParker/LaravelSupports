@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LaravelSupports\Library\SMS\Helpers;
+namespace LaravelSupports\Libraries\SMS\Helpers;
 
 
-use LaravelSupports\Library\SMS\Exceptions\InvalidPhoneNumberException;
+use LaravelSupports\Libraries\SMS\Exceptions\InvalidPhoneNumberException;
 use Illuminate\Support\Str;
 
 /**

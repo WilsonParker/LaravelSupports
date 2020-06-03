@@ -3,7 +3,7 @@
 namespace LaravelSupports\Libraries\Push\Models;
 
 use LaravelSupports\Models\Common\BaseModel;
-use LaravelSupports\LibrariesSupports\Data\Traits\FileSaveTrait;
+use LaravelSupports\Libraries\Supports\Data\Traits\FileSaveTrait;
 use Illuminate\Http\Request;
 
 abstract class AbstractMobilePushModel extends BaseModel

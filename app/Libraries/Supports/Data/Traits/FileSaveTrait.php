@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LaravelSupports\Library\Supports\Data\Traits;
+namespace LaravelSupports\Libraries\Supports\Data\Traits;
 
 
-use LaravelSupports\Library\FileUpload;
+use LaravelSupports\Libraries\FileUpload;
 use LaravelSupports\Models\ImagesModel;
 
 trait FileSaveTrait
@@ -34,7 +34,7 @@ trait FileSaveTrait
      * 이미지를 저장하는 기본 함수 입니다
      *
      * @param   $file
-     * @return \LaravelSupports\Library\Exception|array
+     * @return \LaravelSupports\Libraries\Exception|array
      * ("oriFileName" => $oriFileName, "newFileName" => $newFileName, "hash" => $fileHash);
      * @throws \Exception
      * @author  WilsonParker

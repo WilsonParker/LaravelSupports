@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelSupports\Library\Exceptions\Logs;
+namespace LaravelSupports\Libraries\Exceptions\Logs;
 
-use LaravelSupports\Library\Exceptions\Contracts\ExceptionRecordable;
-use LaravelSupports\Library\Supports\Objects\ConstructOverrideObject;
+use LaravelSupports\Libraries\Exceptions\Contracts\ExceptionRecordable;
+use LaravelSupports\Libraries\Supports\Objects\ConstructOverrideObject;
 
 
 /**

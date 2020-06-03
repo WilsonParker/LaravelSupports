@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelSupports\Library\Supports\Objects;
+namespace LaravelSupports\Libraries\Supports\Objects;
 
-use LaravelSupports\Library\Supports\Objects\Contracts\Initializable;
+use LaravelSupports\Libraries\Supports\Objects\Contracts\Initializable;
 
 
 /**

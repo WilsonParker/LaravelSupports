@@ -3,7 +3,7 @@
 namespace LaravelSupports\Libraries\Push\Models;
 
 use App\Models\ImagesModel;
-use LaravelSupports\LibrariesSupports\Data\Traits\FileSaveTrait;
+use LaravelSupports\Libraries\Supports\Data\Traits\FileSaveTrait;
 use Illuminate\Http\Request;
 
 class MobilePushReservationModel extends AbstractMobilePushModel
