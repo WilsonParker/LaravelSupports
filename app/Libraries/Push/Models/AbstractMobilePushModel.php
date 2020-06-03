@@ -2,7 +2,7 @@
 
 namespace LaravelSupports\LibrariesPush\Models;
 
-use App\Models\Common\BaseModel;
+use LaravelSupports\Models\Common\BaseModel;
 use LaravelSupports\LibrariesSupports\Data\Traits\FileSaveTrait;
 use Illuminate\Http\Request;
 

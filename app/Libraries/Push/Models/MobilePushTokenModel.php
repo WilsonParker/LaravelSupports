@@ -3,7 +3,7 @@
 namespace LaravelSupports\LibrariesPush\Models;
 
 use App\Helpers\PushHelper;
-use App\Models\Common\BaseModel;
+use LaravelSupports\Models\Common\BaseModel;
 
 class MobilePushTokenModel extends BaseModel
 {
