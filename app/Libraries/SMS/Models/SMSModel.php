@@ -4,13 +4,12 @@ namespace LaravelSupports\Libraries\SMS\Models;
 
 use LaravelSupports\Libraries\SMS\Helpers\SMSHelper;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class SMSModel extends Model
 {
-    protected string $table = 'fly_sms';
-    protected array $fillable = [];
-    protected array $guarded = [];
+    protected $table = 'fly_sms';
+    protected $fillable = [];
+    protected $guarded = [];
 
     public function bindData($data)
     {

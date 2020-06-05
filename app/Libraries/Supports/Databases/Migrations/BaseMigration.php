@@ -25,7 +25,7 @@ abstract class BaseMigration extends Migration
     {
         $table->engine = 'InnoDB';
         $table->charset = 'utf8';
-        $table->collation = 'utf8_unicode_ci';
+        $table->collation = 'utf8_general_ci';
     }
 
     function defaultTimestampTemplate(Blueprint $table) {

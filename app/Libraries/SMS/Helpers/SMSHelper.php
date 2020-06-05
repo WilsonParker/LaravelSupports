@@ -6,7 +6,6 @@ namespace LaravelSupports\Libraries\SMS\Helpers;
 
 use LaravelSupports\Libraries\SMS\Models\SMSModel;
 use LaravelSupports\Libraries\Supports\Date\DateHelper;
-use LaravelSupports\Models\Members\PlusMemberModel;
 use GuzzleHttp\Client;
 use SoapBox\Formatter\Formatter;
 
@@ -57,6 +56,7 @@ class SMSHelper
 
             switch ($template[self::KEY_TEMPLATE]) {
                 case self::TEMPLATE_BASIC :
+                    $this->send($template[self::KEY_TEMPLATE_CODE], $data['contact'], $template[self::KEY_MESSAGE]);
                     break;
                 case self::TEMPLATE_PLUS_MEMBER :
                     break;
