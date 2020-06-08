@@ -14,6 +14,7 @@ abstract class AlterMigration extends BaseMigration
     {
         Schema::table($this->table, function (Blueprint $table) {
             $this->defaultUpTemplate($table);
+            $this->defaultSet($table);
         });
     }
 

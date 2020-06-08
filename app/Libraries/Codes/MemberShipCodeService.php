@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Codes;
+namespace LaravelSupports\Libraries\Codes;
 
 
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
@@ -68,7 +68,6 @@ class MemberShipCodeService extends AbstractCodeGenerator
             }
         };
         $errorCallback = function ($e) {
-            dump($e);
             return null;
         };
         return $this->runTransaction($callback, $errorCallback);

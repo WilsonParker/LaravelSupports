@@ -23,9 +23,11 @@ abstract class BaseMigration extends Migration
 
     protected function defaultSet(Blueprint $table)
     {
-        $table->engine = 'InnoDB';
-        $table->charset = 'utf8';
-        $table->collation = 'utf8_general_ci';
+//        $table->engine = 'InnoDB';
+//        $table->charset = 'utf8mb4';
+//        $table->collation = 'utf8mb4_unicode_ci';
+//        $table->charset = 'utf8';
+//        $table->collation = 'utf8_general_ci';
     }
 
     function defaultTimestampTemplate(Blueprint $table) {
