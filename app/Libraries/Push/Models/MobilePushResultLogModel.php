@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class MobilePushResultLogModel extends AbstractMobilePushModel
 {
-    protected string $table = 'mobile_push_result_log';
+    protected $table = 'mobile_push_result_log';
 
     // @Override
     function setSerializeData($json)

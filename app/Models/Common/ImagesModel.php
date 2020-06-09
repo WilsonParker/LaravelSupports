@@ -9,8 +9,8 @@ use LaravelSupports\Models\Common\BaseModel;
 
 class ImagesModel extends BaseModel
 {
-    protected string $table = "images";
-    protected string $primaryKey = "ix";
+    protected $table = "images";
+    protected $primaryKey = "ix";
 
     public bool $timestamps = true;
 

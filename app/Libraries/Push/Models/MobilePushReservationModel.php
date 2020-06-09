@@ -11,7 +11,7 @@ class MobilePushReservationModel extends AbstractMobilePushModel
     use FileSaveTrait;
 
 
-    protected string $table = 'mobile_push_reservation';
+    protected $table = 'mobile_push_reservation';
 
     protected function init()
     {

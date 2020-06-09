@@ -9,8 +9,8 @@ use LaravelSupports\Models\Common\BaseModel;
 
 class FilesModel extends BaseModel
 {
-    protected string $table = "files";
-    protected string $primaryKey = "ix";
+    protected $table = "files";
+    protected $primaryKey = "ix";
 
     public bool $timestamps = true;
 

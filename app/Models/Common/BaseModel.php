@@ -25,12 +25,13 @@ abstract class BaseModel extends Model
      */
     public $timestamps = true;
     public $incrementing = true;
-    protected $primaryKey = "ix";
+    // protected $primaryKey = "ix";
+    protected $primaryKey = "id";
     protected $table = "";
 
     const KEY_SEARCH_TYPE = "search_type";
     const KEY_KEYWORD = "keyword";
-    protected array $selectScope = [];
+    protected array $selectScope = ['*'];
     // 이미지, 파일을 저장하는 suffix 경로 입니다
     protected string $path;
     // 이미지, 파일을 저장하는 prefix 경로 입니다

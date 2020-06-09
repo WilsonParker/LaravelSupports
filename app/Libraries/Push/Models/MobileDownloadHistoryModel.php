@@ -8,8 +8,8 @@ class MobileDownloadHistoryModel extends Model
 {
     public $incrementing = true;
     public $timestamps = false;
-    protected string $primaryKey = 'seq';
-    protected string $table = 'mm_app_download_history';
+    protected $primaryKey = 'seq';
+    protected $table = 'mm_app_download_history';
     protected $dateFormat = "Y-m-d";
 
     public function addHistory($os_type)

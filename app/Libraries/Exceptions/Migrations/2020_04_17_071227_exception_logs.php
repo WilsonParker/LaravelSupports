@@ -6,7 +6,7 @@ use LaravelSupports\Libraries\Supports\Databases\Migrations\BaseMigration;
 class ExceptionLogs extends BaseMigration
 {
 
-    protected string $table = "exception_logs";
+    protected $table = "exception_logs";
 
     /**
      * Run the migrations.

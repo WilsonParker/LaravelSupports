@@ -4,9 +4,8 @@
 namespace LaravelSupports\Libraries\Supports\Auth;
 
 
-use LaravelSupports\Models\Home\Permissions\Admin\AdminModel;
+use App\Models\Members\MemberModel;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class AuthHelper
 {
@@ -22,6 +21,10 @@ class AuthHelper
      */
     public static function getAuthUser()
     {
+        //        $member = Auth::user();
+        $member = MemberModel::find(151400);
+        return $member;
+
         if (self::isLogin()) {
             return Auth::guard("admin")->user();
         } else {
