@@ -13,25 +13,34 @@ class AuthHelper
     /**
      * 로그인 된 AdminModel 을 return 합니다
      *
-     * @param
      * @return
      * @author  WilsonParker
      * @added   2019-08-23
      * @updated 2019-08-23
+     * @updated 2020-06-11
      */
     public static function getAuthUser()
     {
-        //        $member = Auth::user();
         $member = MemberModel::find(151400);
         return $member;
 
-        if (self::isLogin()) {
+        //        $member = Auth::user();
+        $token = DB::table('oauth_access_tokens')->where('id', request()->token)->first();
+        if (!$token) {
+            abort(401);
+        }
+
+        $member = MemberModel::getModel($token->user_id);
+        $member->tokenID = $token->id;
+        return $member;
+
+        /*if (self::isLogin()) {
             return Auth::guard("admin")->user();
         } else {
             return null;
         }
         $model = AdminModel::get()[0];
-        return $model;
+        return $model;*/
     }
 
     /**

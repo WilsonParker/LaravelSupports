@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Codes;
 
 
+use App\Library\LaravelSupports\app\Libraries\Codes\Contracts\CodeGeneratable;
 use Illuminate\Database\Eloquent\Model;
 use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
@@ -18,8 +19,6 @@ use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
  */
 class CouponCodeService extends AbstractCodeGenerator
 {
-    use TransactionTrait;
-
     /**
      * 코드 길이 입니다
      *
@@ -40,35 +39,5 @@ class CouponCodeService extends AbstractCodeGenerator
      * @updated 2020/04/20
      */
     protected string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-    /**
-     * Coupon 의 추천인 코드를 변경 합니다
-     * 추천인 코드를 생성하여 중복이 되지 않으면 해당 코드로 설정하며
-     * 중복이 된 코드가 생성 되었을 경우 코드를 다시 생성합니다
-     * 최대 $replayCount 값 만큼 코드를 다시 생성합니다
-     *
-     * @param Model $model
-     * @param string $code
-     * @return Model
-     * @author  dew9163
-     * @added   2020/06/08
-     * @updated 2020/06/08
-     * @inheritDoc
-     */
-    protected function bindCode(Model $model, string $code): Model
-    {
-        $callback = function () use ($model, $code) {
-            if (!$model->where('code', $code)->exists()) {
-                $model->code = $code;
-                return $model;
-            } else {
-                return false;
-            }
-        };
-        $errorCallback = function ($e) {
-            return null;
-        };
-        return $this->runTransaction($callback, $errorCallback);
-    }
 
 }

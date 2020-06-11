@@ -4,11 +4,10 @@
 namespace LaravelSupports\Libraries\Codes;
 
 
-use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
-use LaravelSupports\Models\Members\PlusMemberModel;
-use LaravelSupports\Models\Members\PlusMemberModel as PlusMemberModelAlias;
-use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
+use App\Library\LaravelSupports\app\Libraries\Codes\Contracts\CodeGeneratable;
 use Illuminate\Database\Eloquent\Model;
+use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
+use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
 
 
 /**
@@ -43,6 +42,11 @@ class RecommendCodeService extends AbstractCodeGenerator
      */
     protected string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
+    protected function isExistCode(CodeGeneratable $model, string $code): bool
+    {
+        return $model->where("recom_code", $code)->exists();
+    }
+
     /**
      * PlusMember 의 추천인 코드를 변경 합니다
      * 추천인 코드를 생성하여 중복이 되지 않으면 해당 코드로 설정하며
@@ -57,15 +61,11 @@ class RecommendCodeService extends AbstractCodeGenerator
      * @updated 2020/04/20
      * @inheritDoc
      */
-    protected function bindCode(Model $model, string $code): Model
+    protected function bindCode(CodeGeneratable $model, string $code): Model
     {
         $callback = function () use ($model, $code) {
-            if (!$model->where("recom_code", $code)->exists()) {
-                $model->recom_code = $code;
-                return $model;
-            } else {
-                return false;
-            }
+            $model->recom_code = $code;
+            return $model;
         };
         $errorCallback = function ($e) {
             return null;

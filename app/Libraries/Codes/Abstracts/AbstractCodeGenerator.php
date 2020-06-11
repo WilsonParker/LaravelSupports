@@ -4,14 +4,16 @@
 namespace LaravelSupports\Libraries\Codes\Abstracts;
 
 
-use LaravelSupports\Models\Members\PlusMemberModel;
-use LaravelSupports\Libraries\Codes\Exceptions\CodeGenerateException;
+use App\Library\LaravelSupports\app\Libraries\Codes\Contracts\CodeGeneratable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use phpseclib\System\SSH\Agent;
+use LaravelSupports\Libraries\Codes\Exceptions\CodeGenerateException;
+use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
+use LaravelSupports\Models\Members\PlusMemberModel;
 
 abstract class AbstractCodeGenerator
 {
+    use TransactionTrait;
 
     /**
      * Maximum number of retries when duplicate code is generated
@@ -57,26 +59,68 @@ abstract class AbstractCodeGenerator
     public function __construct()
     {
         // generate $charactersLength
-        $this->charactersLength = Str::length($this->characters) - 1;
+        $this->initLength();
     }
 
+    /**
+     * If the $charactersLength doesn't exist, initialize it
+     *
+     * @return void
+     * @author  dew9163
+     * @added   2020/06/11
+     * @updated 2020/06/11
+     */
+    protected function initLength()
+    {
+        if ($this->charactersLength == 0) {
+            $this->charactersLength = Str::length($this->characters) - 1;
+        }
+    }
 
+    //abstract protected function bindCode(CodeGeneratable $model, string $code): Model;
     /**
      * Change the code of the  model
      *
-     * @param Model $model
+     * @param CodeGeneratable $model
      * @param string $code
      * @return Model
      * @author  dew9163
      * @added   2020/04/20
      * @updated 2020/04/20
+     * @updated 2020/06/11
      */
-    abstract protected function bindCode(Model $model, string $code): Model;
+    protected function bindCode(CodeGeneratable $model, string $code): Model
+    {
+        $callback = function () use ($model, $code) {
+            $model->setCode($code);
+            return $model;
+        };
+        $errorCallback = function ($e) {
+            return null;
+        };
+        return $this->runTransaction($callback, $errorCallback);
+    }
+
+    /**
+     * Check if code exists
+     *
+     * @param CodeGeneratable $model
+     * @param string $code
+     * @return bool
+     * @author  dew9163
+     * @added   2020/06/11
+     * @updated 2020/06/11
+     */
+    // abstract protected function isExistCode(Model $model, string $code): bool;
+    protected function isExistCode(CodeGeneratable $model, string $code): bool
+    {
+        return $model->isExists($code);
+    }
 
     /**
      * Generate code and retries $replayCount if the code is duplicated
      *
-     * @param Model $model
+     * @param CodeGeneratable $model
      * @param bool $isNeedException
      * @return Model
      * @throws \Throwable
@@ -84,21 +128,10 @@ abstract class AbstractCodeGenerator
      * @added   2020/04/20
      * @updated 2020/04/20
      */
-    public function generateCode(Model $model, bool $isNeedException = false): Model
+    public function generateCode(CodeGeneratable $model, bool $isNeedException = false): ?Model
     {
-        $code = $this->createCode();
-        for ($i = 0; $i < $this->replayCount; $i++) {
-            $result = $this->bindCode($model, $code);
-            if (is_null($result)) {
-                continue;
-            } else {
-                return $result;
-            }
-        }
-
-        // Throw exception when number of retries exceeded and $isNeedException is true
-        throw_if($isNeedException, CodeGenerateException::class, "Number of retries exceeded");
-        return null;
+        $code = $this->createUniqueCode($model, $isNeedException);
+        return $this->bindCode($model, $code);
     }
 
     /**
@@ -116,6 +149,33 @@ abstract class AbstractCodeGenerator
             $code .= $this->createChar();
         }
         return $code;
+    }
+
+    /**
+     * create not exists code
+     *
+     * @param CodeGeneratable $model
+     * @param bool $isNeedException
+     * @return string
+     * @throws \Throwable
+     * @author  dew9163
+     * @added   2020/04/20
+     * @updated 2020/04/20
+     */
+    public function createUniqueCode(CodeGeneratable $model, bool $isNeedException = false): ?string
+    {
+        for ($i = 0; $i < $this->replayCount; $i++) {
+            $code = $this->createCode();
+            if ($this->isExistCode($model, $code)) {
+                continue;
+            } else {
+                return $code;
+            }
+        }
+
+        // Throw exception when number of retries exceeded and $isNeedException is true
+        throw_if($isNeedException, CodeGenerateException::class, "Number of retries exceeded");
+        return null;
     }
 
     /**

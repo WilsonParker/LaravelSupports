@@ -15,15 +15,14 @@ class CouponService
 
     /**
      * CouponService constructor.
-     *
-     * @param $coupon
+     * @param CouponModel $coupon
+     * @param $member
      */
-    public function __construct(CouponModel $coupon)
+    public function __construct(CouponModel $coupon, $member)
     {
         $this->coupon = $coupon;
-        $this->member = AuthHelper::getAuthUser();
+        $this->member = $member;
     }
-
 
     /**
      * use coupon

@@ -4,11 +4,10 @@
 namespace LaravelSupports\Libraries\Codes;
 
 
-use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
-use LaravelSupports\Models\Members\PlusMemberModel as PlusMemberModelAlias;
-use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
+use App\Library\LaravelSupports\app\Libraries\Codes\Contracts\CodeGeneratable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
+use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
 
 
 /**
@@ -20,8 +19,6 @@ use Illuminate\Support\Str;
  */
 class MemberShipCodeService extends AbstractCodeGenerator
 {
-    use TransactionTrait;
-
     /**
      * 코드 길이 입니다
      *
@@ -42,36 +39,6 @@ class MemberShipCodeService extends AbstractCodeGenerator
      * @updated 2020/04/20
      */
     protected string $characters = '0123456789';
-
-    /**
-     * PlusMember 의 멤버쉽 코드를 변경 합니다
-     * 멤버쉽 코드를 생성하여 중복이 되지 않으면 해당 코드로 설정하며
-     * 중복이 된 코드가 생성 되었을 경우 코드를 다시 생성합니다
-     * 최대 $replayCount 값 만큼 코드를 다시 생성합니다
-     *
-     * @param Model $model
-     * @param string $code
-     * @return Model
-     * @author  dew9163
-     * @added   2020/04/20
-     * @updated 2020/04/20
-     * @inheritDoc
-     */
-    protected function bindCode(Model $model, string $code): Model
-    {
-        $callback = function () use ($model, $code) {
-            if (!$model->where("membership_num", $code)->exists()) {
-                $model->membership_num = $code;
-                return $model;
-            } else {
-                return null;
-            }
-        };
-        $errorCallback = function ($e) {
-            return null;
-        };
-        return $this->runTransaction($callback, $errorCallback);
-    }
 
     /**
      * 멤버쉽 코드를 생성 합니다
