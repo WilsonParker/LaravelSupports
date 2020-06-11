@@ -1,12 +1,13 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Pay\Common\Abstracts;
+namespace LaravelSupports\Libraries\Pay\Common\Abstracts;
 
 
-use App\Library\LaravelSupports\app\Libraries\Pay\Common\Contracts\Member;
-use LaravelSupports\Libraries\Codes\StringCodeService;
-use LaravelSupports\Libraries\Coupon\Contracts\Coupons\Coupon;
+use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
+use LaravelSupports\Libraries\Pay\Common\Contracts\Member;
+use LaravelSupports\Libraries\Coupon\Contracts\Coupon;
+use LaravelSupports\Libraries\Coupon\CouponService;
 use LaravelSupports\Libraries\Pay\Common\Contracts\Price;
 
 abstract class AbstractPayService
@@ -32,7 +33,8 @@ abstract class AbstractPayService
         $this->init();
     }
 
-    protected function init() {
+    protected function init()
+    {
 
     }
 
@@ -371,12 +373,14 @@ abstract class AbstractPayService
      * 등록된 coupon code 를 제공 합니다
      *
      * @return null
+     * @throws \Throwable
      * @author  dew9163
      * @added   2020/06/11
      * @updated 2020/06/11
      */
     public function getCouponCode()
     {
-        return isset($this->coupon) ? $this->coupon->getUniqueValue() : null;
+        $couponService = new CouponService($this->coupon, $this->member);
+        return $couponService->getCode($this->price);
     }
 }

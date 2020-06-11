@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Pay\Common\Traits;
+namespace LaravelSupports\Libraries\Pay\Common\Traits;
 
 
 use Illuminate\Support\Str;

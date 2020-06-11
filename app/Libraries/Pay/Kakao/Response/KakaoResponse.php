@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Pay\Kakao\Response;
+namespace LaravelSupports\Libraries\Pay\Kakao\Response;
 
 
 class KakaoResponse

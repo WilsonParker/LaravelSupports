@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Pay\Kakao;
+namespace LaravelSupports\Libraries\Pay\Kakao;
 
 
-use App\Library\LaravelSupports\app\Libraries\Pay\Common\Abstracts\AbstractPayService;
+use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
 use App\Models\Membership\MembershipPaymentModel;
 use App\Models\Payments\PaymentModuleModel;
 use LaravelSupports\Libraries\Codes\StringCodeService;

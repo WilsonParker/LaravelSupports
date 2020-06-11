@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Coupon\Traits;
+namespace LaravelSupports\Libraries\Coupon\Traits;
 
 
 trait CouponAttributesTraits

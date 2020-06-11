@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Pay\Common\Contracts;
+namespace LaravelSupports\Libraries\Pay\Common\Contracts;
 
 
 interface Member

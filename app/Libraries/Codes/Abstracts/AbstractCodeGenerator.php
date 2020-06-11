@@ -4,12 +4,11 @@
 namespace LaravelSupports\Libraries\Codes\Abstracts;
 
 
-use App\Library\LaravelSupports\app\Libraries\Codes\Contracts\CodeGeneratable;
+use LaravelSupports\Libraries\Codes\Contracts\CodeGeneratable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Codes\Exceptions\CodeGenerateException;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
-use LaravelSupports\Models\Members\PlusMemberModel;
 
 abstract class AbstractCodeGenerator
 {

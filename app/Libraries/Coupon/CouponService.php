@@ -4,9 +4,10 @@
 namespace LaravelSupports\Libraries\Coupon;
 
 
+use LaravelSupports\Libraries\Coupon\Exceptions\AlreadyUsedException;
+use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
 use App\Models\Coupons\CouponModel;
 use App\Models\Coupons\CouponUsedMemberModel;
-use LaravelSupports\Libraries\Supports\Auth\AuthHelper;
 
 class CouponService
 {
@@ -49,14 +50,17 @@ class CouponService
      * coupon is usable
      *
      * @param $data
+     * @param bool $throwException
      * @return bool
+     * @throws \Throwable
      * @author  dew9163
      * @added   2020/06/09
      * @updated 2020/06/09
+     * @updated 2020/06/11
      */
-    public function isUsable($data = null)
+    public function isUsable($data = null, $throwException = false)
     {
-        if ($this->coupon->isAvailable() && $this->isNotCouponUsed()) {
+        if (isset($this->coupon) && $this->coupon->isAvailable($throwException) && $this->isNotCouponUsed($throwException)) {
             return $this->coupon->conditions->reduce(function ($carry, $item) use ($data) {
                 $value = $this->getConditionCallback($item->getCouponTypeCode())($item, $this->member, $data);
                 return $item->operator == 'and' ? $carry && $value : $carry || $value;
@@ -99,8 +103,19 @@ class CouponService
         return CouponUsedMemberModel::isUsed($this->coupon->id, $this->member->id);
     }
 
-    public function isNotCouponUsed()
+    /**
+     * Check if you used a coupon
+     *
+     * @param bool $throwException
+     * @return bool
+     * @throws \Throwable
+     * @author  dew9163
+     * @added   2020/06/11
+     * @updated 2020/06/11
+     */
+    public function isNotCouponUsed($throwException = false)
     {
+        throw_if($throwException && !$this->isCouponUsed(), new AlreadyUsedException());
         return !$this->isCouponUsed();
     }
 
@@ -122,5 +137,27 @@ class CouponService
     protected function getBenefitCallback($benefit)
     {
         return $this->getBenefit($benefit)['callback'];
+    }
+
+    /**
+     * return coupon code
+     *
+     * @param
+     * @return mixed|null
+     * @throws \Throwable
+     * @author  dew9163
+     * @added   2020/06/11
+     * @updated 2020/06/11
+     */
+    public function getCode($data)
+    {
+        if (isset($this->coupon)) {
+            $isUsable = $this->isUsable($data, true);
+            throw_if(!$isUsable, new NotMetConditionException());
+            if ($isUsable) {
+                return $this->coupon->getUniqueValue();
+            }
+        }
+        return null;
     }
 }

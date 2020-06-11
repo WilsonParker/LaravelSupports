@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Codes\Contracts;
+namespace LaravelSupports\Libraries\Codes\Contracts;
 
 
 interface CodeGeneratable

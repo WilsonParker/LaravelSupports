@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Codes;
 
 
-use App\Library\LaravelSupports\app\Libraries\Codes\Contracts\CodeGeneratable;
+use LaravelSupports\Libraries\Codes\Contracts\CodeGeneratable;
 use Illuminate\Database\Eloquent\Model;
 use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;

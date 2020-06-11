@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Libraries\Coupon\Contracts\Coupons;
+namespace LaravelSupports\Libraries\Coupon\Contracts;
 
 
 interface Coupon
