@@ -16,6 +16,7 @@ class CouponService
 
     /**
      * CouponService constructor.
+     *
      * @param CouponModel $coupon
      * @param $member
      */
@@ -31,14 +32,16 @@ class CouponService
      * @param $data
      * Price
      * MemberModel
+     * @param bool $throwException
      * @return bool|null
+     * @throws \Throwable
      * @author  dew9163
      * @added   2020/06/09
      * @updated 2020/06/09
      */
-    public function useCoupon($data = null)
+    public function useCoupon($data = null, $throwException = false)
     {
-        if ($this->isUsable($data)) {
+        if ($this->isUsable($data, $throwException)) {
             $result = $this->provideBenefit($data);
             $this->userCouponUsed();
             return $result;
@@ -60,7 +63,7 @@ class CouponService
      */
     public function isUsable($data = null, $throwException = false)
     {
-        if (isset($this->coupon) && $this->coupon->isAvailable($throwException) && $this->isNotCouponUsed($throwException)) {
+        if (isset($this->coupon) && $this->isNotCouponUsed($throwException) && $this->coupon->isAvailable($throwException)) {
             return $this->coupon->conditions->reduce(function ($carry, $item) use ($data) {
                 $value = $this->getConditionCallback($item->getCouponTypeCode())($item, $this->member, $data);
                 return $item->operator == 'and' ? $carry && $value : $carry || $value;
@@ -115,8 +118,9 @@ class CouponService
      */
     public function isNotCouponUsed($throwException = false)
     {
-        throw_if($throwException && !$this->isCouponUsed(), new AlreadyUsedException());
-        return !$this->isCouponUsed();
+        $isUsed = $this->isCouponUsed();
+        throw_if($throwException && $isUsed, new AlreadyUsedException());
+        return !$isUsed;
     }
 
     protected function getCondition($condition)
@@ -154,10 +158,9 @@ class CouponService
         if (isset($this->coupon)) {
             $isUsable = $this->isUsable($data, true);
             throw_if(!$isUsable, new NotMetConditionException());
-            if ($isUsable) {
-                return $this->coupon->getUniqueValue();
-            }
+            return $this->coupon->getUniqueValue();
+        } else {
+            return null;
         }
-        return null;
     }
 }

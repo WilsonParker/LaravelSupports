@@ -14,4 +14,6 @@ interface Coupon
 
     public function getCouponValue();
 
+    public function getCouponUsableCount();
+
 }
