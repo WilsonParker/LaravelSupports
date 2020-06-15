@@ -17,10 +17,10 @@ class CouponService
     /**
      * CouponService constructor.
      *
-     * @param CouponModel $coupon
+     * @param CouponModel|null $coupon
      * @param $member
      */
-    public function __construct(CouponModel $coupon, $member)
+    public function __construct(?CouponModel $coupon, $member)
     {
         $this->coupon = $coupon;
         $this->member = $member;

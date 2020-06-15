@@ -4,16 +4,16 @@
 namespace LaravelSupports\Libraries\Pay\Common\Contracts;
 
 
-interface Price
+interface Payment
 {
     public function getID();
 
-    public function getNumber();
-
     public function getName();
 
-    public function getPrice();
+    public function getPayAmount();
 
-    public function isSubscribe();
+    public function getPayload();
+
+    public function getPayloadName();
 
 }

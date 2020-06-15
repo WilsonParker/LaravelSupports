@@ -4,10 +4,11 @@
 namespace LaravelSupports\Libraries\Pay\Common\Abstracts;
 
 
-use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
-use LaravelSupports\Libraries\Pay\Common\Contracts\Member;
+use GuzzleHttp\Client;
 use LaravelSupports\Libraries\Coupon\Contracts\Coupon;
 use LaravelSupports\Libraries\Coupon\CouponService;
+use LaravelSupports\Libraries\Pay\Common\Contracts\Member;
+use LaravelSupports\Libraries\Pay\Common\Contracts\Payment;
 use LaravelSupports\Libraries\Pay\Common\Contracts\Price;
 
 abstract class AbstractPayService
@@ -16,27 +17,78 @@ abstract class AbstractPayService
     protected string $host;
     protected string $webHookURL;
     protected Member $member;
-    protected Price $price;
+//    protected Price $price;
     protected ?Coupon $coupon;
+    protected ?Payment $payment;
 
     /**
      * AbstractPayService constructor.
+     *
      * @param Member $member
-     * @param Price $price
+     * @param Price $payment
      * @param Coupon|null $coupon
      */
-    public function __construct(Member $member, Price $price, Coupon $coupon = null)
+    public function __construct(Member $member, Payment $payment, Coupon $coupon = null)
     {
         $this->member = $member;
-        $this->price = $price;
-        $this->coupon = $coupon;
+        $this->payment = $payment;
+        $this->setCoupon($coupon);
         $this->init();
     }
 
-    protected function init()
+    /**
+     * api 를 호출 합니다
+     *
+     * @param $endpoint
+     * @param $data
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @author  dew9163
+     * @added   2020/06/15
+     * @updated 2020/06/15
+     */
+    protected function call($endpoint, $data)
     {
-
+        $response = $this->buildRequest(
+            "POST",
+            $this->host . $endpoint,
+            $data
+        );
+        return json_decode($response->getBody());
     }
+
+    /**
+     * api 를 호출하기 위한 response 를 생성 합니다
+     *
+     * @param $method
+     * @param $url
+     * @param array $params
+     * @param null $options
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @author  dew9163
+     * @added   2020/06/15
+     * @updated 2020/06/15
+     */
+    protected function buildRequest($method, $url, $params = [], $options = null)
+    {
+        $client = new Client();
+        $response = $client->request($method, $url, [
+            'headers' => $this->getHeaders(),
+            'form_params' => $params
+        ]);
+        return $response;
+    }
+
+    /**
+     * api 를 호출하기 위해 필요한 head 정보를 제공 합니다
+     *
+     * @return
+     * @author  dew9163
+     * @added   2020/06/15
+     * @updated 2020/06/15
+     */
+    abstract protected function getHeaders();
 
     /**
      * ready 결제 준비에 필요한 데이터를 제공 합니다
@@ -79,16 +131,6 @@ abstract class AbstractPayService
     abstract public function ready();
 
     /**
-     * 결제를 합니다
-     *
-     * @return array
-     * @author  dew9163
-     * @added   2020/06/10
-     * @updated 2020/06/10
-     */
-    abstract public function pay();
-
-    /**
      * 결제 승인을 합니다
      *
      * @return array
@@ -97,6 +139,19 @@ abstract class AbstractPayService
      * @updated 2020/06/10
      */
     abstract public function approve();
+
+    abstract public function subscription();
+
+    abstract public function cancel();
+
+    abstract public function order();
+
+    abstract public function inactive();
+
+    protected function init()
+    {
+
+    }
 
     /**
      * 결제가 완료 되었을 때 실행 합니다
@@ -147,7 +202,7 @@ abstract class AbstractPayService
      */
     public function getPartnerOrderID()
     {
-        return $this->price->getID();
+        return $this->payment->getID();
     }
 
     /**
@@ -177,7 +232,7 @@ abstract class AbstractPayService
      */
     function getItemName()
     {
-        return $this->price->getName();
+        return $this->payment->getName();
     }
 
     /**
@@ -222,7 +277,7 @@ abstract class AbstractPayService
      */
     public function getTotalAmount()
     {
-        return $this->price->getPrice() * $this->getQuantity();
+        return $this->payment->getPayAmount() * $this->getQuantity();
     }
 
     /**
@@ -380,7 +435,28 @@ abstract class AbstractPayService
      */
     public function getCouponCode()
     {
-        $couponService = new CouponService($this->coupon, $this->member);
-        return $couponService->getCode($this->price);
+        if (isset($this->coupon)) {
+            $couponService = new CouponService($this->coupon, $this->member);
+            return $couponService->getCode($this->payment->price);
+        } else {
+            return null;
+        }
     }
+
+    /**
+     * @param Coupon|null $coupon
+     */
+    public function setCoupon(?Coupon $coupon): void
+    {
+        $this->coupon = $coupon;
+    }
+
+    /**
+     * @param Payment|null $payment
+     */
+    public function setPayment(?Payment $payment): void
+    {
+        $this->payment = $payment;
+    }
+
 }

@@ -22,7 +22,7 @@ abstract class AbstractCodeGenerator
      * @added   2020/04/20
      * @updated 2020/04/20
      */
-    protected int $replayCount = 10;
+    protected int $replayCount = 100;
 
     /**
      * Size of code

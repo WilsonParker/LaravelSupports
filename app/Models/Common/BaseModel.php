@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
 {
@@ -271,7 +272,8 @@ abstract class BaseModel extends Model
      * @updated 2020/05/14
      * @updated 2020/05/27
      */
-    protected function buildSelectScope() {
+    protected function buildSelectScope()
+    {
     }
 
     /**
@@ -311,6 +313,25 @@ abstract class BaseModel extends Model
         // $hasProperties 의 값을 Model 의 속성에 적용합니
         foreach ($hasProperties as $property) {
             $this->{$property} = $data[$property];
+        }
+    }
+
+    public function bindDataWithSetter(array $data)
+    {
+        // $data 의 값 중 table columns 에 해당하는 값들을 filter 합니다
+        $hasProperties = collect($this->getColumns())->filter(function ($item) use ($data) {
+            return Arr::has($data, $item);
+        });
+
+        // $hasProperties 의 값을 Model 의 속성에 적용합니
+        foreach ($hasProperties as $property) {
+            // setter method 이름을 생성합니다
+            $methodName = 'set'.Str::ucfirst(Str::camel($property));
+            if (method_exists($this, $methodName)) {
+                $this->{$methodName}($data[$property]);
+            } else {
+                $this->{$property} = $data[$property];
+            }
         }
     }
 
