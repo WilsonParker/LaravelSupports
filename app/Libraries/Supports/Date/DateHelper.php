@@ -20,7 +20,7 @@ class DateHelper
     }
 
     /**
-     * 이번 달 정보를 return 합니다
+     * 이번 달 정보를 제공 합니다
      *
      * @return  string
      * @author  dew9163
@@ -33,7 +33,7 @@ class DateHelper
     }
 
     /**
-     * 이번 달의 마지막 일 정보를 return 합니다
+     * 이번 달의 마지막 일 정보를 제공 합니다
      *
      * @return  string
      * @author  dew9163
@@ -46,7 +46,21 @@ class DateHelper
     }
 
     /**
-     * 다음 달의 마지막 일 정보를 return 합니다
+     * $date 에 해당하는 날짜의 마지막 일 정보를 제공 합니다
+     *
+     * @param
+     * @return
+     * @author  dew9163
+     * @added   2020/06/16
+     * @updated 2020/06/16
+     */
+    public function getLastDayOfDate($date)
+    {
+        return $date->format('t');
+    }
+
+    /**
+     * 다음 달의 마지막 일 정보를 제공 합니다
      *
      * @return  string
      * @author  dew9163
@@ -59,7 +73,7 @@ class DateHelper
     }
 
     /**
-     * $month 만큼 지난 달의 월과 일 정보를 return 합니다
+     * $month 만큼 지난 달의 월과 일 정보를 제공 합니다
      *
      * @param   int $month
      * @return  string
@@ -73,7 +87,7 @@ class DateHelper
     }
 
     /**
-     * 현재 월과 일 정보를 return 합니다
+     * 현재 월과 일 정보를 제공 합니다
      *
      * @return  string
      * @author  dew9163
@@ -85,4 +99,18 @@ class DateHelper
         return date("n월 d일");
     }
 
+    /**
+     * $month 를 더한 날짜 정보를 제공 합니다
+     *
+     * @param int $month
+     * @param string $format
+     * @return false|string
+     * @author  dew9163
+     * @added   2020/06/16
+     * @updated 2020/06/16
+     */
+    public function getDateTheMonthAdded($month = 0, $format = 'Y-m-d H:i:s')
+    {
+        return date($format, strtotime("+$month month"));
+    }
 }

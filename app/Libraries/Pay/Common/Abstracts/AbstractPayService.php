@@ -437,7 +437,7 @@ abstract class AbstractPayService
     {
         if (isset($this->coupon)) {
             $couponService = new CouponService($this->coupon, $this->member);
-            return $couponService->getCode($this->payment->price);
+            return $couponService->getCode($this->payment->membershipPrice);
         } else {
             return null;
         }

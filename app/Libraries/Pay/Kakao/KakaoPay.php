@@ -8,13 +8,11 @@ use App\Models\Membership\MembershipPaymentModel;
 use App\Models\Payments\PaymentModuleModel;
 use LaravelSupports\Libraries\Codes\StringCodeService;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
-use LaravelSupports\Libraries\Pay\Common\Contracts\Payment;
 
 class KakaoPay extends AbstractPayService
 {
     protected string $webHookURL = 'http://test.api2.flybook.kr';
     protected string $host = 'https://kapi.kakao.com';
-    protected ?Payment $payment;
     private $payload;
 
     protected function init()
@@ -82,7 +80,7 @@ class KakaoPay extends AbstractPayService
         $options = [
             'sale_amount' => 3000
         ];
-        $paymentModel = MembershipPaymentModel::createModel($paymentModuleModel, $this->price, $this->member, $options);
+        $paymentModel = MembershipPaymentModel::createModel($paymentModuleModel, $this->payment, $this->member, $options);
         $this->setPayment($paymentModel);
         $result = $this->call("/v1/payment/ready", $this->getReadyData());
 
@@ -126,7 +124,7 @@ class KakaoPay extends AbstractPayService
 
     public function getCID()
     {
-        return $this->price->isSubscribe() ? config('values.payment.kakao.autopay_tid') : config('values.payment.kakao.tid');
+        return $this->payment->isSubscribe() ? config('values.payment.kakao.autopay_tid') : config('values.payment.kakao.tid');
     }
 
     public function getCIDSecret()
@@ -151,7 +149,7 @@ class KakaoPay extends AbstractPayService
 
     protected function getCallbackUrl($url)
     {
-        return "{$this->webHookURL}{$url}?type=kakaopay&token={$this->member->getToken()}&payload={$this->getPayload()}&price={$this->price->getID()}&coupon={$this->getCouponCode()}";
+        return "{$this->webHookURL}{$url}?type=kakaopay&token={$this->member->getToken()}&payload={$this->getPayload()}&price={$this->getPartnerOrderID()}&coupon={$this->getCouponCode()}";
     }
 
     public function getPayload()
