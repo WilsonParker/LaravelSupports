@@ -3,6 +3,8 @@
 
 namespace LaravelSupports\Libraries\Supports\Date;
 
+use Carbon\Carbon;
+
 /**
  * 날짜 관련 Helper 클래스 입니다
  *
@@ -75,7 +77,7 @@ class DateHelper
     /**
      * $month 만큼 지난 달의 월과 일 정보를 제공 합니다
      *
-     * @param   int $month
+     * @param int $month
      * @return  string
      * @author  dew9163
      * @added   2020/03/16
@@ -112,5 +114,37 @@ class DateHelper
     public function getDateTheMonthAdded($month = 0, $format = 'Y-m-d H:i:s')
     {
         return date($format, strtotime("+$month month"));
+    }
+
+    public function formatDate($date, $format = self::DEF_FORMAT)
+    {
+        return Carbon::parse($date)->format($format);
+    }
+
+    /**
+     * $date 에 $unit 단위로 $value 만큼 add 합니다
+     *
+     * @param Carbon $date
+     * @param $unit
+     * @param $value
+     * @return Carbon|null
+     * @author  dew9163
+     * @added   2020/06/18
+     * @updated 2020/06/18
+     */
+    public function addDate(Carbon $date, $unit, $value)
+    {
+        switch ($unit) {
+            case 'hours':
+                return $date->addHours($value);
+            case 'days':
+                return $date->addDays($value);
+            case 'months':
+                return $date->addMonths($value);
+            case 'years':
+                return $date->addYears($value);
+            default :
+                return null;
+        }
     }
 }
