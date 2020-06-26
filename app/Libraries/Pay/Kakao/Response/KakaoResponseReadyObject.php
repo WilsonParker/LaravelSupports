@@ -4,17 +4,20 @@
 namespace LaravelSupports\Libraries\Pay\Kakao\Response;
 
 
-class KakaoResponse
+use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractResponseReadyObject;
+
+class KakaoResponseReadyObject extends AbstractResponseReadyObject
 {
+
     /**
      * 결제 고유 번호, 20자
      *
      * @type    string
      * @author  dew9163
-     * @added   2020/06/10
-     * @updated 2020/06/10
+     * @added   2020/06/16
+     * @updated 2020/06/16
      */
-    protected $tid;
+    public $tid;
 
     /**
      * 요청한 클라이언트(Client)가 모바일 앱일 경우
@@ -25,7 +28,7 @@ class KakaoResponse
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    protected $next_redirect_app_url;
+    public $next_redirect_app_url;
 
     /**
      * 요청한 클라이언트가 모바일 웹일 경우
@@ -36,7 +39,7 @@ class KakaoResponse
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    protected $next_redirect_mobile_url;
+    public $next_redirect_mobile_url;
 
     /**
      * 요청한 클라이언트가 PC 웹일 경우
@@ -47,7 +50,7 @@ class KakaoResponse
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    protected $next_redirect_pc_url;
+    public $next_redirect_pc_url;
 
     /**
      * 카카오페이 결제 화면으로 이동하는 Android 앱 스킴(Scheme)
@@ -57,7 +60,7 @@ class KakaoResponse
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    protected $android_app_scheme;
+    public $android_app_scheme;
 
     /**
      * 카카오페이 결제 화면으로 이동하는 iOS 앱 스킴
@@ -67,7 +70,7 @@ class KakaoResponse
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    protected $ios_app_scheme;
+    public $ios_app_scheme;
 
     /**
      * 결제 준비 요청 시간
@@ -77,5 +80,17 @@ class KakaoResponse
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    protected $created_at;
+    public $created_at;
+
+    public function getResult()
+    {
+        return [
+            'next_redirect_app_url' => $this->next_redirect_pc_url,
+            'next_redirect_mobile_url' => $this->next_redirect_mobile_url,
+            'next_redirect_pc_url' => $this->next_redirect_pc_url,
+            'android_app_scheme' => $this->android_app_scheme,
+            'ios_app_scheme' => $this->ios_app_scheme,
+        ];
+    }
+
 }

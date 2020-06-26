@@ -4,8 +4,8 @@
 namespace LaravelSupports\Libraries\Pay\Common\Traits;
 
 
-use Illuminate\Support\Str;
-use LaravelSupports\Libraries\Codes\StringCodeService;
+
+use App\Services\Codes\StringCodeService;
 
 trait HasPaymentAttributes
 {
@@ -21,7 +21,7 @@ trait HasPaymentAttributes
         return 'payload';
     }
 
-    public function setPayload(string $payload)
+    public function setPayload($payload)
     {
         $this->{$this->getPayloadName()} = $payload;
     }

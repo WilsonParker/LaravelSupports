@@ -6,11 +6,18 @@ namespace LaravelSupports\Libraries\Pay\Common\Contracts;
 
 interface Payment
 {
+    const STATUS_READY = 'ready';
+    const STATUS_PAID = 'paid';
+    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_FAILED = 'failed';
+
     public function getID();
 
     public function getName();
 
     public function getPayAmount();
+
+    public function getDeliveryCost();
 
     public function getPayload();
 
@@ -28,11 +35,7 @@ interface Payment
 
     public function getType();
 
-    public function getMemberModel();
-
-    public function getPriceModel();
-
-    public function getCouponModel();
+    public function getQuantity();
 
     public function getToken();
 
@@ -65,4 +68,16 @@ interface Payment
     public function getPaymentType();
 
     public function setPaymentType($type);
+
+    public function getPgTid();
+
+    public function setPgTid($id);
+
+    public function getPgProvider();
+
+    public function setPgProvider($provider);
+
+    public function getDescription();
+
+    public function setDescription($description);
 }

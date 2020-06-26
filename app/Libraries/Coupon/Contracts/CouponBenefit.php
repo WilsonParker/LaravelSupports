@@ -11,4 +11,6 @@ interface CouponBenefit extends Coupon
     public function getCouponSubValueRegex();
 
     public function getCouponSubValue();
+
+    public function getCouponThirdValue();
 }

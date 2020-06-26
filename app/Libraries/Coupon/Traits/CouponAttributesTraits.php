@@ -22,6 +22,11 @@ trait CouponAttributesTraits
         return 'sub_value';
     }
 
+    public function getThirdValueKey()
+    {
+        return 'third_value';
+    }
+
     public function getUniqueValue()
     {
         return $this->{$this->getUniqueName()};
@@ -35,5 +40,10 @@ trait CouponAttributesTraits
     public function getCouponSubValue()
     {
         return $this->{$this->getSubValueKey()};
+    }
+
+    public function getCouponThirdValue()
+    {
+        return $this->{$this->getThirdValueKey()};
     }
 }

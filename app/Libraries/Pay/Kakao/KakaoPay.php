@@ -4,21 +4,18 @@
 namespace LaravelSupports\Libraries\Pay\Kakao;
 
 
-use App\Models\Membership\MembershipPaymentModel;
-use App\Models\Payments\PaymentModuleModel;
-use LaravelSupports\Libraries\Codes\StringCodeService;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
+use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseApproveObject;
+use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseReadyObject;
 
 class KakaoPay extends AbstractPayService
 {
-    protected string $webHookURL = 'http://test.api2.flybook.kr';
-    protected string $host = 'https://kapi.kakao.com';
-    private $payload;
+
+    protected $webHookURL = 'http://test.api2.flybook.kr/v3/membership/pay/callback';
+    protected $host = 'https://kapi.kakao.com';
 
     protected function init()
     {
-        $service = new StringCodeService(64);
-        $this->payload = $service->createCode();
     }
 
     /**
@@ -48,48 +45,31 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
-    public function getPayData()
-    {
-        /*return [
-            'key' => $this->getAdminKey(),
-            'payload' => $this->getPayload(),
-            'coupon' => $this->getCouponCode(),
-            'cid' => $this->getCID(),
-            'partner_order_id' => $this->price->getID(),
-            'partner_user_id' => $this->member->getID(),
-            'item_name' => $this->price->getName(),
-            'quantity' => $this->getQuantity(),
-            'total_amount' => $this->getTotalAmount(),
-            'vat_amount' => $this->getVatAmount(),
-            'tax_free_amount' => $this->getTaxFreeAmount(),
-            'approval_url' => $this->getApprovalUrl(),
-            'cancel_url' => $this->getCancelUrl(),
-            'fail_url' => $this->getFailUrl(),
-
-        ];*/
-    }
-
     public function getApproveData()
     {
-
+        return [
+            'cid' => $this->getCID(),
+            'tid' => $this->payment->getTID(),
+            'partner_order_id' => $this->getPartnerOrderID(),
+            'partner_user_id' => $this->getPartnerUserID(),
+            'pg_token' => $this->getToken(),
+        ];
     }
 
     public function ready()
     {
-        $paymentModuleModel = PaymentModuleModel::getModel('kakao_pay');
-        $options = [
-            'sale_amount' => 3000
-        ];
-        $paymentModel = MembershipPaymentModel::createModel($paymentModuleModel, $this->payment, $this->member, $options);
-        $this->setPayment($paymentModel);
         $result = $this->call("/v1/payment/ready", $this->getReadyData());
-
-        return $result;
+        $obj = new KakaoResponseReadyObject();
+        $obj->bindStd($result);
+        return $obj;
     }
 
     public function approve()
     {
-        return $this->call("/v1/payment/approve", []);
+        $result = $this->call("/v1/payment/approve", $this->getApproveData());
+        $obj = new KakaoResponseApproveObject();
+        $obj->bindStd($result);
+        return $obj;
     }
 
     public function subscription()
@@ -132,31 +112,9 @@ class KakaoPay extends AbstractPayService
         return null;
     }
 
-    public function getApprovalUrl()
-    {
-        return $this->getCallbackUrl("/v3/membership/pay/paid");
-    }
-
-    public function getCancelUrl()
-    {
-        return $this->getCallbackUrl("/v3/membership/pay/cancelled");
-    }
-
-    public function getFailUrl()
-    {
-        return $this->getCallbackUrl("/v3/membership/pay/failed");
-    }
-
     protected function getCallbackUrl($url)
     {
-        return "{$this->webHookURL}{$url}?type=kakaopay&token={$this->member->getToken()}&payload={$this->getPayload()}&price={$this->getPartnerOrderID()}&coupon={$this->getCouponCode()}";
-    }
-
-    public function getPayload()
-    {
-        $service = new StringCodeService(64);
-        $model = new MembershipPaymentModel();
-        return $service->createUniqueCode($model);
+        return "{$this->webHookURL}{$url}?type=kakao_pay&payload={$this->getPayload()}";
     }
 
 }

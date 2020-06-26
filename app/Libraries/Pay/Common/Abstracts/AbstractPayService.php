@@ -4,34 +4,36 @@
 namespace LaravelSupports\Libraries\Pay\Common\Abstracts;
 
 
-use GuzzleHttp\Client;
 use LaravelSupports\Libraries\Coupon\Contracts\Coupon;
 use LaravelSupports\Libraries\Coupon\CouponService;
 use LaravelSupports\Libraries\Pay\Common\Contracts\Member;
 use LaravelSupports\Libraries\Pay\Common\Contracts\Payment;
-use LaravelSupports\Libraries\Pay\Common\Contracts\Price;
+use GuzzleHttp\Client;
 
 abstract class AbstractPayService
 {
 
-    protected string $host;
-    protected string $webHookURL;
-    protected Member $member;
-//    protected Price $price;
-    protected ?Coupon $coupon;
-    protected ?Payment $payment;
+    protected $host;
+    protected $webHookURL;
+    protected $member;
+    protected $price;
+    protected $coupon;
+    protected $payment;
+    protected $data;
 
     /**
      * AbstractPayService constructor.
      *
      * @param Member $member
-     * @param Price $payment
+     * @param Payment $payment
      * @param Coupon|null $coupon
+     * @param null $data
      */
-    public function __construct(Member $member, Payment $payment, Coupon $coupon = null)
+    public function __construct(Member $member, Payment $payment, Coupon $coupon = null, $data = null)
     {
         $this->member = $member;
         $this->payment = $payment;
+        $this->data = $data;
         $this->setCoupon($coupon);
         $this->init();
     }
@@ -98,7 +100,9 @@ abstract class AbstractPayService
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    abstract public function getReadyData();
+    public function getReadyData() {
+        return [];
+    }
 
     /**
      * 결제에 필요한 데이터를 제공 합니다
@@ -108,7 +112,7 @@ abstract class AbstractPayService
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    abstract public function getPayData();
+//    abstract public function getPayData();
 
     /**
      * approve 결제 승인에 필요한 데이터를 제공 합니다
@@ -118,7 +122,21 @@ abstract class AbstractPayService
      * @added   2020/06/10
      * @updated 2020/06/10
      */
-    abstract public function getApproveData();
+    public function getApproveData() {
+        return [];
+    }
+
+    /**
+     * subscribe 결제 승인에 필요한 데이터를 제공 합니다
+     *
+     * @return array
+     * @author  dew9163
+     * @added   2020/06/17
+     * @updated 2020/06/17
+     */
+    public function getSubscribeData() {
+        return [];
+    }
 
     /**
      * 결제 준비를 합니다
@@ -274,6 +292,11 @@ abstract class AbstractPayService
      * @author  dew9163
      * @added   2020/06/10
      * @updated 2020/06/10
+     * @updated 2020/06/22
+     * 배송비 추가
+     * return $this->payment->getPayAmount() * $this->getQuantity() + $this->payment->getDeliveryCost();
+     * @updated 2020/06/25
+     * 할인, 배송비 설정은 Payment 에서 하도록 함
      */
     public function getTotalAmount()
     {
@@ -320,9 +343,13 @@ abstract class AbstractPayService
      * @return string
      * @author  dew9163
      * @added   2020/06/10
-     * @updated 2020/06/10
+     * @updated 2020/06/17
      */
-    abstract public function getApprovalUrl();
+//    abstract public function getApprovalUrl();
+    public function getApprovalUrl()
+    {
+        return $this->getCallbackUrl("/paid");
+    }
 
     /**
      * kakao
@@ -332,9 +359,13 @@ abstract class AbstractPayService
      * @return string
      * @author  dew9163
      * @added   2020/06/10
-     * @updated 2020/06/10
+     * @updated 2020/06/17
      */
-    abstract public function getCancelUrl();
+//    abstract public function getCancelUrl();
+    public function getCancelUrl()
+    {
+        return $this->getCallbackUrl("/cancelled");
+    }
 
     /**
      * kakao
@@ -344,9 +375,13 @@ abstract class AbstractPayService
      * @return string
      * @author  dew9163
      * @added   2020/06/10
-     * @updated 2020/06/10
+     * @updated 2020/06/17
      */
-    abstract public function getFailUrl();
+//    abstract public function getFailUrl();
+    public function getFailUrl()
+    {
+        return $this->getCallbackUrl("/failed");
+    }
 
     /**
      * kakao
@@ -422,7 +457,15 @@ abstract class AbstractPayService
      * @added   2020/06/11
      * @updated 2020/06/11
      */
-    abstract public function getPayload();
+    public function getPayload()
+    {
+        return $this->payment->getPayload();
+    }
+
+    public function getToken()
+    {
+        return $this->payment->getToken();
+    }
 
     /**
      * 등록된 coupon code 를 제공 합니다
@@ -437,24 +480,18 @@ abstract class AbstractPayService
     {
         if (isset($this->coupon)) {
             $couponService = new CouponService($this->coupon, $this->member);
-            return $couponService->getCode($this->payment->membershipPrice);
+            return $couponService->getCode($this->payment->price);
         } else {
             return null;
         }
     }
 
-    /**
-     * @param Coupon|null $coupon
-     */
-    public function setCoupon(?Coupon $coupon): void
+    public function setCoupon($coupon)
     {
         $this->coupon = $coupon;
     }
 
-    /**
-     * @param Payment|null $payment
-     */
-    public function setPayment(?Payment $payment): void
+    public function setPayment($payment)
     {
         $this->payment = $payment;
     }
