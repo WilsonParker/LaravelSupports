@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Pay\ImPort\Response;
 
 
+
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractResponseReadyObject;
 use LaravelSupports\Libraries\Pay\Common\Exception\PaymentException;
 
@@ -83,6 +84,7 @@ class ImPortResponse extends AbstractResponseReadyObject
 {
     protected $code;
     protected $message;
+    protected $response;
     protected $imp_uid;
     protected $merchant_uid;
     protected $pay_method;
@@ -114,6 +116,11 @@ class ImPortResponse extends AbstractResponseReadyObject
     protected $buyer_tel;
     protected $buyer_addr;
     protected $buyer_postcode;
+    protected $customer_name;
+    protected $customer_email;
+    protected $customer_tel;
+    protected $customer_addr;
+    protected $customer_postcode;
     protected $custom_data;
     protected $user_agent;
     protected $status;
@@ -162,6 +169,12 @@ class ImPortResponse extends AbstractResponseReadyObject
     {
     }
 
+    public function isSuccess() {
+        $isFailedStatus = isset($this->status) && $this->status == 'failed';
+        $isFailedCode = $this->code == -1;
+        return $isFailedCode || is_null($this->response) || $isFailedStatus;
+    }
+
     /**
      * @param
      * @return void
@@ -169,13 +182,23 @@ class ImPortResponse extends AbstractResponseReadyObject
      * @author  dew9163
      * @added   2020/06/25
      * @updated 2020/06/25
+     * @updated 2020/07/13
+     * return exception if message not null
+     * @updated 2020/07/14
+     * return exception if code is -1
+     * @updated 2020/07/15
+     * return exception if status is 'failed'
      */
     public function bindStd($std)
     {
         parent::bindStd($std->response);
-        $this->message = $std->message;
         $this->code = $std->code;
-        throw_if(is_null($std->response), new PaymentException($this->message));
+        $this->message = $std->message;
+        $this->response = $std->response;
+        $this->fail_reason;
+
+        $errorMessage = isset($this->message) ? $this->message : (isset($this->fail_reason) ? $this->fail_reason : '');
+        throw_if($this->isSuccess(), new PaymentException($errorMessage));
     }
 
 }

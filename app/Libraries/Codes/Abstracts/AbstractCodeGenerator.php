@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Codes\Abstracts;
 
 
-use LaravelSupports\Libraries\Codes\Contracts\CodeGeneratable;
+use LaravelSupports\Libraries\Codes\Contracts\GenerateCode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Codes\Exceptions\CodeGenerateException;
@@ -80,7 +80,7 @@ abstract class AbstractCodeGenerator
     /**
      * Change the code of the  model
      *
-     * @param CodeGeneratable $model
+     * @param GenerateCode $model
      * @param string $code
      * @return Model
      * @author  dew9163
@@ -88,7 +88,7 @@ abstract class AbstractCodeGenerator
      * @updated 2020/04/20
      * @updated 2020/06/11
      */
-    protected function bindCode(CodeGeneratable $model, string $code): Model
+    protected function bindCode(GenerateCode $model, string $code): Model
     {
         $callback = function () use ($model, $code) {
             $model->setCode($code);
@@ -103,7 +103,7 @@ abstract class AbstractCodeGenerator
     /**
      * Check if code exists
      *
-     * @param CodeGeneratable $model
+     * @param GenerateCode $model
      * @param string $code
      * @return bool
      * @author  dew9163
@@ -111,7 +111,7 @@ abstract class AbstractCodeGenerator
      * @updated 2020/06/11
      */
     // abstract protected function isExistCode(Model $model, string $code): bool;
-    protected function isExistCode(CodeGeneratable $model, string $code): bool
+    protected function isExistCode(GenerateCode $model, string $code): bool
     {
         return $model->isExists($code);
     }
@@ -119,7 +119,7 @@ abstract class AbstractCodeGenerator
     /**
      * Generate code and retries $replayCount if the code is duplicated
      *
-     * @param CodeGeneratable $model
+     * @param GenerateCode $model
      * @param bool $isNeedException
      * @return Model
      * @throws \Throwable
@@ -127,7 +127,7 @@ abstract class AbstractCodeGenerator
      * @added   2020/04/20
      * @updated 2020/04/20
      */
-    public function generateCode(CodeGeneratable $model, bool $isNeedException = false): ?Model
+    public function generateCode(GenerateCode $model, bool $isNeedException = false): ?Model
     {
         $code = $this->createUniqueCode($model, $isNeedException);
         return $this->bindCode($model, $code);
@@ -153,7 +153,7 @@ abstract class AbstractCodeGenerator
     /**
      * create not exists code
      *
-     * @param CodeGeneratable $model
+     * @param GenerateCode $model
      * @param bool $isNeedException
      * @return string
      * @throws \Throwable
@@ -161,7 +161,7 @@ abstract class AbstractCodeGenerator
      * @added   2020/04/20
      * @updated 2020/04/20
      */
-    public function createUniqueCode(CodeGeneratable $model, bool $isNeedException = false): ?string
+    public function createUniqueCode(GenerateCode $model, bool $isNeedException = false): ?string
     {
         for ($i = 0; $i < $this->replayCount; $i++) {
             $code = $this->createCode();

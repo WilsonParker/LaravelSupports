@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Codes;
 
 
-use LaravelSupports\Libraries\Codes\Contracts\CodeGeneratable;
+use LaravelSupports\Libraries\Codes\Contracts\GenerateCode;
 use Illuminate\Database\Eloquent\Model;
 use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
@@ -42,7 +42,7 @@ class RecommendCodeService extends AbstractCodeGenerator
      */
     protected string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-    protected function isExistCode(CodeGeneratable $model, string $code): bool
+    protected function isExistCode(GenerateCode $model, string $code): bool
     {
         return $model->where("recom_code", $code)->exists();
     }
@@ -61,7 +61,7 @@ class RecommendCodeService extends AbstractCodeGenerator
      * @updated 2020/04/20
      * @inheritDoc
      */
-    protected function bindCode(CodeGeneratable $model, string $code): Model
+    protected function bindCode(GenerateCode $model, string $code): Model
     {
         $callback = function () use ($model, $code) {
             $model->recom_code = $code;

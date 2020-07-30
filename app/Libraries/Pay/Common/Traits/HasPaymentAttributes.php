@@ -4,8 +4,7 @@
 namespace LaravelSupports\Libraries\Pay\Common\Traits;
 
 
-
-use App\Services\Codes\StringCodeService;
+use LaravelSupports\Libraries\Codes\StringCodeService;
 
 trait HasPaymentAttributes
 {

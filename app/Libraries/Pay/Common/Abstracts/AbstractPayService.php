@@ -43,16 +43,19 @@ abstract class AbstractPayService
      *
      * @param $endpoint
      * @param $data
+     * @param string $method
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @author  dew9163
      * @added   2020/06/15
      * @updated 2020/06/15
+     * @updated 2020/06/26
+     * add $method parameter
      */
-    protected function call($endpoint, $data)
+    protected function call($endpoint, $data, $method = 'POST')
     {
         $response = $this->buildRequest(
-            "POST",
+            $method,
             $this->host . $endpoint,
             $data
         );
@@ -139,6 +142,17 @@ abstract class AbstractPayService
     }
 
     /**
+     *
+     * @return array
+     * @author  dew9163
+     * @added   2020/07/21
+     * @updated 2020/07/21
+     */
+    public function getStoreSubscribeData() {
+        return [];
+    }
+
+    /**
      * 결제 준비를 합니다
      *
      * @return array
@@ -158,7 +172,25 @@ abstract class AbstractPayService
      */
     abstract public function approve();
 
+    /**
+     * 자동 결제를 합니다
+     *
+     * @return
+     * @author  dew9163
+     * @added   2020/07/21
+     * @updated 2020/07/21
+     */
     abstract public function subscription();
+
+    /**
+     * 자동 결제 정보를 등록 합니다
+     *
+     * @return
+     * @author  dew9163
+     * @added   2020/07/21
+     * @updated 2020/07/21
+     */
+    abstract public function storeSubscribeUser();
 
     abstract public function cancel();
 

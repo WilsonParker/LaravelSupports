@@ -2,7 +2,7 @@
 
 namespace LaravelSupports\Libraries\Supports\Http\Requests\Contracts;
 
-interface RequestValueCastable
+interface RequestValueCastingPossible
 {
     public function castValue(String $key, $val);
 }

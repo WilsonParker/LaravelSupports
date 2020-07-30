@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Pay\Common\Abstracts;
 
 
-use App\Renewal\Supports\ReflectionObject;
+use LaravelSupports\Libraries\Supports\Objects\ReflectionObject;
 
 abstract class AbstractResponseObject extends ReflectionObject
 {
@@ -179,6 +179,10 @@ abstract class AbstractResponseObject extends ReflectionObject
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    public function isSuccess() {
+        return false;
     }
 
 }

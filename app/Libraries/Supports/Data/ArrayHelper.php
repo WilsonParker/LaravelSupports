@@ -102,4 +102,19 @@ class ArrayHelper
         return false;
     }
 
+    /**
+     * $array 에 $key 가 존재할 경우 해당 값을 제공하며
+     * 그렇지 않을 경우 $def 를 제공 합니다
+     *
+     * @param $array
+     * @param $key
+     * @param null $def
+     * @return mixed|null
+     * @author  dew9163
+     * @added   2020/06/19
+     * @updated 2020/06/19
+     */
+    public static function getValueOfKeyIfExist($array, $key, $def = null) {
+        return isset($array) ? array_key_exists($key, $array) ? $array[$key] : $def : $def;
+    }
 }

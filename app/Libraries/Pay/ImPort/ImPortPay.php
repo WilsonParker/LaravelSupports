@@ -7,8 +7,10 @@ namespace LaravelSupports\Libraries\Pay\ImPort;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseAgainObject;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseOnTimeObject;
-use App\Supports\DataObjects\ArrayHelper;
 use Illuminate\Support\Str;
+use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseStoreSubscribeUserObject;
+use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseSubscribeUserObject;
+use LaravelSupports\Libraries\Supports\Data\ArrayHelper;
 
 /**
  * 플러스 결제
@@ -21,9 +23,15 @@ use Illuminate\Support\Str;
 class ImPortPay extends AbstractPayService
 {
 
-    protected $webHookURL = 'http://test.api2.flybook.kr/v3/membership/pay/callback';
+    protected $webHookURL = 'https://api2.flybook.kr/v3/membership/pay/callback';
     protected $host = 'https://api.iamport.kr';
     protected $tokenURL = '/users/getToken';
+    private $token;
+
+    protected function init()
+    {
+        $this->token = $this->getAccessToken();
+    }
 
     /**
      * @inheritDoc
@@ -68,6 +76,23 @@ class ImPortPay extends AbstractPayService
         ];
     }
 
+    public function getStoreSubscribeData()
+    {
+        return [
+            'customer_uid' => $this->getCustomUID(),
+            'pg' => $this->getPG(),
+            'card_number' => $this->data['card_number'],
+            'expiry' => '20' . $this->data['card_year'] . '-' . $this->data['card_month'],
+            'birth' => $this->data['card_certification_number'],
+            'pwd_2digit' => $this->data['card_password'],
+            'customer_name' => $this->member->realname,
+            'customer_tel' => $this->member->phone,
+            'customer_email' => $this->member->email,
+            'customer_addr' => $this->member->address . ' ' . $this->member->address_detail,
+            'customer_postcode' => $this->member->postcode,
+        ];
+    }
+
 
     /**
      * PG 사 정보
@@ -77,10 +102,12 @@ class ImPortPay extends AbstractPayService
      * @author  dew9163
      * @added   2020/06/17
      * @updated 2020/06/17
+     * @updated 2020/07/22
+     * 구독 방식 과 일반 결제 PG 설정
      */
     protected function getPG()
     {
-        return 'nice.flybook04m';
+        return $this->payment->membershipPrice->isSubscribe() ? 'nice.flybook02m' : 'nice.flybook04m';
     }
 
     /**
@@ -91,11 +118,24 @@ class ImPortPay extends AbstractPayService
      * @author  dew9163
      * @added   2020/06/17
      * @updated 2020/06/17
+     * @updated 2020/06/26
+     * add Origin Card payment uid
      */
     protected function getCustomUID()
     {
-        $model = $this->data['model'];
-        return $model->isCustomIDSaved() ? $model->getCustomID() : Str::random(32) . ':member_' . $this->member->id;
+        $model = ArrayHelper::getValueOfKeyIfExist($this->data, 'model');
+        if (is_null($model)) {
+            if (isset($this->payment) && !is_null($this->payment->getSID())) {
+                return $this->payment->getSID();
+            }
+        } else {
+            if ($model->isCustomIDSaved()) {
+                return $model->getCustomID();
+            } else if ($model->isOriginCard()) {
+                return $this->member->id;
+            }
+        }
+        return Str::random(32) . ':member_' . $this->member->id;
     }
 
     /**
@@ -111,7 +151,7 @@ class ImPortPay extends AbstractPayService
      */
     protected function getMerchantUID()
     {
-        return "membership_" . $this->payment->getID() . Str::random(6);
+        return Str::random(16) . ":membership_" . $this->payment->getID();
     }
 
     public function ready()
@@ -122,33 +162,78 @@ class ImPortPay extends AbstractPayService
     public function approve()
     {
         $model = ArrayHelper::getValueOfKeyIfExist($this->data, 'model');
-        if (isset($model) && $model->isCustomIDSaved()) {
+        $isNew = ArrayHelper::getValueOfKeyIfExist($this->data, 'isNew', false);
+        // 무료 결제 일 경우
+        if ($this->payment->getPayAmount() == 0) {
+            // 저장된 카드를 사용할 경우 customUID 가 유효한지 확인
+            if (!$isNew) {
+                return $this->subscribeUser();
+            } else {
+                return $this->storeSubscribeUser();
+            }
+        } else if (isset($model) && !$isNew && ($model->isCustomIDSaved() || $model->isOriginCard())) {
             return $this->subscription();
         } else {
-            $token = $this->getAccessToken();
-            $result = $this->call("/subscribe/payments/onetime?_token=$token", $this->getApproveData());
+            $result = $this->call("/subscribe/payments/onetime?_token={$this->token}", $this->getApproveData());
             $obj = new ImPortResponseOnTimeObject();
             $obj->bindStd($result);
 
-            // sid 저장
-            $model->saveCustomID($obj->getSID());
-            $model->setCardName($obj->getCardName());
-            $model->save();
+            if ($this->data['save_card']) {
+                // sid 저장
+                $model->saveCustomID($obj->getSID());
+                $model->setCardName($obj->getCardName());
+                $model->save();
+            }
             return $obj;
         }
     }
 
     public function subscription()
     {
-        $token = $this->getAccessToken();
-        $result = $this->call("/subscribe/payments/again?_token=$token", $this->getSubscribeData());
+        $result = $this->call("/subscribe/payments/again?_token={$this->token}", $this->getSubscribeData());
         $obj = new ImPortResponseAgainObject();
+        $obj->bindStd($result);
+        return $obj;
+    }
+
+    /**
+     * 구독 결제 이용자 정보를 제공 합니다
+     *
+     * @return ImPortResponseSubscribeUserObject
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
+     * @author  dew9163
+     * @added   2020/06/26
+     * @updated 2020/06/26
+     */
+    public function subscribeUser()
+    {
+        $result = $this->call("/subscribe/customers/{$this->getCustomUID()}?_token={$this->token}", [], 'GET');
+        $obj = new ImPortResponseSubscribeUserObject();
+        $obj->bindStd($result);
+        return $obj;
+    }
+
+    /**
+     *
+     * @return ImPortResponseStoreSubscribeUserObject
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
+     * @author  dew9163
+     * @added   2020/07/21
+     * @updated 2020/07/21
+     */
+    public function storeSubscribeUser()
+    {
+        $result = $this->call("/subscribe/customers/{$this->getCustomUID()}?_token={$this->token}", $this->getStoreSubscribeData(), 'POST');
+        $obj = new ImPortResponseStoreSubscribeUserObject();
         $obj->bindStd($result);
         return $obj;
     }
 
     public function cancel()
     {
+
     }
 
     public function order()

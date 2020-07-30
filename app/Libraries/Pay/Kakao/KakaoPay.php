@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Pay\Kakao;
 
 
+
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
 use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseApproveObject;
 use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseReadyObject;
@@ -11,7 +12,7 @@ use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseReadyObject;
 class KakaoPay extends AbstractPayService
 {
 
-    protected $webHookURL = 'http://test.api2.flybook.kr/v3/membership/pay/callback';
+    protected $webHookURL = 'https://api2.flybook.kr/v3/membership/pay/callback';
     protected $host = 'https://kapi.kakao.com';
 
     protected function init()
@@ -56,6 +57,25 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getSubscribeData()
+    {
+        return [
+            'cid' => $this->getCID(),
+            'sid' => $this->getSID(),
+            'partner_order_id' => $this->getPartnerOrderID(),
+            'partner_user_id' => $this->getPartnerUserID(),
+            'item_name' => $this->getItemName(),
+            'quantity' => '1',
+            'total_amount' => $this->getTotalAmount(),
+            'vat_amount' => '0',
+            'tax_free_amount' => '0',
+        ];
+    }
+
+
     public function ready()
     {
         $result = $this->call("/v1/payment/ready", $this->getReadyData());
@@ -74,7 +94,10 @@ class KakaoPay extends AbstractPayService
 
     public function subscription()
     {
-        return $this->call("/v1/payment/subscription", []);
+        $result = $this->call("/v1/payment/subscription", $this->getSubscribeData());
+        $obj = new KakaoResponseApproveObject();
+        $obj->bindStd($result);
+        return $obj;
     }
 
     public function cancel()
@@ -112,9 +135,21 @@ class KakaoPay extends AbstractPayService
         return null;
     }
 
+    public function getSID()
+    {
+        return $this->payment->getSID();
+    }
+
     protected function getCallbackUrl($url)
     {
         return "{$this->webHookURL}{$url}?type=kakao_pay&payload={$this->getPayload()}";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function storeSubscribeUser()
+    {
     }
 
 }

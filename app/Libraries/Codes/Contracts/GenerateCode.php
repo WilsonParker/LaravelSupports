@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Codes\Contracts;
 
 
-interface CodeGeneratable
+interface GenerateCode
 {
 
     public function isExists($code);

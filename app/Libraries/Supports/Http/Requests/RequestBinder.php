@@ -3,8 +3,8 @@
 namespace LaravelSupports\Libraries\Supports\Http\Requests;
 
 use LaravelSupports\Libraries\Supports\Data\StringHelper;
-use LaravelSupports\Libraries\Supports\Http\Contracts\RequestValueCastable;
 use Illuminate\Http\Request;
+use LaravelSupports\Libraries\Supports\Http\Requests\Contracts\RequestValueCastingPossible;
 
 /**
  * @class   RequestBinder.php
@@ -30,7 +30,7 @@ trait RequestBinder
      * Request 에서 데이터를 가져올 name array 이며 추가적으로 rename, default, override default 를 사용할 수 있습니다
      *
      * ex) ["ADM_PART", "ADM_LOGIN"=>"N", "REG_DATE"=>now()]
-     * @param RequestValueCastable|null $callable
+     * @param RequestValueCastingPossible|null $callable
      * $request->input 으로 데이터를 가져온 후 casting 또는 decorate 작업을 하기 위한 변수 입니다
      *
      * public function castValue(String $key, $val);
@@ -81,7 +81,7 @@ trait RequestBinder
      * @create  20181227
      * @update  20181227
      */
-    public function bind(Request $request, array $data, RequestValueCastable $callable = null)
+    public function bind(Request $request, array $data, RequestValueCastingPossible $callable = null)
     {
         $result = [];
         foreach ($data as $key => $value) {
@@ -103,10 +103,10 @@ trait RequestBinder
     }
 
     /**
-     * array 의 value 들을 RequestValueCastable 을 이용하여 cast 하여 저장합니다
+     * array 의 value 들을 RequestValueCastingPossible 을 이용하여 cast 하여 저장합니다
      *
      * @param array $data
-     * @param RequestValueCastable|null $callable
+     * @param RequestValueCastingPossible|null $callable
      * @return  array
      * @author  WilsonParker
      * @added   2018.12.27
@@ -114,7 +114,7 @@ trait RequestBinder
      * @bug
      * @see
      */
-    public function bindArray(array $data, RequestValueCastable $callable = null){
+    public function bindArray(array $data, RequestValueCastingPossible $callable = null){
         $result = [];
         foreach ($data as $key => $value) {
             $result[$key] = $callable == null ? $value : $callable->castValue($key, $value);

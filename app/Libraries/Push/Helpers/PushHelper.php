@@ -6,9 +6,9 @@ namespace LaravelSupports\Libraries\Push\Helpers;
 
 use LaravelSupports\Libraries\Push\Models\AbstractMobilePushModel;
 use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
-use LaravelSupports\LibrariesRestCall;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
+use LaravelSupports\Libraries\Supports\Http\RestCall;
 
 class PushHelper
 {

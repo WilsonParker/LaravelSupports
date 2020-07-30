@@ -15,103 +15,58 @@ use Carbon\Carbon;
 class DateHelper
 {
     private $date;
+    const DEF_FORMAT = 'Y-m-d H:i:s';
+    const YEARS = 'years';
+    const MONTHS = 'months';
+    const DAYS = 'days';
+    const DAY_OF_DAYS = 1;
+    const DAY_OF_MONTHS = 30;
+    const DAY_OF_YEARS = 365;
+
+    const SIMPLE_DAY_OF_MONTHS = 30;
+    const SIMPLE_DAY_OF_YEARS = 360;
 
     public function __construct()
     {
         $this->date = new \DateTime();
     }
 
-    /**
-     * 이번 달 정보를 제공 합니다
-     *
-     * @return  string
-     * @author  dew9163
-     * @added   2020/03/16
-     * @updated 2020/03/16
-     */
-    public function getCurrentMonth(): string
+    public function getCurrentTime($format = self::DEF_FORMAT)
+    {
+        return date($format);
+    }
+
+    public function getCurrentMonth()
     {
         return date("n");
     }
 
-    /**
-     * 이번 달의 마지막 일 정보를 제공 합니다
-     *
-     * @return  string
-     * @author  dew9163
-     * @added   2020/03/16
-     * @updated 2020/03/16
-     */
-    public function getLastDayOfAMonth(): string
+    public function getLastDayOfAMonth()
     {
         return $this->date->format('t');
     }
 
-    /**
-     * $date 에 해당하는 날짜의 마지막 일 정보를 제공 합니다
-     *
-     * @param
-     * @return
-     * @author  dew9163
-     * @added   2020/06/16
-     * @updated 2020/06/16
-     */
     public function getLastDayOfDate($date)
     {
         return $date->format('t');
     }
 
-    /**
-     * 다음 달의 마지막 일 정보를 제공 합니다
-     *
-     * @return  string
-     * @author  dew9163
-     * @added   2020/03/16
-     * @updated 2020/03/16
-     */
-    public function getLastDayOfNextMonth(): string
+    public function getLastDayOfNextMonth()
     {
         return date("t", strtotime("+1 month"));
     }
 
-    /**
-     * $month 만큼 지난 달의 월과 일 정보를 제공 합니다
-     *
-     * @param int $month
-     * @return  string
-     * @author  dew9163
-     * @added   2020/03/16
-     * @updated 2020/03/16
-     */
-    public function getMonthAndLastDayOfMonth(int $month = 0): string
+    public function getMonthAndLastDayOfNextMonth()
     {
-        return date("n월 t일", strtotime("+$month month"));
+        return date("n월 t일", strtotime("+1 month"));
     }
 
-    /**
-     * 현재 월과 일 정보를 제공 합니다
-     *
-     * @return  string
-     * @author  dew9163
-     * @added   2020/04/23
-     * @updated 2020/04/23
-     */
-    public function getNowMonthAndDayOfMonth(): string
+    public function getNowMonthAndDayOfMonth()
     {
         return date("n월 d일");
     }
 
-    /**
-     * $month 를 더한 날짜 정보를 제공 합니다
-     *
-     * @param int $month
-     * @param string $format
-     * @return false|string
-     * @author  dew9163
-     * @added   2020/06/16
-     * @updated 2020/06/16
-     */
-    public function getDateTheMonthAdded($month = 0, $format = 'Y-m-d H:i:s')
+    public function getDateTheMonthAdded($month = 0, $format = self::DEF_FORMAT)
     {
         return date($format, strtotime("+$month month"));
     }
@@ -131,6 +86,8 @@ class DateHelper
      * @author  dew9163
      * @added   2020/06/18
      * @updated 2020/06/18
+     * @updated 2020/07/06
+     * add weeks
      */
     public function addDate(Carbon $date, $unit, $value)
     {
@@ -139,6 +96,8 @@ class DateHelper
                 return $date->addHours($value);
             case 'days':
                 return $date->addDays($value);
+            case 'weeks':
+                return $date->addWeeks($value);
             case 'months':
                 return $date->addMonths($value);
             case 'years':
@@ -146,5 +105,101 @@ class DateHelper
             default :
                 return null;
         }
+    }
+
+    /**
+     * $fromUnit 의 $value 를
+     * $toUnit 의 값으로 변환하여 제공 합니다
+     *
+     * @param $fromUnit
+     * @param $value
+     * @param $toUnit
+     * @return null
+     * @author  dew9163
+     * @added   2020/06/24
+     * @updated 2020/06/24
+     */
+    public function convertDateInteger($fromUnit, $value, $toUnit)
+    {
+        switch ($fromUnit) {
+            case self::DAYS:
+                $days = $value * self::DAY_OF_DAYS;
+                break;
+            case self::MONTHS:
+                $days = $value * self::DAY_OF_MONTHS;
+                break;
+            case self::YEARS:
+                $days = $value * self::DAY_OF_YEARS;
+                break;
+            default :
+                return 0;
+        }
+
+        switch ($toUnit) {
+            case self::DAYS:
+                $result = $days / self::DAY_OF_DAYS;
+                break;
+            case self::MONTHS:
+                $result = $days / self::DAY_OF_MONTHS;
+                break;
+            case self::YEARS:
+                $result = $days / self::DAY_OF_YEARS;
+                break;
+            default :
+                return 0;
+        }
+
+        return $result;
+    }
+
+    public function convertSimpleDateInteger($fromUnit, $value, $toUnit)
+    {
+        switch ($fromUnit) {
+            case self::DAYS:
+                $days = $value * self::DAY_OF_DAYS;
+                break;
+            case self::MONTHS:
+                $days = $value * self::SIMPLE_DAY_OF_MONTHS;
+                break;
+            case self::YEARS:
+                $days = $value * self::SIMPLE_DAY_OF_YEARS;
+                break;
+            default :
+                return 0;
+        }
+
+        switch ($toUnit) {
+            case self::DAYS:
+                $result = $days / self::DAY_OF_DAYS;
+                break;
+            case self::MONTHS:
+                $result = $days / self::SIMPLE_DAY_OF_MONTHS;
+                break;
+            case self::YEARS:
+                $result = $days / self::SIMPLE_DAY_OF_YEARS;
+                break;
+            default :
+                return 0;
+        }
+
+        return $result;
+    }
+
+    /**
+     * $from 과 $to 를 비교 합니다
+     * $greaterThan 이 true 일 경우
+     * $from 이 더 클 경우 true 를 제공 합니다
+     *
+     * @param Carbon $to
+     * @param Carbon $from
+     * @param
+     * @return void
+     * @author  dew9163
+     * @added   2020/06/24
+     * @updated 2020/06/24
+     */
+    public function compareDate(Carbon $from, Carbon $to, $greaterThan)
+    {
+
     }
 }

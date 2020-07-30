@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Libraries\BookLibrary\API\Traits;
+namespace LaravelSupports\Libraries\BookLibrary\Api\Traits;
 
 
 use Illuminate\Support\Str;
