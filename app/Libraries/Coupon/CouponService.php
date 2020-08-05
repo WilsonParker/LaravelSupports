@@ -4,11 +4,11 @@
 namespace LaravelSupports\Libraries\Coupon;
 
 
-use App\Renewal\Models\Coupons\CouponModel;
-use App\Renewal\Models\Coupons\CouponUsedMemberModel;
-use App\Renewal\Models\Membership\ConvertMarkMessageTrait;
-use App\Renewal\Models\Membership\MembershipModel;
-use App\Renewal\Models\Membership\MembershipPriceModel;
+use App\Services\Models\Coupons\CouponModel;
+use App\Services\Models\Coupons\CouponUsedMemberModel;
+use App\Services\Models\Membership\ConvertMarkMessageTrait;
+use App\Services\Models\Membership\MembershipModel;
+use App\Services\Models\Membership\MembershipPriceModel;
 use LaravelSupports\Libraries\Coupon\Exceptions\AlreadyUsedException;
 use LaravelSupports\Libraries\Coupon\Exceptions\DuplicatedException;
 use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;

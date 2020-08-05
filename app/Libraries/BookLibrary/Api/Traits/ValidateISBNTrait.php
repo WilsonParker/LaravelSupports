@@ -6,7 +6,7 @@ namespace LaravelSupports\Libraries\BookLibrary\Api\Traits;
 
 use Illuminate\Support\Str;
 
-trait ValidateISBNContract
+trait ValidateISBNTrait
 {
     protected $validators = [
         "blank" => [

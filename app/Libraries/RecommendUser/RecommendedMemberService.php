@@ -6,7 +6,7 @@ namespace LaravelSupports\Libraries\RecommendUser;
 
 use App\BplusMember;
 use App\Member;
-use App\Renewal\Models\Members\RecommendedMemberModel;
+use App\Services\Models\Members\RecommendedMemberModel;
 use App\Services\Membership\MembershipService;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\AlreadyRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\DoNotSelfRecommendedException;
