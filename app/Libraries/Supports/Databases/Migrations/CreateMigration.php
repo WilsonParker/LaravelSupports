@@ -24,6 +24,6 @@ abstract class CreateMigration extends BaseMigration
      * @param Blueprint $table
      * @return void
      */
-    abstract function defaultUpTemplate(Blueprint $table);
+    abstract protected function defaultUpTemplate(Blueprint $table);
 
 }

@@ -18,6 +18,7 @@ abstract class BaseMigration extends Migration
             if (Schema::hasTable($this->table)) {
                 $this->defaultDownTemplate($table);
             }
+            $table->dropIfExists();
         });
     }
 
@@ -30,7 +31,8 @@ abstract class BaseMigration extends Migration
 //        $table->collation = 'utf8_general_ci';
     }
 
-    function defaultTimestampTemplate(Blueprint $table) {
+    protected function defaultTimestampTemplate(Blueprint $table)
+    {
         $table->timestamp('created_at')->useCurrent();
         $table->timestamp('updated_at')->useCurrent();
         $table->softDeletes();
@@ -38,11 +40,13 @@ abstract class BaseMigration extends Migration
 
     /**
      * Reverse the migrations.
+     *
      * @param Blueprint $table
      * @return void
      */
-    function defaultDownTemplate(Blueprint $table)
+    protected function defaultDownTemplate(Blueprint $table)
     {
-        $table->dropIfExists();
+
     }
+
 }
