@@ -4,7 +4,10 @@
 namespace LaravelSupports\Libraries\SMS\Helpers;
 
 
+use App\Models\Members\MemberModel;
+use App\Models\Members\PlusMemberModel;
 use GuzzleHttp\Client;
+use LaravelSupports\Libraries\SMS\Models\SMSModel;
 use LaravelSupports\Libraries\Supports\Date\DateHelper;
 use SoapBox\Formatter\Formatter;
 
@@ -74,11 +77,13 @@ class SMSHelper
                 case self::TEMPLATE_RECOMMEND_MEMBER :
                     break;
                 case self::TEMPLATE_LAST_MEMBER :
-                    $plusMemberModel = new BplusMember();
+                    $plusMemberModel = new PlusMemberModel();
                     $plusExpireMembers = $plusMemberModel->plusExpireInAMonth();
+//                    $plusExpireMembers = PlusMemberModel::where('member_id', 146973)->get();
+//                     dd($plusExpireMembers);
 
                     collect($plusExpireMembers)->each(function ($plusMember) use ($template) {
-                        $member = Member::
+                        $member = MemberModel::
                         select("phone", "realname")
                             ->where('id', $plusMember->member_id)
                             ->first();
@@ -296,7 +301,7 @@ class SMSHelper
         $return_data[self::KEY_PHONE] = $phone;
         $return_data[self::KEY_TEMPLATE_CODE] = $template_code;
 
-        $smsObj = new SMS();
+        $smsObj = new SMSModel();
         $smsObj->bindData($return_data);
         $smsObj->save();
 

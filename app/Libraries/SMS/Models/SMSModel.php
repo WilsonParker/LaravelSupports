@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SMSModel extends Model
 {
-    protected $table = 'fly_sms';
+    protected $table = 'sms';
     protected $fillable = [];
     protected $guarded = [];
 
