@@ -13,9 +13,6 @@ use SoapBox\Formatter\Formatter;
 
 class SMSHelper
 {
-    private $key = "NDU2Mi0xNDY0NjYzNjE3OTI1LWJlZjkxNjUyLTMwNzctNDNjZC1iOTE2LTUyMzA3N2YzY2Q3MQ==";
-    private $callback = "07050291422";
-
     const KEY_TEMPLATE = "template";
     const KEY_MESSAGE = "message";
     const KEY_TEMPLATE_CODE = "template_code";
@@ -34,6 +31,8 @@ class SMSHelper
     const TEMPLATE_SEND_MEMBER = "send_member";
     const TEMPLATE_RECOMMEND_MEMBER = "recom_member";
     const TEMPLATE_LAST_MEMBER = "last_member";
+    // 마지막 회원 재전송
+    const TEMPLATE_LAST_MEMBER_RE_SEND = "re_send_last_member";
     const TEMPLATE_SEND_PLUS = "send_plus";
     const TEMPLATE_SEND_SECRET_BOOK = "send_secret_book";
     // 플러스 단체 회원 쿠폰 발송 template code
@@ -49,12 +48,19 @@ class SMSHelper
     const TEMPLATE_KAKAO_PAY_SUCCESS = "kakaopay_success";
     const TEMPLATE_KAKAO_PAY_FAIL = "kakaopay_fail";
 
+    private $key = "NDU2Mi0xNDY0NjYzNjE3OTI1LWJlZjkxNjUyLTMwNzctNDNjZC1iOTE2LTUyMzA3N2YzY2Q3MQ==";
+    private $callback = "07050291422";
+    private int $successCount = 0;
+    private array $success = [];
+    private int $failCount = 0;
+    private array $fail = [];
+
     /**
      * template 에 따라 sms 메시지를 발송합니다
      *
      * @param array $template
      * @param null $data
-     * @return bool
+     * @return int[]
      * @author  dew9163
      * @added   2020/03/16
      *
@@ -83,8 +89,31 @@ class SMSHelper
 //                     dd($plusExpireMembers);
 
                     collect($plusExpireMembers)->each(function ($plusMember) use ($template) {
-                        $member = MemberModel::
-                        select("phone", "realname")
+                        $member = MemberModel::select("id", "phone", "realname")
+                            ->where('id', $plusMember->member_id)
+                            ->first();
+
+                        $phone = $member->phone;
+                        if (isset($phone)) {
+                            $phone = str_replace("-", "", $phone);
+                            if (!TelNumberHelper::isPhoneNumber($phone)) {
+                                return;
+                            }
+                        }
+
+                        $dateHelper = new DateHelper();
+                        $message = str_replace("#{회원이름}", $member->realname, $template[self::KEY_MESSAGE]);
+                        $message = str_replace("#{이용기간}", $plusMember->sendnum, $message);
+                        // $message = str_replace("#{해당월쿠폰코드}", $coupon, $message);
+                        $message = str_replace("#{유효기간}", $dateHelper->getCurrentMonth(), $message);
+                        $message = str_replace("#{유효기간요일}", $dateHelper->getCurrentMonth(), $message);
+
+                        $this->send($template[self::KEY_TEMPLATE_CODE], $phone, $message);
+                    });
+                    break;
+                case self::TEMPLATE_LAST_MEMBER_RE_SEND :
+                    collect($data)->each(function ($plusMember) use ($template) {
+                        $member = MemberModel::select("id", "phone", "realname")
                             ->where('id', $plusMember->member_id)
                             ->first();
 
@@ -192,7 +221,7 @@ class SMSHelper
 감사합니다.
             ";
                     $members = Member::whereIn('id', $data)->get();
-                    collect($members)->each(function ($item) use($template, $message) {
+                    collect($members)->each(function ($item) use ($template, $message) {
                         $phone = $item->phone;
                         if (isset($phone)) {
                             $phone = str_replace("-", "", $phone);
@@ -259,9 +288,14 @@ class SMSHelper
                     break;
             }
         } catch (\Exception $e) {
-            return false;
+            dd($e);
         }
-        return true;
+        return [
+            'successCount' => $this->successCount,
+            'success' => $this->success,
+            'failCount' => $this->failCount,
+            'fail' => $this->fail,
+        ];
     }
 
     /**
@@ -277,33 +311,44 @@ class SMSHelper
      */
     public function send($template_code, $phone, $message)
     {
-        $client = new Client();
-        $res = $client->request('POST', 'http://api.apistore.co.kr/kko/1/msg/flybook', [
-            'headers' => [
-                'x-waple-authorization' => $this->key
-            ],
-            'form_params' => [
-                self::KEY_PHONE => $phone,
-                self::KEY_TEMPLATE_CODE => $template_code,
-                'callback' => $this->callback,
-                'msg' => $message,
-                'failed_type' => 'LMS',
-                'failed_subject' => '플라이북 알림',
-                'failed_msg' => $message,
-                'apiVersion' => '1',
-                'client_id' => 'flybook'
-            ]
-        ]);
+        try {
+            $client = new Client();
+            $res = $client->request('POST', 'http://api.apistore.co.kr/kko/1/msg/flybook', [
+                'headers' => [
+                    'x-waple-authorization' => $this->key
+                ],
+                'form_params' => [
+                    self::KEY_PHONE => $phone,
+                    self::KEY_TEMPLATE_CODE => $template_code,
+                    'callback' => $this->callback,
+                    'msg' => $message,
+                    'failed_type' => 'LMS',
+                    'failed_subject' => '플라이북 알림',
+                    'failed_msg' => $message,
+                    'apiVersion' => '1',
+                    'client_id' => 'flybook'
+                ]
+            ]);
 
-        $formatter = Formatter::make($res->getBody(), Formatter::JSON);
-        $return_data = $formatter->toArray();
-        $return_data[self::KEY_MESSAGE] = $message;
-        $return_data[self::KEY_PHONE] = $phone;
-        $return_data[self::KEY_TEMPLATE_CODE] = $template_code;
+            $formatter = Formatter::make($res->getBody(), Formatter::JSON);
+            $return_data = $formatter->toArray();
+            $return_data[self::KEY_MESSAGE] = $message;
+            $return_data[self::KEY_PHONE] = $phone;
+            $return_data[self::KEY_TEMPLATE_CODE] = $template_code;
 
-        $smsObj = new SMSModel();
-        $smsObj->bindData($return_data);
-        $smsObj->save();
+            $smsObj = new SMSModel();
+            $smsObj->bindData($return_data);
+            $smsObj->save();
+
+            $this->successCount++;
+            array_push($this->success, $phone);
+        } catch (\Exception $e) {
+            $this->failCount++;
+            array_push($this->fail, [
+                'phone' => $phone,
+                'message' => $e->getMessage(),
+            ]);
+        }
 
         return $smsObj;
     }

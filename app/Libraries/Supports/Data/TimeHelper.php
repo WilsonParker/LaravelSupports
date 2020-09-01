@@ -4,58 +4,114 @@
 namespace LaravelSupports\Libraries\Supports\Data;
 
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class TimeHelper
 {
 
+    protected $channel = 'timer';
+    private $callback;
+    private $onCompleteCallback;
+    private string $timeFormat = 'Y-m-d H:i:s';
+    private string $executeTimeFormat = '%hh %im %s.%fs';
+    private $startTime;
+    private $endTime;
+    private $executeTime;
+    private $result;
 
     /**
-     * 현재 시간 초 를 제공합니다
+     * TimeHelper constructor.
      *
-     * @return  float
-     * @author  dew9163
-     * @added   2020/02/27
-     * @updated 2020/02/27
+     * @param $callback
+     * @param $onCompleteCallback
      */
-    public static function getTime()
+    public function __construct($callback, $onCompleteCallback = null)
     {
-        list($usec, $sec) = explode(" ", microtime());
-        return ((float)$usec + (float)$sec);
+        $this->callback = $callback;
+        $this->onCompleteCallback = $onCompleteCallback;
+        /*$this->onCompleteCallback = function () {
+            echo "시작 시간 : {$this->startTime->format($this->timeFormat)} <br/>";
+            echo "종료 시간 : {$this->endTime->format($this->timeFormat)} <br/>";
+            echo "소요 시간 : {$this->endTime->diff($this->startTime)->format($this->executeTime)} <br/>";
+        };*/
+    }
+
+    protected function log()
+    {
+        Log::channel($this->channel)->info("시작 시간 : {$this->startTime->format($this->timeFormat)}");
+        Log::channel($this->channel)->info("종료 시간 : {$this->endTime->format($this->timeFormat)}");
+        Log::channel($this->channel)->info("소요 시간 : {$this->executeTime->format($this->executeTimeFormat)}");
     }
 
     /**
-     * BookLib 를 테스트하기 위한 함수
      *
-     * @param   $callback
-     * @return  void
      * @author  dew9163
      * @added   2020/02/27
      * @updated 2020/02/27
+     * @updated 2020/09/01
      */
-    public static function execute($callback)
+    public function execute()
     {
-        $root = "/home/vagrant/FlybookLaravel/Files/svc/addon/flybook";
-        include_once $root . "/ini/common.ini.php";
-        include_once $root . "/lib/pplane.net/php/loadLibrary.php";
-        $request = [];
-        $request['dbh'] = new PDO (PDO_DSN, PDO_USER, PDO_PASS);
-        $book = new RenewalBook();
-
-        $startDate = date('Y-m-d H:i:s');
-        $start = getTime();
-
-        $output = $callback($book, $request);
-
-        $endDate = date('Y-m-d H:i:s');
-        $end = getTime();
-
-        $output["startDate"] = $startDate;
-        $output["endDate"] = $endDate;
-        echo json_encode($output);
-
-        $time = $end - $start;
-        $time_arr[] = $time;
-        echo '<br/>수행시간: ' . number_format($time, 4) . '초';
-
-        $request["dbh"] = null;
+        $this->startTime = Carbon::now();
+        $callback = $this->callback;
+        $this->result = $callback();
+        $this->endTime = Carbon::now();
+        $this->executeTime = $this->endTime->diff($this->startTime);
+        $this->log();
+        if (isset($this->onCompleteCallback)) {
+            $onCompleteCallback  =$this->onCompleteCallback;
+            return $onCompleteCallback($this);
+        }
+        return $this->result;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeFormat(): string
+    {
+        return $this->timeFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExecuteTimeFormat(): string
+    {
+        return $this->executeTimeFormat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExecuteTime()
+    {
+        return $this->executeTime;
+    }
+
 }
