@@ -12,7 +12,7 @@ class FilesModel extends BaseModel
     protected $table = "files";
     protected $primaryKey = "ix";
 
-    public bool $timestamps = true;
+    public $timestamps = true;
 
     protected array $guarded = ["ix"];
 

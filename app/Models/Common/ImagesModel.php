@@ -12,7 +12,7 @@ class ImagesModel extends BaseModel
     protected $table = "images";
     protected $primaryKey = "ix";
 
-    public bool $timestamps = true;
+    public $timestamps = true;
 
     private string $viewPath;
 
