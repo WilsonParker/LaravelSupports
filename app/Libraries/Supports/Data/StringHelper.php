@@ -14,10 +14,9 @@
 
 namespace LaravelSupports\Libraries\Supports\Data;
 
-use Illuminate\Support\Arr;
-
 class StringHelper
 {
+    const SPECIAL_CHARACTERS_REG = "/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i";
 
     /**
      * @param String $haystack
@@ -32,7 +31,7 @@ class StringHelper
      * @create  20181227
      * @update  20181227
      **/
-    public static function contains(String $haystack, String $needle)
+    public static function contains(string $haystack, string $needle)
     {
         return strpos($haystack, $needle) === false ? false : true;
     }
@@ -49,18 +48,19 @@ class StringHelper
      * @create  20181227
      * @update  20181227
      **/
-    protected function matchesKey(String $reg, String $key)
+    protected function matchesKey(string $reg, string $key)
     {
         preg_match_all($reg, $key, $matches);
         return $matches[0][0];
     }
 
-    public static function defaultString(String $str, String $def)
+    public static function defaultString(string $str, string $def)
     {
         return is_null($str) ? $def : $str;
     }
 
-    public static function explodeWithTrim(String $delimiter, String $str) {
+    public static function explodeWithTrim(string $delimiter, string $str)
+    {
         return array_map("trim", explode($delimiter, $str));
     }
 
@@ -83,7 +83,18 @@ class StringHelper
      * $subject
      * ':name 의 나이는 :age 입니다'
      */
-    public static function replaceWithCollection($replace, $subject) {
+    public static function replaceWithCollection($replace, $subject)
+    {
         return str_replace(array_keys($replace), $replace, $subject);
+    }
+
+    public static function clearSpecialCharacters(string $string)
+    {
+        return self::clearString($string, self::SPECIAL_CHARACTERS_REG);
+    }
+
+    public static function clearString(string $string, string $reg)
+    {
+        return preg_replace($reg, '', $string);
     }
 }
