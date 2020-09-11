@@ -25,6 +25,7 @@ class SMSHelper
     const KEY_PAYMENT_DATE = "payment_date";
     const KEY_MEMBER_ID = "member_id";
     const KEY_MEMBER_PAYMENT_DATE = "member_payment_date";
+    const KEY_CONTENT = "content";
 
     const TEMPLATE_BASIC = "basic";
     const TEMPLATE_PLUS_MEMBER = "plus_member";
@@ -42,6 +43,7 @@ class SMSHelper
     // 구독 결제 결과 template code
     const TEMPLATE_SUBSCRIBE_PAYMENT_SUCCESS = "subscribe_payment_success";
     const TEMPLATE_SUBSCRIBE_PAYMENT_FAIL = "subscribe_payment_fail";
+    const TEMPLATE_SUBSCRIBE_PAYMENT_FAIL_REASON = "subscribe_payment_fail_reason";
     // 결제 실패 template code
     const TEMPLATE_PAYMENT_FAIL = "payment_fail";
     // KakaoPay 결과 template code
@@ -175,6 +177,13 @@ class SMSHelper
 
                         $message = str_replace("#{회원이름}", $item[self::KEY_NAME], $template[self::KEY_MESSAGE]);
                         $this->send($template[self::KEY_TEMPLATE_CODE], $phone, $message);
+                    });
+                    break;
+                case self::TEMPLATE_SUBSCRIBE_PAYMENT_FAIL_REASON:
+                    collect($data)->each(function ($item) use ($template) {
+                        $message = str_replace("#{회원이름}", $item[self::KEY_NAME], $template[self::KEY_MESSAGE]);
+                        $message = str_replace("#{내용}", $item[self::KEY_CONTENT], $message);
+                        $this->send($template[self::KEY_TEMPLATE_CODE], $item['phone'], $message);
                     });
                     break;
                 case self::TEMPLATE_SUBSCRIBE_PAYMENT_SUCCESS:
