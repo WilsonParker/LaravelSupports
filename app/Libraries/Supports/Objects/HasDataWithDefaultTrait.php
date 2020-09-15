@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Libraries\Supports\Data;
+namespace LaravelSupports\Libraries\Supports\Objects;
 
 
 trait HasDataWithDefaultTrait
