@@ -28,8 +28,9 @@ class SMSHelper
     const KEY_CONTENT = "content";
 
     const TEMPLATE_BASIC = "basic";
+    const TEMPLATE_REPLACE = "replace";
     const TEMPLATE_PLUS_MEMBER = "plus_member";
-    const TEMPLATE_SEND_MEMBER = "send_member";
+    const TEMPLATE_PLUS_SEND_MEMBER = "plus_send_member";
     const TEMPLATE_RECOMMEND_MEMBER = "recom_member";
     const TEMPLATE_LAST_MEMBER = "last_member";
     // 마지막 회원 재전송
@@ -76,9 +77,29 @@ class SMSHelper
                 case self::TEMPLATE_BASIC :
                     $this->send($template[self::KEY_TEMPLATE_CODE], $data['contact'], $template[self::KEY_MESSAGE]);
                     break;
+                case self::TEMPLATE_REPLACE :
+                    collect($data)->each(function ($item) use ($template) {
+                        $message = str_replace("#{회원이름}", $item[self::KEY_NAME], $template[self::KEY_MESSAGE]);
+                        $message = str_replace("#{내용}", $item[self::KEY_CONTENT], $message);
+                        $this->send($template[self::KEY_TEMPLATE_CODE], $item['phone'], $message);
+                    });
+                    break;
                 case self::TEMPLATE_PLUS_MEMBER :
                     break;
-                case self::TEMPLATE_SEND_MEMBER :
+                case self::TEMPLATE_PLUS_SEND_MEMBER :
+                    $plusMemberModels = PlusMemberModel::getPlusSentMembersQuery()->get();
+                    collect($plusMemberModels)->each(function ($item) use ($template) {
+                        $message = str_replace("#{회원이름}", $item->member->realname, $template[self::KEY_MESSAGE]);
+
+                        $phone = $item->member->phone;
+                        if (isset($phone)) {
+                            $phone = str_replace("-", "", $phone);
+                            if (!TelNumberHelper::isPhoneNumber($phone)) {
+                                return;
+                            }
+                        }
+                        $this->send($template[self::KEY_TEMPLATE_CODE], $phone, $message);
+                    });
                     break;
                 case self::TEMPLATE_SEND_PLUS :
                     break;
@@ -182,7 +203,7 @@ class SMSHelper
                 case self::TEMPLATE_SUBSCRIBE_PAYMENT_FAIL_REASON:
                     collect($data)->each(function ($item) use ($template) {
                         $message = str_replace("#{회원이름}", $item[self::KEY_NAME], $template[self::KEY_MESSAGE]);
-                        $message = str_replace("#{내용}", $item[self::KEY_CONTENT], $message);
+                        $message = str_replace("#{쿠폰코드}", $item[self::KEY_CONTENT], $message);
                         $this->send($template[self::KEY_TEMPLATE_CODE], $item['phone'], $message);
                     });
                     break;
@@ -229,7 +250,7 @@ class SMSHelper
 궁금하신 점 있으시면 카카오톡(ID:플라이북)으로 연락주세요!
 감사합니다.
             ";
-                    $members = Member::whereIn('id', $data)->get();
+                    $members = MemberModel::whereIn('id', $data)->get();
                     collect($members)->each(function ($item) use ($template, $message) {
                         $phone = $item->phone;
                         if (isset($phone)) {

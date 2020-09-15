@@ -82,29 +82,45 @@ class DateHelper
      * @param Carbon $date
      * @param $unit
      * @param $value
+     * @param bool $overflow
      * @return Carbon|null
      * @author  dew9163
      * @added   2020/06/18
      * @updated 2020/06/18
      * @updated 2020/07/06
      * add weeks
+     * @updated 2020/08/31
+     * add $overflow
+     * when $overflow is true, adding the date moves to the next date
+     * (apply in months, years)
      */
-    public function addDate(Carbon $date, $unit, $value)
+    public function addDate(Carbon $date, $unit, $value, $overflow = false)
     {
         switch ($unit) {
             case 'hours':
-                return $date->addHours($value);
+                $date->addHours($value);
+                break;
             case 'days':
-                return $date->addDays($value);
+                $date->addDays($value);
+                break;
             case 'weeks':
-                return $date->addWeeks($value);
+                $date->addWeeks($value);
+                break;
             case 'months':
-                return $date->addMonths($value);
+                if ($overflow) {
+                    $date->addMonths($value);
+                } else {
+                    $currentDay = $date->day;
+                    $dayOfNextMonth = $date->day(1)->addMonth($value)->daysInMonth;
+                    $day = $currentDay < $dayOfNextMonth ? $currentDay : $dayOfNextMonth;
+                    $date->day($day);
+                }
+                break;
             case 'years':
-                return $date->addYears($value);
-            default :
-                return null;
+                $date->addYears($value);
+                break;
         }
+        return $date;
     }
 
     /**
