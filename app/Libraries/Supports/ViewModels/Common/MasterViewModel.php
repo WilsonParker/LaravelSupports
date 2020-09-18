@@ -77,7 +77,7 @@ abstract class MasterViewModel extends BaseViewModel
         // 페이지 목록 수의 기본값 입니다
         $this->paginate = config("pageLimit");
         // 이미지 저장 경로 prefix 의 기본값 입니다
-        $this->viewPath = config("image.viewPath");
+        $this->viewPath = config("constants.images.image.viewPath");
         $this->init();
     }
 

@@ -81,7 +81,7 @@ trait FileSaveTrait
      * @updated 2019-09-06
      */
     public function getImageUrl($fileResult) {
-        $viewPath = config("image.viewPath");
+        $viewPath = config("constants.images.image.viewPath");
         return "/".$viewPath."/".$this->path."/".$fileResult['newFileName'];
     }
 

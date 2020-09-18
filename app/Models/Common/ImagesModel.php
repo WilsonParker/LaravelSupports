@@ -20,7 +20,7 @@ class ImagesModel extends BaseModel
 
     protected function init()
     {
-        $this->viewPath = config("image.viewPath");
+        $this->viewPath = config("constants.images.image.viewPath");
     }
 
     /**

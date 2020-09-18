@@ -15,11 +15,11 @@ class MobilePushReservationModel extends AbstractMobilePushModel
 
     protected function init()
     {
-        $this->path = config("image.mobilePush.path");
+        $this->path = config("constants.images.image.mobilePush.path");
         // 파일, 이미지를 업로드 할 전체 경로 입니다
-        $this->uploadPath = config("image.mobilePush.uploadPath");
+        $this->uploadPath = config("constants.images.image.mobilePush.uploadPath");
         // 파일, 이미지 테이블에 저장할 table type 입니다
-        $this->tableType = config("image.mobilePush.type");
+        $this->tableType = config("constants.images.image.mobilePush.type");
     }
 
     public function image()
