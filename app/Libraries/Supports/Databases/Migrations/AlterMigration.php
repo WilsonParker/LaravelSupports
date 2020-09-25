@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 abstract class AlterMigration extends BaseMigration
 {
-    protected string $table;
+    protected bool $needDrop = false;
 
     public function up()
     {

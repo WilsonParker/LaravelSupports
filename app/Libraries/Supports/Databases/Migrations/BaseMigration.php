@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Schema;
 abstract class BaseMigration extends Migration
 {
     protected string $table;
+    protected bool $needDrop = true;
 
     public function down()
     {
@@ -18,7 +19,9 @@ abstract class BaseMigration extends Migration
             if (Schema::hasTable($this->table)) {
                 $this->defaultDownTemplate($table);
             }
-            $table->dropIfExists();
+            if($this->needDrop) {
+                $table->dropIfExists();
+            }
         });
     }
 
