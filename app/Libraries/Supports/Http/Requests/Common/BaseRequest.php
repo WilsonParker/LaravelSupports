@@ -10,8 +10,9 @@ use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
 
 abstract class BaseRequest extends FormRequest
 {
-    protected $rules = [];
+    protected array $rules = [];
     protected array $messages = [];
+    protected $validatorCallback;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
@@ -31,6 +32,51 @@ abstract class BaseRequest extends FormRequest
     public function messages()
     {
         return $this->messages;
+    }
+
+    /**
+     * @param mixed $validatorCallback
+     */
+    public function setValidatorCallback($validatorCallback)
+    {
+        $this->validatorCallback = $validatorCallback;
+    }
+
+    /**
+     * 중복 방지 validation callback 제공
+     *
+     * @param $from
+     * @param $to
+     * @param $message
+     * @return \Closure
+     * @author  dew9163
+     * @added   2020/06/22
+     * @updated 2020/06/22
+     */
+    protected function getConflictValidationCallback($from, $to, $message)
+    {
+        return function ($validator) use ($from, $to, $message) {
+            $validator->after(function (Validator $validator) use ($from, $to, $message) {
+                $validationData = $validator->getData();
+                if (isset($validationData[$from]) && isset($validationData[$to])) {
+                    $validator->errors()->add($from, $message);
+                }
+            });
+        };
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param \Illuminate\Validation\Validator $validator
+     * @return void
+     */
+    public function withValidator(\Illuminate\Validation\Validator $validator)
+    {
+        if (isset($this->validatorCallback)) {
+            $callback = $this->validatorCallback;
+            $callback($validator);
+        }
     }
 
     /**
