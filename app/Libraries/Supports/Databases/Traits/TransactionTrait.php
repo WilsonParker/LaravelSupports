@@ -55,7 +55,7 @@ trait TransactionTrait
                 $result = $errorCallback($e);
             } else {
                 // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
-                $result = new ResponseTemplate($e->getCode(), $e->getMessage(), [
+                $result = new ResponseTemplate($e->getCode(), $e->getCode(), $e->getMessage(), [
                     "line" => $e->getLine(),
                     "string" => $e->getTraceAsString()
                 ]);
