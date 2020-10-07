@@ -11,20 +11,42 @@ trait ReflectionTrait
         return array_keys(get_object_vars($this));
     }
 
-    public function bindStd($std)
+    public function bind($data, $callback)
     {
         foreach ($this->getProps() as $prop) {
-            if(isset($std->{$prop})) {
-                $this->{$prop} = $std->{$prop};
-            }
+            $callback($data, $prop);
         }
+        $this->afterBind();
+    }
+
+    public function bindStd($std)
+    {
+        $callback = function ($data, $prop) {
+            if (isset($data->{$prop})) {
+                $this->{$prop} = $data->{$prop};
+            }
+        };
+        $this->bind($std, $callback);
     }
 
     public function bindJson($json)
     {
         $data = json_decode($json, true);
-        foreach ($this->getProps() as $prop) {
-            $this->{$prop} = $data["$prop"];
-        }
+        $this->bindArray($data);
+    }
+
+    public function bindArray($arr)
+    {
+        $callback = function ($data, $prop) {
+            if (isset($data[$prop])) {
+                $this->{$prop} = $data[$prop];
+            }
+        };
+        $this->bind($arr, $callback);
+    }
+
+    public function afterBind()
+    {
+
     }
 }
