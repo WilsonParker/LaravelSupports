@@ -72,6 +72,7 @@ class SMSHelper
      */
     public function templateSend(array $template, $data = null)
     {
+        $this->initializeResult();
         try {
             switch ($template[self::KEY_TEMPLATE]) {
                 case self::TEMPLATE_BASIC :
@@ -203,7 +204,7 @@ class SMSHelper
                 case self::TEMPLATE_SUBSCRIBE_PAYMENT_FAIL_REASON:
                     collect($data)->each(function ($item) use ($template) {
                         $message = str_replace("#{회원이름}", $item[self::KEY_NAME], $template[self::KEY_MESSAGE]);
-                        $message = str_replace("#{쿠폰코드}", $item[self::KEY_CONTENT], $message);
+                        $message = str_replace("#{내용}", $item[self::KEY_CONTENT], $message);
                         $this->send($template[self::KEY_TEMPLATE_CODE], $item['phone'], $message);
                     });
                     break;
@@ -381,6 +382,14 @@ class SMSHelper
         }
 
         return $smsObj;
+    }
+
+    private function initializeResult()
+    {
+        $this->successCount = 0;
+        $this->success = [];
+        $this->failCount = 0;
+        $this->fail = [];
     }
 
     private function sendPaymentMessage($template, $header, $messageTemplate, $data)
