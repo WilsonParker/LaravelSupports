@@ -32,7 +32,8 @@ abstract class BaseModel extends Model
 
     const KEY_SEARCH_TYPE = "search_type";
     const KEY_KEYWORD = "keyword";
-    protected array $selectScope = ['*'];
+    // protected array $selectScope = ['*'];
+    protected array $selectScope;
     // 이미지, 파일을 저장하는 suffix 경로 입니다
     protected string $path = '';
     // 이미지, 파일을 저장하는 prefix 경로 입니다
@@ -93,7 +94,9 @@ abstract class BaseModel extends Model
     protected function addSelectScope()
     {
         static::addGlobalScope('selectScope', function (Builder $builder) {
-            $builder->select($this->selectScope);
+            if(isset($this->selectScope)) {
+                $builder->select($this->selectScope);
+            }
             $this->buildOrderScope($builder);
             $this->buildWhereScope($builder);
             $this->buildWithScope($builder);
