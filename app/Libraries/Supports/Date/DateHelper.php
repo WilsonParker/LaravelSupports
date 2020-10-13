@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Date;
 
 use Carbon\Carbon;
+use DateTime;
 
 /**
  * 날짜 관련 Helper 클래스 입니다
@@ -28,7 +29,7 @@ class DateHelper
 
     public function __construct()
     {
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
     }
 
     public function getCurrentTime($format = self::DEF_FORMAT)

@@ -2,6 +2,7 @@
 
 namespace LaravelSupports\Libraries\Push\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class MobileDownloadHistoryModel extends Model
@@ -23,7 +24,7 @@ class MobileDownloadHistoryModel extends Model
                 $model->android += 1;
                 break;
             default :
-                throw new \Exception("Not found os_type", 500);
+                throw new Exception("Not found os_type", 500);
         }
         return $model->save();
     }

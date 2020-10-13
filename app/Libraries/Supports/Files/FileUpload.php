@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Libraries;
+use Exception;
 use File;
 use Image;
 
@@ -23,7 +24,7 @@ class FileUpload
      * @param $basePath
      *  저장 기본 경로
      * @return  array | Exception
-     * @throws \Exception
+     * @throws Exception
      * @author  오세현
      * @added   2019-07-29
      * @updated 2019-07-29
@@ -41,9 +42,9 @@ class FileUpload
             $originalFile->save($basePath."/".$newFileName);
 
             return array("oriFileName" => $oriFileName, "newFileName" => $newFileName, "hash" => $fileHash);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
-            throw new \Exception(" 파일 업로드중 오류가 발생하였습니다.");
+            throw new Exception(" 파일 업로드중 오류가 발생하였습니다.");
         }
     }
 
@@ -56,7 +57,7 @@ class FileUpload
      * @param $basePath
      *  저장 기본 경로
      * @return  array | Exception
-     * @throws \Exception
+     * @throws Exception
      * @author  오세현
      * @added   2019-07-29
      * @updated 2019-07-29
@@ -75,8 +76,8 @@ class FileUpload
             $file->move($basePath, $newFileName);
 
             return array("oriFileName" => $oriFileName, "newFileName" => $newFileName, "hash" => $fileHash);
-        } catch (\Exception $e) {
-            throw new \Exception(" 파일 업로드중 오류가 발생하였습니다.");
+        } catch (Exception $e) {
+            throw new Exception(" 파일 업로드중 오류가 발생하였습니다.");
         }
     }
 
@@ -104,7 +105,7 @@ class FileUpload
      * @param   $file
      * @param   $basePath
      * @return  Exception|array
-     * @throws  \Exception
+     * @throws  Exception
      * @author  WilsonParker
      * @added   2019-08-26
      * @updated 2019-08-26

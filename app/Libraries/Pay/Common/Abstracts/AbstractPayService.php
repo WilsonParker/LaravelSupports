@@ -4,11 +4,14 @@
 namespace LaravelSupports\Libraries\Pay\Common\Abstracts;
 
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use LaravelSupports\Libraries\Coupon\Contracts\Coupon;
 use LaravelSupports\Libraries\Coupon\CouponService;
 use LaravelSupports\Libraries\Pay\Common\Contracts\Member;
 use LaravelSupports\Libraries\Pay\Common\Contracts\Payment;
-use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 abstract class AbstractPayService
 {
@@ -45,7 +48,7 @@ abstract class AbstractPayService
      * @param $data
      * @param string $method
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @author  dew9163
      * @added   2020/06/15
      * @updated 2020/06/15
@@ -69,8 +72,8 @@ abstract class AbstractPayService
      * @param $url
      * @param array $params
      * @param null $options
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      * @author  dew9163
      * @added   2020/06/15
      * @updated 2020/06/15
@@ -503,7 +506,7 @@ abstract class AbstractPayService
      * 등록된 coupon code 를 제공 합니다
      *
      * @return null
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/11
      * @updated 2020/06/11

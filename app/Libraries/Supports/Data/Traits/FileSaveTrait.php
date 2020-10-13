@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Data\Traits;
 
 
+use Exception;
 use LaravelSupports\Libraries\FileUpload;
 use LaravelSupports\Models\ImagesModel;
 
@@ -18,7 +19,7 @@ trait FileSaveTrait
      * @param   $ix
      * 저장하는 model 의 ix
      * @return  ImagesModel
-     * @throws  \Exception
+     * @throws  Exception
      * @author  WilsonParker
      * @added   2019-08-26
      * @updated 2019-08-26
@@ -36,7 +37,7 @@ trait FileSaveTrait
      * @param   $file
      * @return \LaravelSupports\Libraries\Exception|array
      * ("oriFileName" => $oriFileName, "newFileName" => $newFileName, "hash" => $fileHash);
-     * @throws \Exception
+     * @throws Exception
      * @author  WilsonParker
      * @added   2019-09-06
      * @updated 2019-09-06

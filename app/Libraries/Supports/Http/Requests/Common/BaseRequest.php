@@ -2,6 +2,7 @@
 
 namespace LaravelSupports\Libraries\Supports\Http\Requests\Common;
 
+use Closure;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -48,7 +49,7 @@ abstract class BaseRequest extends FormRequest
      * @param $from
      * @param $to
      * @param $message
-     * @return \Closure
+     * @return Closure
      * @author  dew9163
      * @added   2020/06/22
      * @updated 2020/06/22

@@ -6,6 +6,7 @@ namespace LaravelSupports\Libraries\SMS\Helpers;
 
 use App\Models\Members\MemberModel;
 use App\Models\Members\PlusMemberModel;
+use Exception;
 use GuzzleHttp\Client;
 use LaravelSupports\Libraries\SMS\Models\SMSModel;
 use LaravelSupports\Libraries\Supports\Date\DateHelper;
@@ -318,7 +319,7 @@ class SMSHelper
                     $this->send($template[self::KEY_TEMPLATE_CODE], "01066193581", $message);
                     break;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
         }
         return [
@@ -373,7 +374,7 @@ class SMSHelper
 
             $this->successCount++;
             array_push($this->success, $phone);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->failCount++;
             array_push($this->fail, [
                 'phone' => $phone,

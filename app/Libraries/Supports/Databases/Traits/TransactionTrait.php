@@ -4,11 +4,13 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Traits;
 
 
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
+use Throwable;
 
 trait TransactionTrait
 {
@@ -39,7 +41,7 @@ trait TransactionTrait
             }
             DB::commit();
             // transaction 중 에러 발생 시
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // DB rollback 을 실행합니다
             DB::rollback();
             if($loggable) {
@@ -96,7 +98,7 @@ trait TransactionTrait
             }
             DB::commit();
             // transaction 중 에러 발생 시
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // DB rollback 을 실행합니다
             DB::rollback();
             // $errorCallback 이 함수인지 확인합니다

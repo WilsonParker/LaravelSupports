@@ -1,6 +1,10 @@
 <?php
 namespace LaravelSupports\Libraries\Push\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Validator;
+
 class MobilePushController extends AdminController
 {
     //-- 리턴 디폴트 페이지
@@ -46,7 +50,7 @@ class MobilePushController extends AdminController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -57,7 +61,7 @@ class MobilePushController extends AdminController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function list(Request $request)
     {
@@ -67,7 +71,7 @@ class MobilePushController extends AdminController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -81,8 +85,8 @@ class MobilePushController extends AdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -144,7 +148,7 @@ class MobilePushController extends AdminController
                 break;
         }
 
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             $validatorDatas,
             $messages
@@ -234,7 +238,7 @@ class MobilePushController extends AdminController
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -245,7 +249,7 @@ class MobilePushController extends AdminController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit()
     {
@@ -255,9 +259,9 @@ class MobilePushController extends AdminController
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request)
     {
@@ -268,7 +272,7 @@ class MobilePushController extends AdminController
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Request $request)
     {

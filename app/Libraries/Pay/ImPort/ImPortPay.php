@@ -4,13 +4,15 @@
 namespace LaravelSupports\Libraries\Pay\ImPort;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseAgainObject;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseOnTimeObject;
-use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseStoreSubscribeUserObject;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseSubscribeUserObject;
 use LaravelSupports\Libraries\Supports\Data\ArrayHelper;
+use Throwable;
 
 /**
  * 플러스 결제
@@ -200,8 +202,8 @@ class ImPortPay extends AbstractPayService
      * 구독 결제 이용자 정보를 제공 합니다
      *
      * @return ImPortResponseSubscribeUserObject
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @throws GuzzleException
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/26
      * @updated 2020/06/26
@@ -217,8 +219,8 @@ class ImPortPay extends AbstractPayService
     /**
      *
      * @return ImPortResponseStoreSubscribeUserObject
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @throws GuzzleException
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/07/21
      * @updated 2020/07/21

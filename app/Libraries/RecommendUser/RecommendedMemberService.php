@@ -6,14 +6,16 @@ namespace LaravelSupports\Libraries\RecommendUser;
 
 use App\BplusMember;
 use App\Member;
-use App\Services\Models\Members\RecommendedMemberModel;
 use App\Services\Membership\MembershipService;
+use App\Services\Models\Members\RecommendedMemberModel;
+use Exception;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\AlreadyRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\DoNotSelfRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\NotFoundRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\NotMembershipRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\NotUsableRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\SubscriberRecommendedException;
+use Throwable;
 
 class RecommendedMemberService
 {
@@ -37,7 +39,7 @@ class RecommendedMemberService
      * @param $priceModel
      * @param bool $throwException
      * @return void
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/24
      * @updated 2020/06/24
@@ -59,7 +61,7 @@ class RecommendedMemberService
      * @param $priceModel
      * @param bool $throwException
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/25
      * @updated 2020/06/25
@@ -79,7 +81,7 @@ class RecommendedMemberService
      * @param $priceModel
      * @param bool $throwException
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/23
      * @updated 2020/06/23
@@ -99,7 +101,7 @@ class RecommendedMemberService
             throw_if($throwException && !$priceModel->isUsableRecommendCode(), new NotUsableRecommendedException());
             // 구독 방식 멤버십 회원일 경우 추천인 혜택 지급 불가
             throw_if($throwException && $recommendedMember->isSubscribe(), new SubscriberRecommendedException());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($throwException) {
                 throw $e;
             } else {
@@ -114,7 +116,7 @@ class RecommendedMemberService
      *
      * @param $recommendedMember
      * @return void
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/25
      * @updated 2020/06/25

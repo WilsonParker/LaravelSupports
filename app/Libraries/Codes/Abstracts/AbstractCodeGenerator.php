@@ -4,11 +4,12 @@
 namespace LaravelSupports\Libraries\Codes\Abstracts;
 
 
-use LaravelSupports\Libraries\Codes\Contracts\GenerateCode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use LaravelSupports\Libraries\Codes\Contracts\GenerateCode;
 use LaravelSupports\Libraries\Codes\Exceptions\CodeGenerateException;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
+use Throwable;
 
 abstract class AbstractCodeGenerator
 {
@@ -122,7 +123,7 @@ abstract class AbstractCodeGenerator
      * @param GenerateCode $model
      * @param bool $isNeedException
      * @return Model
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/04/20
      * @updated 2020/04/20
@@ -156,7 +157,7 @@ abstract class AbstractCodeGenerator
      * @param GenerateCode $model
      * @param bool $isNeedException
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/04/20
      * @updated 2020/04/20

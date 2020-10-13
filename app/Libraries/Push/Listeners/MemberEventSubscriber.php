@@ -7,6 +7,7 @@ use App\Events\Members\MemberDetailNotificationEvent;
 use App\Events\Members\MemberFeedNotificationEvent;
 use App\Events\Members\MemberNotificationEvent;
 use App\Services\Push\FCMPushService;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Arr;
 
 class MemberEventSubscriber
@@ -135,7 +136,7 @@ class MemberEventSubscriber
     /**
      * Register the listeners for the subscriber.
      *
-     * @param \Illuminate\Events\Dispatcher $events
+     * @param Dispatcher $events
      */
     public function subscribe($events)
     {

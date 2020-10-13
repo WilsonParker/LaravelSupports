@@ -4,6 +4,8 @@
 namespace LaravelSupports\Libraries\Pay\Delivery;
 
 
+use Exception;
+
 class DeliveryService
 {
     const REGULAR_EXPRESSION = "/([\S]+\s[\S]+(구|군)\s[\S]+(면|동))/";
@@ -31,7 +33,7 @@ class DeliveryService
             $convertedAddress = $this->convertAddressForDelivery($address);
             $model = BplusDeliveryArea::where('area', 'like', $convertedAddress)->firstOrFail();
             return $model->cost;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return 0;
         }
     }

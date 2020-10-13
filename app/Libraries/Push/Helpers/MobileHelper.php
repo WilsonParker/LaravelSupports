@@ -3,9 +3,10 @@
 
 namespace LaravelSupports\Libraries\Push\Helpers;
 
+use Exception;
+use Illuminate\Support\Facades\DB;
 use LaravelSupports\Libraries\Push\Models\MobileDownloadHistoryModel;
 use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
-use Illuminate\Support\Facades\DB;
 
 class MobileHelper
 {
@@ -47,7 +48,7 @@ class MobileHelper
                     return self::pushResultJson(200, $result);
                 }
                 return self::pushResultJson(500, $message);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 return self::pushResultJson(500, $message);
             }
         };
@@ -138,7 +139,7 @@ class MobileHelper
         try {
             $result = $callback();
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $code = $e->getCode();
             $message = "

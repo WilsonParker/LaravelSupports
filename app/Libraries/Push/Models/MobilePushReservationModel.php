@@ -3,8 +3,9 @@
 namespace LaravelSupports\Libraries\Push\Models;
 
 use App\Models\ImagesModel;
-use LaravelSupports\Libraries\Supports\Data\Traits\FileSaveTrait;
+use DateTime;
 use Illuminate\Http\Request;
+use LaravelSupports\Libraries\Supports\Data\Traits\FileSaveTrait;
 
 class MobilePushReservationModel extends AbstractMobilePushModel
 {
@@ -40,7 +41,7 @@ class MobilePushReservationModel extends AbstractMobilePushModel
         $this->reserve_type = 'P';
         $this->reserve_push_os = 'a';
 
-        $date = \DateTime::createFromFormat("YmdHi", $this->reserve_time);
+        $date = DateTime::createFromFormat("YmdHi", $this->reserve_time);
         $this->reserve_time = $date->format('Y-m-d H:i:s');
         $this->bindPushData($request);
     }

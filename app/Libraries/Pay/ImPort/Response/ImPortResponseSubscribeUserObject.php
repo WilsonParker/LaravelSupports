@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Pay\ImPort\Response;
 
 
+use Exception;
 use LaravelSupports\Libraries\Pay\Common\Exception\PaymentException;
 
 class ImPortResponseSubscribeUserObject extends ImPortResponse
@@ -15,7 +16,7 @@ class ImPortResponseSubscribeUserObject extends ImPortResponse
     {
         try {
             parent::bindStd($std);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new PaymentException("저장된 카드 정보를 불러올 수 없습니다.\n 수동으로 카드 정보를 입력하여 결제 부탁드립니다");
         }
     }

@@ -2,11 +2,9 @@
 
 namespace LaravelSupports\Libraries\Exceptions\Logs;
 
+use Exception;
 use LaravelSupports\Libraries\Exceptions\Contracts\ExceptionRecordable;
 use LaravelSupports\Libraries\Exceptions\Models\ExceptionModel;
-use LaravelSupports\Libraries\Supports\Data\TableIterator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Database 에 Exception Log 를 기록합니다
@@ -22,7 +20,7 @@ class ExceptionLogDB implements ExceptionRecordable
     /**
      * exception 을 database 에 저장합니다
      *
-     * @param \Exception $exception
+     * @param Exception $exception
      * @return  Void
      * @author  WilsonParker
      * @added   2019.03.04
@@ -44,7 +42,7 @@ class ExceptionLogDB implements ExceptionRecordable
             $model->bind($data);
             $model->save();
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
         }
     }

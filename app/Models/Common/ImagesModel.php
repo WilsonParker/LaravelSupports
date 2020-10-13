@@ -4,8 +4,8 @@
 namespace LaravelSupports\Models\Common;
 
 
+use Exception;
 use LaravelSupports\Libraries\FileUpload;
-use LaravelSupports\Models\Common\BaseModel;
 
 class ImagesModel extends BaseModel
 {
@@ -79,7 +79,7 @@ class ImagesModel extends BaseModel
      *
      * @param string $path
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      * @author  WilsonParker
      * @added   2020/03/31
      * @updated 2020/03/31

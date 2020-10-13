@@ -4,10 +4,11 @@
 namespace LaravelSupports\Libraries\Push\Helpers;
 
 
-use LaravelSupports\Libraries\Push\Models\AbstractMobilePushModel;
-use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
+use Exception;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
+use LaravelSupports\Libraries\Push\Models\AbstractMobilePushModel;
+use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
 use LaravelSupports\Libraries\Supports\Http\RestCall;
 
 class PushHelper
@@ -187,7 +188,7 @@ class PushHelper
                     return self::pushResultJson(200, $result);
                 }
                 return self::pushResultJson(500, $message);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 return self::pushResultJson(500, $message);
             }
         };
@@ -264,7 +265,7 @@ class PushHelper
         try {
             $result = $callback();
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $code = $e->getCode();
             $message = "

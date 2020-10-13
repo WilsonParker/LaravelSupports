@@ -2,6 +2,7 @@
 
 namespace LaravelSupports\Libraries\Exceptions\Logs;
 
+use Exception;
 use LaravelSupports\Libraries\Supports\Objects\ObjectHelper;
 
 /**
@@ -29,7 +30,7 @@ class ExceptionLogger
     /**
      * $recordable 을 이용하여 Exception 을 기록합니다
      *
-     * @param \Exception $exception
+     * @param Exception $exception
      * @return  Void
      * @author  WilsonParker
      * @added   2019.03.04
@@ -43,7 +44,7 @@ class ExceptionLogger
             $recordable = ObjectHelper::createInstance($this->recordableClass);
             $exception->err_trace = $this->jTraceEx($exception);
             $recordable->record($exception);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e->getMessage());
         }
     }
@@ -51,7 +52,7 @@ class ExceptionLogger
     /**
      * Exception StackTrace 를 가공합니다
      *
-     * @param \Exception $e
+     * @param Exception $e
      * @param String $seen
      * @return  String
      * @author  WilsonParker

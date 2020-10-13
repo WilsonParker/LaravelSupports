@@ -2,6 +2,7 @@
 
 namespace LaravelSupports\Libraries\Exceptions\Logs;
 
+use Exception;
 use LaravelSupports\Libraries\Exceptions\Contracts\ExceptionRecordable;
 use LaravelSupports\Libraries\Supports\Objects\ConstructOverrideObject;
 
@@ -23,7 +24,7 @@ class ExceptionLogFile extends ConstructOverrideObject implements ExceptionRecor
     /**
      * Exception 을 이용하여 File 에 기록합니다
      *
-     * @param   \Exception $exception
+     * @param   Exception $exception
      * @return
      * @author  WilsonParker
      * @added   2019.03.04

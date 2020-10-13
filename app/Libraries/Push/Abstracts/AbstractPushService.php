@@ -4,11 +4,12 @@
 namespace LaravelSupports\Libraries\Push\Abstracts;
 
 
+use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use LaravelSupports\Libraries\Push\Contracts\HasPushToken;
 use LaravelSupports\Libraries\Push\Exceptions\HasPushTokenException;
 use LaravelSupports\Libraries\Push\Objects\MobileResultObject;
-use GuzzleHttp\Client;
-use Illuminate\Support\Arr;
+use Throwable;
 
 abstract class AbstractPushService
 {
@@ -151,7 +152,7 @@ abstract class AbstractPushService
      * @param array $tokens
      * @param string $result
      * @return MobileResultObject
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/05/29
      * @updated 2020/05/29

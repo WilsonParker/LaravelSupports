@@ -4,6 +4,7 @@
 namespace App\Libraries;
 
 
+use File;
 use Illuminate\Support\Facades\Storage;
 
 class FileHelper
@@ -37,7 +38,7 @@ class FileHelper
 
         // 기존 구조에 맞춰 upload 폴더 하위에 저장되도록 고정(파일시스템은 upload driver 사용)
         // \File::makeDirectory("/upload/{$dir}", $mode = 0777, true, true);
-        \File::makeDirectory($dir, $mode = 0777, true, true);
+        File::makeDirectory($dir, $mode = 0777, true, true);
         if ($filename) {
             $result["is_saved"] = true;
             $result["message"] = "OK";

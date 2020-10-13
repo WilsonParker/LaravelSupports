@@ -92,7 +92,7 @@ abstract class BaseModel extends Model
      */
     protected function addSelectScope()
     {
-        static::addGlobalScope('selectScope', function (\Illuminate\Database\Eloquent\Builder $builder) {
+        static::addGlobalScope('selectScope', function (Builder $builder) {
             $builder->select($this->selectScope);
             $this->buildOrderScope($builder);
             $this->buildWhereScope($builder);

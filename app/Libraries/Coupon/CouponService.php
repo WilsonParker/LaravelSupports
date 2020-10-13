@@ -9,10 +9,11 @@ use App\Services\Models\Coupons\CouponUsedMemberModel;
 use App\Services\Models\Membership\ConvertMarkMessageTrait;
 use App\Services\Models\Membership\MembershipModel;
 use App\Services\Models\Membership\MembershipPriceModel;
+use App\Supports\Date\DateHelper;
 use LaravelSupports\Libraries\Coupon\Exceptions\AlreadyUsedException;
 use LaravelSupports\Libraries\Coupon\Exceptions\DuplicatedException;
 use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
-use App\Supports\Date\DateHelper;
+use Throwable;
 
 class CouponService
 {
@@ -61,7 +62,7 @@ class CouponService
      * MemberModel
      * @param bool $throwException
      * @return bool|null
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/09
      * @updated 2020/06/09
@@ -82,7 +83,7 @@ class CouponService
      * @param $data
      * @param bool $throwException
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/09
      * @updated 2020/06/09
@@ -137,7 +138,7 @@ class CouponService
      *
      * @param bool $throwException
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/11
      * @updated 2020/06/11
@@ -154,7 +155,7 @@ class CouponService
      *
      * @param bool $throwException
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/26
      * @updated 2020/06/26
@@ -184,7 +185,7 @@ class CouponService
      *
      * @param
      * @return mixed|null
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/12
      * @updated 2020/06/12

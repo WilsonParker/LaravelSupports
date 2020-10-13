@@ -7,6 +7,7 @@ namespace LaravelSupports\Libraries\Pay\ImPort\Response;
 
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractResponseReadyObject;
 use LaravelSupports\Libraries\Pay\Common\Exception\PaymentException;
+use Throwable;
 
 /**
  * ImPort ontime 결제 시 제공되는 response 객체
@@ -178,7 +179,7 @@ class ImPortResponse extends AbstractResponseReadyObject
     /**
      * @param
      * @return void
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/25
      * @updated 2020/06/25

@@ -2,6 +2,9 @@
 
 namespace LaravelSupports\Libraries\Supports\Objects;
 
+use ReflectionClass;
+use ReflectionException;
+
 /**
  * Class 로 객체를 생성하는데 도움을 줍니다
  *
@@ -21,7 +24,7 @@ class ObjectHelper
      * @param Class $cls
      * @param mixed ...$args
      * @return  Object
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @author  WilsonParker
      * @added   2019.03.05
      * @updated 2019.03.05
@@ -30,7 +33,7 @@ class ObjectHelper
      */
     public static function createInstance($cls, ...$args)
     {
-        $ref = new \ReflectionClass($cls);
+        $ref = new ReflectionClass($cls);
         return $ref->newInstance(...$args);
     }
 

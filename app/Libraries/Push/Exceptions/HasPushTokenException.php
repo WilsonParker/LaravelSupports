@@ -4,7 +4,9 @@
 namespace LaravelSupports\Libraries\Push\Exceptions;
 
 
-class HasPushTokenException extends \Exception
+use Exception;
+
+class HasPushTokenException extends Exception
 {
     protected $message = '$tokenModelClass must implements HasPushToken interface';
 }

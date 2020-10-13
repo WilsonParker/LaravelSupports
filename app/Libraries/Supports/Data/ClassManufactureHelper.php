@@ -6,6 +6,7 @@ namespace LaravelSupports\Libraries\Supports\Data;
 
 use Illuminate\Support\Arr;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 class ClassManufactureHelper
@@ -43,7 +44,7 @@ class ClassManufactureHelper
      * @param   bool $isPublic
      * public 변수에만 binding 할지 설정
      * @return  void
-     * @throws  \ReflectionException
+     * @throws  ReflectionException
      * @author  WilsonParker
      * @added   2019-08-27
      * @updated 2019-08-27

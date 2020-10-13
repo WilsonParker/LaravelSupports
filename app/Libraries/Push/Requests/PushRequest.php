@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Validator;
 
 class PushRequest extends FormRequest
 {
@@ -73,7 +74,7 @@ class PushRequest extends FormRequest
                 break;
         }
 
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             $validatorDatas,
             $messages

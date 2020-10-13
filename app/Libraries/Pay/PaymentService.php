@@ -12,6 +12,7 @@ use LaravelSupports\Libraries\Pay\Common\Contracts\MembershipPayment;
 use LaravelSupports\Libraries\Pay\Delivery\DeliveryService;
 use LaravelSupports\Libraries\Pay\ImPort\ImPortPay;
 use LaravelSupports\Libraries\Pay\Kakao\KakaoPay;
+use Throwable;
 
 class PaymentService
 {
@@ -80,7 +81,7 @@ class PaymentService
      * self::KEY_RECOMMEND_CODE : 'recommend_code'
      *
      * @return mixed
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/17
      * @updated 2020/06/17
@@ -120,7 +121,7 @@ class PaymentService
      * 결제 건을 승인 합니다
      *
      * @return mixed
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/06/25
      * @updated 2020/06/25
@@ -173,7 +174,7 @@ class PaymentService
      * nice_pay : 'model':MemberCard
      *
      * @return mixed
-     * @throws \Throwable
+     * @throws Throwable
      * @author  dew9163
      * @added   2020/07/01
      * @updated 2020/07/01

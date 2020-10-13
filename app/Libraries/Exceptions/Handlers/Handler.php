@@ -4,9 +4,13 @@ namespace LaravelSupports\Libraries\Exceptions\Handlers;
 
 use Exception;
 use Facades\LaravelSupports\Libraries\Exceptions\Log\ExceptionLogger;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use PharIo\Manifest\InvalidUrlException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -49,10 +53,10 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param \Exception $exception
+     * @param Exception $exception
      * @return void
      */
-    public function report(\Throwable $exception)
+    public function report(Throwable $exception)
     {
         parent::report($exception);
         // ExceptionLogger::report($exception);
@@ -62,11 +66,11 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception $exception
+     * @param Request $request
+     * @param Exception $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, \Throwable $exception)
+    public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
     }
@@ -74,7 +78,7 @@ class Handler extends ExceptionHandler
     /**
      * Exception 종류에 따라 $handlers 에 설정된 handler 를 사용해 처리합니다
      *
-     * @param \Exception $exception
+     * @param Exception $exception
      * @return  Void
      * @author  WilsonParker
      * @added   2019.03.05
@@ -99,9 +103,9 @@ class Handler extends ExceptionHandler
     /**
      * Convert an authentication exception into a response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Auth\AuthenticationException $exception
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return Response
      */
     /*public function unauthenticated($request, AuthenticationException $exception)
     {

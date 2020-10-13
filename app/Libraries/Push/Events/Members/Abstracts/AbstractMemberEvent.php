@@ -5,6 +5,7 @@ namespace LaravelSupports\Libraries\Push\Events\Members\Abstracts;
 
 
 use App\Models\Push\MemberAlim;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -29,7 +30,7 @@ class AbstractMemberEvent implements ShouldQueue
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array
      */
     /*public function broadcastOn()
     {
