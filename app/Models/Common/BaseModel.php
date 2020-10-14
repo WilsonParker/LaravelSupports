@@ -41,6 +41,8 @@ abstract class BaseModel extends Model
     // 이미지, 파일을 저장하는 table 의 type 입니다
     protected string $tableType = '';
 
+    protected $guarded = [];
+
     /**
      * value of pagination limit
      *
