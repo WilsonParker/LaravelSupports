@@ -27,7 +27,7 @@ abstract class BaseModel extends Model
     public $timestamps = true;
     public $incrementing = true;
     // protected $primaryKey = "ix";
-    protected $primaryKey = "ix";
+    protected $primaryKey = "id";
     protected $table = "";
 
     const KEY_SEARCH_TYPE = "search_type";
