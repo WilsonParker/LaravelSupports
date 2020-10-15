@@ -31,13 +31,14 @@ class StringHelper
      * @create  20181227
      * @update  20181227
      **/
-    public static function contains(string $haystack, string $needle)
+    public function contains(string $haystack, string $needle)
     {
         return strpos($haystack, $needle) === false ? false : true;
     }
 
     /**
      * @param String $reg
+     * @param string $key
      * @return  String $key
      * @author  WilsonParker
      * @brief
@@ -47,19 +48,19 @@ class StringHelper
      * @bug
      * @create  20181227
      * @update  20181227
-     **/
+     */
     protected function matchesKey(string $reg, string $key)
     {
         preg_match_all($reg, $key, $matches);
         return $matches[0][0];
     }
 
-    public static function defaultString(string $str, string $def)
+    public function defaultString(string $str, string $def)
     {
         return is_null($str) ? $def : $str;
     }
 
-    public static function explodeWithTrim(string $delimiter, string $str)
+    public function explodeWithTrim(string $delimiter, string $str)
     {
         return array_map("trim", explode($delimiter, $str));
     }
@@ -83,18 +84,51 @@ class StringHelper
      * $subject
      * ':name 의 나이는 :age 입니다'
      */
-    public static function replaceWithCollection($replace, $subject)
+    public function replaceWithCollection($replace, $subject)
     {
         return str_replace(array_keys($replace), $replace, $subject);
     }
 
-    public static function clearSpecialCharacters(string $string)
+    public function clearSpecialCharacters(string $string)
     {
-        return self::clearString($string, self::SPECIAL_CHARACTERS_REG);
+        return $this->clearString($string, self::SPECIAL_CHARACTERS_REG);
     }
 
-    public static function clearString(string $string, string $reg)
+    public function clearString(string $string, string $reg)
     {
         return preg_replace($reg, '', $string);
+    }
+
+    public function indexOf(string $str, string $needle): int
+    {
+        foreach ($this->strSplitUnicode($str) as $idx => $char) {
+            if ($char === $needle) {
+                return $idx;
+            }
+        }
+        return -1;
+    }
+
+    public function substr(string $str, int $start, int $end)
+    {
+        $chars = $this->strSplitUnicode($str);
+        $partOfStr = '';
+        for ($i = $start; $i <= $end; $i++) {
+            $partOfStr .= $chars[$i];
+        }
+        return $partOfStr;
+    }
+
+    public function strSplitUnicode($str, $l = 0)
+    {
+        if ($l > 0) {
+            $ret = array();
+            $len = mb_strlen($str, "UTF-8");
+            for ($i = 0; $i < $len; $i += $l) {
+                $ret[] = mb_substr($str, $i, $l, "UTF-8");
+            }
+            return $ret;
+        }
+        return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
     }
 }

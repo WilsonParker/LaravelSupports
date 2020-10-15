@@ -90,6 +90,7 @@ class SMSHelper
                     break;
                 case self::TEMPLATE_PLUS_SEND_MEMBER :
                     $plusMemberModels = PlusMemberModel::getPlusSentMembersQuery()->get();
+//                    $plusMemberModels = PlusMemberModel::where('member_id', 146973)->get();
                     collect($plusMemberModels)->each(function ($item) use ($template) {
                         $message = str_replace("#{회원이름}", $item->member->realname, $template[self::KEY_MESSAGE]);
 
