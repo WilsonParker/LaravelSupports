@@ -99,11 +99,15 @@ class StringHelper
         return preg_replace($reg, '', $string);
     }
 
-    public function indexOf(string $str, string $needle): int
+    public function indexOf(string $str, string $needle, int $start = 0): int
     {
-        foreach ($this->strSplitUnicode($str) as $idx => $char) {
-            if ($char === $needle) {
-                return $idx;
+        if ($start < 0) {
+            return -1;
+        }
+        $chars = $this->strSplitUnicode($str);
+        for ($i = $start; $i < sizeof($chars); $i++) {
+            if ($chars[$i] === $needle) {
+                return $i;
             }
         }
         return -1;
