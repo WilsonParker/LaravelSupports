@@ -450,6 +450,10 @@ abstract class BaseModel extends Model
         return $model;
     }
 
+    public function getPrimaryValue() {
+        return $this->{$this->primaryKey};
+    }
+
     /**
      * create an instance using the connection
      *
