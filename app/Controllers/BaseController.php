@@ -5,12 +5,14 @@ namespace App\Library\LaravelSupports\app\Controllers;
 
 use App\View\Components\Inputs\TableSearchComponent;
 use App\ViewModels\Common\BaseViewModel;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -264,5 +266,29 @@ abstract class BaseController extends Controller
     {
         $this->title = $title;
         $this->description = $description;
+    }
+
+    /**
+     * Cache 에 저장 유무를 확인하여 데이터를 불러오거나 저장 합니다
+     *
+     * @param string $key
+     * @param $callback
+     * @param Carbon $expired
+     * @param bool $notUsedCache
+     * cache 사용 여부
+     * @return mixed
+     * @author  dew9163
+     * @added   2020/11/04
+     * @updated 2020/11/04
+     */
+    protected function getCacheData(string $key, $callback, Carbon $expired, bool $notUsedCache = false)
+    {
+        if (Cache::has($key) && !$notUsedCache) {
+            $result = Cache::get($key);
+        } else {
+            $result = $callback();
+            Cache::add($key, $result, $expired);
+        }
+        return $result;
     }
 }
