@@ -2,6 +2,15 @@ LaravelSupports
 
 ## Settings
 
+> Use all
+```
+git init app/Library/LaravelSupports
+cd app/Library/LaravelSupports
+git remote add -f origin https://github.com/WilsonParker/LaravelSupports.git
+git pull origin master
+``` 
+
+> Use Sparse
 - **[Git Sparse](https://www.lesstif.com/gitbook/git-clone-20776761.html)**
 ```
 git init app/Library/LaravelSupports
@@ -10,6 +19,9 @@ git config core.sparseCheckout true
 git remote add -f origin https://github.com/WilsonParker/LaravelSupports.git
 echo "app/Libraries" >> .git/info/sparse-checkout
 echo "app/Models" >> .git/info/sparse-checkout
+echo "app/Controllers" >> .git/info/sparse-checkout
+echo "app/Views" >> .git/info/sparse-checkout
+echo "app/ViewModels" >> .git/info/sparse-checkout
 git pull origin master
 
 ```
