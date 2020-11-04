@@ -3,8 +3,6 @@
 
 namespace LaravelSupports\Controllers;
 
-use App\View\Components\Inputs\TableSearchComponent;
-use App\ViewModels\Common\BaseViewModel;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -15,6 +13,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
+use LaravelSupports\ViewModels\BaseViewModel;
+use LaravelSupports\Views\Components\BaseComponent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Throwable;
 
@@ -153,7 +153,7 @@ abstract class BaseController extends Controller
 
     protected function getSearchKeys(): array
     {
-        return [TableSearchComponent::KEY_SEARCH, TableSearchComponent::KEY_SORT, TableSearchComponent::KEY_PAGINATE_LENGTH, TableSearchComponent::KEY_KEYWORD, TableSearchComponent::KEY_SUB_KEYWORD, TableSearchComponent::KEY_SUB_SEARCH, TableSearchComponent::KEY_SEARCH_OPERATOR];
+        return [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
     }
 
     /**
@@ -170,26 +170,24 @@ abstract class BaseController extends Controller
     {
         $query = clone $query;
         $this->searchData = $request->only($this->getSearchKeys());
-        if ($request->has([TableSearchComponent::KEY_SEARCH, TableSearchComponent::KEY_KEYWORD])) {
-            $search = $this->searchData[TableSearchComponent::KEY_SEARCH];
-            $keyword = $this->searchData[TableSearchComponent::KEY_KEYWORD];
+        if ($request->has([BaseComponent::KEY_SEARCH, BaseComponent::KEY_KEYWORD])) {
+            $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
+            $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
             $query = $this->buildSearchQuery($query, $search, $keyword);
         }
 
-        if ($request->has([TableSearchComponent::KEY_SORT])) {
-            $sort = $this->searchData[TableSearchComponent::KEY_SORT];
-            if(isset($sort)) {
+        if ($request->has([BaseComponent::KEY_SORT])) {
+            $sort = $this->searchData[BaseComponent::KEY_SORT];
+            if (isset($sort)) {
                 $query = $this->buildSortQuery($query, $sort);
             }
         }
 
-        if ($request->has([TableSearchComponent::KEY_SUB_SEARCH, TableSearchComponent::KEY_SUB_KEYWORD])) {
-            $subSearch = $this->searchData[TableSearchComponent::KEY_SUB_SEARCH];
-            $subKeyword = $this->searchData[TableSearchComponent::KEY_SUB_KEYWORD];
-            $operator = $this->searchData[TableSearchComponent::KEY_SEARCH_OPERATOR];
-            if(isset($subKeyword)) {
-                $query = $this->buildSubSearchQuery($query, $subSearch, $subKeyword, $operator);
-            }
+        if ($request->has([BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SUB_KEYWORD])) {
+            $subSearch = $this->searchData[BaseComponent::KEY_SUB_SEARCH];
+            $subKeyword = $this->searchData[BaseComponent::KEY_SUB_KEYWORD] ?? '';
+            $operator = $this->searchData[BaseComponent::KEY_SEARCH_OPERATOR];
+            $query = $this->buildSubSearchQuery($query, $subSearch, $subKeyword, $operator);
         }
         return $query;
     }
@@ -240,8 +238,8 @@ abstract class BaseController extends Controller
      */
     protected function getLength(Request $request): int
     {
-        $length = $request->input(TableSearchComponent::KEY_PAGINATE_LENGTH, $this->paginate);
-        $this->searchData[TableSearchComponent::KEY_PAGINATE_LENGTH] = $length;
+        $length = $request->input(BaseComponent::KEY_PAGINATE_LENGTH, $this->paginate);
+        $this->searchData[BaseComponent::KEY_PAGINATE_LENGTH] = $length;
         return $length;
     }
 
