@@ -2,11 +2,11 @@
 
 namespace LaravelSupports\Views\Components\Inputs;
 
-use App\Library\LaravelSupports\app\View\Components\BaseComponent;
+
+use LaravelSupports\Views\Components\BaseComponent;
 
 class TableSearchComponent extends BaseComponent
 {
-    public const PREFIX = 'admin.layouts.components.';
     protected string $view = 'table.table_search_component';
 
     public array $length;

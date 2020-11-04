@@ -24,9 +24,9 @@ class BaseComponent extends Component
     public const KEY_KEYWORD = 'keyword';
     public const KEY_SUB_KEYWORD = 'sub_keyword';
     public const KEY_PAGINATE_LENGTH = 'length';
-    public const PREFIX = 'admin.layouts.components.';
 
     protected string $view = '';
+    protected string $prefix = 'admin.layouts.components.';
 
     /**
      * Create a new component instance.
@@ -45,6 +45,6 @@ class BaseComponent extends Component
      */
     public function render()
     {
-        return view(self::PREFIX . $this->view);
+        return view($this->prefix . $this->view);
     }
 }
