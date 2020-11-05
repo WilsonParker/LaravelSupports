@@ -3,6 +3,7 @@
 namespace LaravelSupports\Views\Components;
 
 use Illuminate\View\Component;
+use Illuminate\View\View;
 
 class BaseComponent extends Component
 {
@@ -41,7 +42,7 @@ class BaseComponent extends Component
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Illuminate\View\View|string
+     * @return View|string
      */
     public function render()
     {
