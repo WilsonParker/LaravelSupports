@@ -1,5 +1,5 @@
 @inject('baseViewModel', 'LaravelSupports\ViewModels\BaseViewModel)
-@inject('tableSearchComponent', 'LaravelSupports\Views\Components\Inputs\DataTableSearchComponent)
+@inject('tableSearchComponent', 'LaravelSupports\Views\Components\Tables\DataTableSearchComponent)
 
 @push('styles')
     <style>

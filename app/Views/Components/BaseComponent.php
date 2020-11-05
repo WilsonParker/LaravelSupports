@@ -27,17 +27,7 @@ class BaseComponent extends Component
     public const KEY_PAGINATE_LENGTH = 'length';
 
     protected string $view = '';
-    protected string $prefix = 'admin.layouts.components.';
-
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+    protected string $prefix = 'layouts.components.';
 
     /**
      * Get the view / contents that represent the component.

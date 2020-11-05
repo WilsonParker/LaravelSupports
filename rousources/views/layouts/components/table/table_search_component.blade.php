@@ -1,5 +1,5 @@
 @inject('baseViewModel', 'LaravelSupports\ViewModels\BaseViewModel)
-@inject('tableSearchComponent', 'LaravelSupports\Views\Components\Inputs\TableSearchComponent)
+@inject('tableSearchComponent', 'LaravelSupports\Views\Components\Tables\TableSearchComponent)
 
 <!-- DataTales -->
 <div class="card shadow mb-4">

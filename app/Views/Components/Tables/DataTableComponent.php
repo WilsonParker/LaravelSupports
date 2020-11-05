@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Views\Components\Inputs;
+namespace LaravelSupports\Views\Components\Tables;
 
 use App\View\Components\BaseComponent;
 
