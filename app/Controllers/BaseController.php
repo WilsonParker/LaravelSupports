@@ -4,7 +4,6 @@
 namespace LaravelSupports\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
@@ -197,7 +196,7 @@ abstract class BaseController extends Controller
      *
      * @param Request $request
      * @param Builder $query
-     * @return LengthAwarePaginator
+     * @return Paginator
      * @author  dew9163
      * @added   2020/09/20
      * @updated 2020/09/20
