@@ -28,7 +28,7 @@ abstract class BaseController extends Controller
      * @var string
      * @author  dew9163
      */
-    protected string $root = 'admin';
+    protected string $root = '';
 
     /**
      * view prefix
