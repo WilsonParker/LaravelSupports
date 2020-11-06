@@ -5,14 +5,14 @@ namespace LaravelSupports\Views\Components\Inputs;
 
 use LaravelSupports\Views\Components\BaseComponent;
 
-class RadioComponent extends BaseComponent
+class LikeRadioComponent extends BaseComponent
 {
     const KEY_TEXT = 'text';
     const KEY_VALUE = 'value';
     const KEY_CHECKED = 'checked';
     const KEY_NON_CHECKED = 'non_checked';
 
-    protected string $view = 'input.radio_component';
+    protected string $view = 'input.like_radio_component';
 
     public string $name;
     public array $items;
