@@ -2,7 +2,8 @@
 
 namespace LaravelSupports\Views\Components\Tables;
 
-use App\View\Components\BaseComponent;
+
+use LaravelSupports\Views\Components\BaseComponent;
 
 class DataTableComponent extends BaseComponent
 {
