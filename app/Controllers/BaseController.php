@@ -136,6 +136,21 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * build additional search query
+     *
+     * @param Request $request
+     * @param Builder $query
+     * @return Builder
+     * @author  dew9163
+     * @added   2020/11/10
+     * @updated 2020/11/10
+     */
+    protected function buildAdditionalSearchQuery(Request $request, Builder $query): Builder
+    {
+        return $query;
+    }
+
+    /**
      * build sort query
      *
      * @param Builder $query
@@ -188,6 +203,8 @@ abstract class BaseController extends Controller
             $operator = $this->searchData[BaseComponent::KEY_SEARCH_OPERATOR];
             $query = $this->buildSubSearchQuery($query, $subSearch, $subKeyword, $operator);
         }
+        $query = $this->buildAdditionalSearchQuery($request, $query);
+
         return $query;
     }
 
