@@ -12,9 +12,6 @@ use LaravelSupports\Libraries\Supports\Objects\ObjectHelper;
  * @class   ExceptionLogger.php
  * @added   2019.03.04
  * @updated 2019.03.04
- * @bug
- * @todo
- * @see
  */
 class ExceptionLogger
 {
@@ -30,7 +27,7 @@ class ExceptionLogger
     /**
      * $recordable 을 이용하여 Exception 을 기록합니다
      *
-     * @param Exception $exception
+     * @param \Throwable $throwable
      * @return  Void
      * @author  WilsonParker
      * @added   2019.03.04
@@ -38,13 +35,13 @@ class ExceptionLogger
      * @bug
      * @see
      */
-    public function report($exception)
+    public function report(\Throwable $throwable)
     {
         try {
             $recordable = ObjectHelper::createInstance($this->recordableClass);
-            $exception->err_trace = $this->jTraceEx($exception);
-            $recordable->record($exception);
-        } catch (Exception $e) {
+            $throwable->err_trace = $this->jTraceEx($throwable);
+            $recordable->record($throwable);
+        } catch (\Throwable $e) {
             dd($e->getMessage());
         }
     }
@@ -52,8 +49,8 @@ class ExceptionLogger
     /**
      * Exception StackTrace 를 가공합니다
      *
-     * @param Exception $e
-     * @param String $seen
+     * @param \Throwable $throwable
+     * @param null $seen
      * @return  String
      * @author  WilsonParker
      * @added   2019.03.04
@@ -61,16 +58,16 @@ class ExceptionLogger
      * @bug
      * @see
      */
-    public function jTraceEx($e, $seen = null)
+    public function jTraceEx(\Throwable $throwable, $seen = null)
     {
         $starter = $seen ? 'Caused by: ' : '';
         $result = array();
         if (!$seen) $seen = array();
-        $trace = $e->getTrace();
-        $prev = $e->getPrevious();
-        $result[] = sprintf('%s%s: %s', $starter, get_class($e), $e->getMessage());
-        $file = $e->getFile();
-        $line = $e->getLine();
+        $trace = $throwable->getTrace();
+        $prev = $throwable->getPrevious();
+        $result[] = sprintf('%s%s: %s', $starter, get_class($throwable), $throwable->getMessage());
+        $file = $throwable->getFile();
+        $line = $throwable->getLine();
         while (true) {
             $current = "$file:$line";
             if (is_array($seen) && in_array($current, $seen)) {

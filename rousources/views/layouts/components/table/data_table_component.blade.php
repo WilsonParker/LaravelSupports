@@ -59,7 +59,8 @@
     <script>
         $(document).ready(function () {
             $('#dataTable').DataTable({
-                "scrollX": true
+                "scrollX": true,
+                "order": [[ "{{ $sort[0] }}", "{{ $sort[1] }}" ]]
             });
             $('.dataTables_length').addClass('bs-select');
         });

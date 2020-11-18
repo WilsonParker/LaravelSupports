@@ -343,14 +343,17 @@ abstract class BaseModel extends Model
     /**
      * Model 의 table columns 데이터를 return 합니다
      *
+     * @param array $except
      * @return  array
      * @author  WilsonParker
      * @added   2019-08-28
      * @updated 2019-08-28
+     * @updated 2020-11-17
      */
-    public function getColumns(): array
+    public function getColumns(array $except = []): array
     {
-        return array_values($this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable()));
+        $columns = array_values($this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable()));
+        return array_diff($columns, $except);
     }
 
     /**

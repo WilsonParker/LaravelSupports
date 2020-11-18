@@ -11,17 +11,20 @@ class DataTableComponent extends BaseComponent
 
     public string $title;
     public string $header;
+    public array $sort;
 
     /**
      * Create a new component instance.
      *
      * @param string $title
      * @param string $header
+     * @param array $sort
      */
-    public function __construct(string $title = '', string $header = '')
+    public function __construct(string $title = '', string $header = '', array $sort = [0, 'desc'])
     {
         $this->title = $title;
         $this->header = $header;
+        $this->sort = $sort;
     }
 
 }

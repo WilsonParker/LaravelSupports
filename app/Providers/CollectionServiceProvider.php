@@ -55,5 +55,25 @@ class CollectionServiceProvider extends ServiceProvider
                 return !$collection->exists($item, $prop);
             });
         });
+
+        /**
+         * filter 를 위한 $callback 을 이용하여
+         * true, false 결과에 맞게 분할 합니다
+         *
+         * @author  dew9163
+         * @added   2020/11/13
+         * @updated 2020/11/13
+         */
+        Collection::macro('divide', function ($callback): Collection {
+            $true = $this->filter(function ($item) use ($callback) {
+                return $callback($item);
+            });
+            $false = $this->diff($true);
+
+            return collect([
+                'true' => $true,
+                'false' => $false,
+            ]);
+        });
     }
 }
