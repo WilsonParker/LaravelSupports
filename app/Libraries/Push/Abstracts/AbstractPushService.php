@@ -169,6 +169,7 @@ abstract class AbstractPushService
                 $tokenModel->whereIn($tokenModel->getTokenName(), $junkList)->delete();
             }
         }
+
         return $model;
     }
 

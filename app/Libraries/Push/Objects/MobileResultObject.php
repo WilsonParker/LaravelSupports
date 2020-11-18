@@ -7,6 +7,8 @@ class MobileResultObject {
     var $success;
     var $failure;
     var $canonical_ids;
+    var $successList;
+    var $failureList;
     /**
      * [
      *  { error : String } | { message_id : String }
@@ -25,6 +27,12 @@ class MobileResultObject {
             $this->failure = $json->failure;
             $this->canonical_ids = $json->canonical_ids;
             $this->results = $json->results;
+
+            collect($this->results)->divide(function ($item, $key) {
+                $arr = (array) $item;
+                return array_keys($arr)[0] == 'error';
+            });
+
         }
     }
 

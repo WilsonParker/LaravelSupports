@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Push\Events\Members\Abstracts;
 
 
-use App\Models\Push\MemberAlim;
+use App\Models\Push\MemberAlimModel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,9 +20,9 @@ class AbstractMemberEvent implements ShouldQueue
     /**
      * AbstractMemberEvent constructor.
      *
-     * @param MemberAlim $notification
+     * @param MemberAlimModel $notification
      */
-    public function __construct(MemberAlim $notification)
+    public function __construct(MemberAlimModel $notification)
     {
         $this->notification = $notification;
     }
