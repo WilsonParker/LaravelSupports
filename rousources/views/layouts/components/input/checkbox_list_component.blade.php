@@ -2,7 +2,11 @@
 
 @foreach($items as $values)
     <div class="{{ $divClass }}">
-        <input type="checkbox" id="{{ $values[$component::KEY_KEY] }}" class="{{ $inputClass }}">
+        <input type="checkbox" id="{{ $values[$component::KEY_KEY] }}" name="{{ $values[$component::KEY_NAME] }}" class="{{ $inputClass }}"
+               @if($values[$component::KEY_CHECKED])
+                   checked
+               @endif
+        >
         <label class="{{ $labelClass }}" for="{{ $values[$component::KEY_KEY] }}">{{ $values[$component::KEY_TEXT] }}</label>
     </div>
     @if($values[$component::KEY_IS_OTHER] == true)

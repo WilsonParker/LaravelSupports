@@ -8,7 +8,10 @@ use LaravelSupports\Views\Components\BaseComponent;
 class CheckBoxListComponent extends BaseComponent
 {
     const KEY_KEY = 'key';
+    const KEY_VALUE = 'value';
     const KEY_TEXT = 'text';
+    const KEY_NAME = 'name';
+    const KEY_CHECKED = 'checked';
     const KEY_IS_OTHER = 'is_other';
 
     protected string $view = 'input.checkbox_list_component';
@@ -34,25 +37,40 @@ class CheckBoxListComponent extends BaseComponent
         $this->labelClass = $labelClass;
     }
 
-
     /**
      * view 를 꾸미기 위한 data 생성
      *
      * @param array $arr
      * @param string $key
      * @param string $text
+     * @param string|null $value
+     * @param string $name
+     * @param bool $isChecked
      * @param bool $isOther
-     * @return void
+     * @return array
      * @author  dew9163
      * @added   2020/11/05
-     * @updated 2020/11/05
+     * @updated 2020/11/18
      */
-    public static function buildData(array &$arr, string $key, string $text, bool $isOther = false)
+    public static function buildDataWithArray(array &$arr, string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false): array
     {
-        array_push($arr, [
+        $result = self::buildData($key, $text, $value, $name, $isChecked, $isOther);
+        if (isset($arr)) {
+            array_push($arr, $result);
+        }
+        return $result;
+    }
+
+    public static function buildData(string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false): array
+    {
+        $val = isset($value) ? $value : $key;
+        return [
             self::KEY_KEY => $key,
             self::KEY_TEXT => $text,
+            self::KEY_NAME => $name,
+            self::KEY_VALUE => $val,
+            self::KEY_CHECKED => $isChecked,
             self::KEY_IS_OTHER => $isOther,
-        ]);
+        ];
     }
 }

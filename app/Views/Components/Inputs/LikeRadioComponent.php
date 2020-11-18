@@ -37,18 +37,27 @@ class LikeRadioComponent extends BaseComponent
      * @param $value
      * @param $checked
      * @param $nonChecked
-     * @return void
+     * @return array
      * @author  dew9163
      * @added   2020/11/05
      * @updated 2020/11/05
      */
-    public static function buildData(array &$arr, $text, $value, $checked, $nonChecked)
+    public static function buildDataWithArray(array &$arr, $text, $value, $checked, $nonChecked): array
     {
-        array_push($arr, [
+        $result = self::buildData($text, $value, $checked, $nonChecked);
+        if (isset($arr)) {
+            array_push($arr, $result);
+        }
+        return $result;
+    }
+
+    public static function buildData($text, $value, $checked, $nonChecked)
+    {
+        return [
             self::KEY_TEXT => $text,
             self::KEY_VALUE => $value,
             self::KEY_CHECKED => $checked,
             self::KEY_NON_CHECKED => $nonChecked,
-        ]);
+        ];
     }
 }
