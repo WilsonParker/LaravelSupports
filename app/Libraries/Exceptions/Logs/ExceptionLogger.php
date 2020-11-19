@@ -4,6 +4,7 @@ namespace LaravelSupports\Libraries\Exceptions\Logs;
 
 use Exception;
 use LaravelSupports\Libraries\Supports\Objects\ObjectHelper;
+use Throwable;
 
 /**
  * Exception 에 대한 내용을 기록합니다
@@ -27,7 +28,7 @@ class ExceptionLogger
     /**
      * $recordable 을 이용하여 Exception 을 기록합니다
      *
-     * @param \Throwable $throwable
+     * @param Throwable $throwable
      * @return  Void
      * @author  WilsonParker
      * @added   2019.03.04
@@ -35,13 +36,13 @@ class ExceptionLogger
      * @bug
      * @see
      */
-    public function report(\Throwable $throwable)
+    public function report(Throwable $throwable)
     {
         try {
             $recordable = ObjectHelper::createInstance($this->recordableClass);
             $throwable->err_trace = $this->jTraceEx($throwable);
             $recordable->record($throwable);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             dd($e->getMessage());
         }
     }
@@ -49,7 +50,7 @@ class ExceptionLogger
     /**
      * Exception StackTrace 를 가공합니다
      *
-     * @param \Throwable $throwable
+     * @param Throwable $throwable
      * @param null $seen
      * @return  String
      * @author  WilsonParker
@@ -58,7 +59,7 @@ class ExceptionLogger
      * @bug
      * @see
      */
-    public function jTraceEx(\Throwable $throwable, $seen = null)
+    public function jTraceEx(Throwable $throwable, $seen = null)
     {
         $starter = $seen ? 'Caused by: ' : '';
         $result = array();

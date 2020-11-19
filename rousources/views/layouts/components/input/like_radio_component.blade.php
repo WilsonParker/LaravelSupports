@@ -6,7 +6,9 @@
     @foreach($items as $values)
         <div class="form-check form-check-inline">
             <input class="form-check-input input_radio" type="radio" id="input_radio_{{ $name }}_{{ $values['value'] }}"
-                   name="{{ $name }}" style="display: none">
+                   name="{{ $name }}"
+                   value="{{ $values['value'] }}"
+                   style="display: none">
             <i class="" aria-hidden="true"
                style="margin-right: 5px"
                data-checked="fa {{ $values['checked'] }}"
