@@ -2,6 +2,7 @@
 
 namespace LaravelSupports\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Collection;
 
@@ -29,6 +30,8 @@ class CollectionServiceProvider extends ServiceProvider
          * $prop 으로 비교하여 $collection 에 해당하는 item 들을 포함한 Collection 을 제공 합니다
          * $collection 에 단일 item 을 넘길 수 있습니다
          *
+         * @param   $collection Collection | array | Model
+         * @param   $prop
          * @author  dew9163
          * @added   2020/11/12
          * @updated 2020/11/12
@@ -37,6 +40,10 @@ class CollectionServiceProvider extends ServiceProvider
             if ($collection instanceof Collection) {
                 return $this->filter(function ($item) use ($collection, $prop) {
                     return $collection->exists($item, $prop);
+                });
+            } else if (is_array($collection)) {
+                return $this->filter(function ($item) use ($collection, $prop) {
+                    return in_array($item->{$prop}, $collection);
                 });
             } else {
                 return $collection->exists($collection, $prop) ? collect([$collection]) : collect([]);

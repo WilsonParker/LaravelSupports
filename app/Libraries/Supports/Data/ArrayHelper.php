@@ -22,15 +22,13 @@ class ArrayHelper
     }
 
     /**
+     * $keys 에 저장된 key 들을 $arr 에서 제거합니다
+     *
      * @param array &$arr
      * key 를 제거할 array
      * @param array $keys
      * 제거할 key array
      * @author  WilsonParker
-     * @brief   $keys 에 저장된 key 들을 $arr 에서 제거합니다
-     * @see
-     * @todo
-     * @bug
      * @create  20181224
      * @update  20181224
      **/
@@ -44,16 +42,14 @@ class ArrayHelper
     }
 
     /**
-     * @param Array &$arr
-     * @param Array $keys
+     * key => value 로 구성된 array 에서 $keys 에 포함된 key 들을 $arr 에서 제거합니다
+     *
+     * @param array $arr
+     * @param array $keys
      * @author  WilsonParker
-     * @brief   key => value 로 구성된 array 에서 $keys 에 포함된 key 들을 $arr 에서 제거합니다
-     * @see
-     * @todo
-     * @bug
      * @create  20181224
      * @update  20181224
-     **/
+     */
     public static function removeKeyAndValues(array &$arr, array $keys)
     {
         // array_diff_key() expected an associative array.
@@ -62,6 +58,50 @@ class ArrayHelper
             $assocKeys[$key] = true;
         }
         $arr = array_diff_key($arr, $assocKeys);
+    }
+
+    /**
+     * $arr 과 $values 가 하나라도 포함하는지 확인 합니다
+     *
+     * @param array $arr
+     * @param $values
+     * @return bool
+     * @author  dew9163
+     * @added   2020/11/20
+     * @updated 2020/11/20
+     */
+    public static function include(array $arr, $values): bool
+    {
+        if (is_array($values)) {
+            foreach ($values as $key => $item) {
+                if (self::exists($arr, $item)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return self::exists($arr, $values);
+        }
+    }
+
+    /**
+     * $arr 에 value 가 존재 하는지 확인 합니다
+     *
+     * @param array $arr
+     * @param $value
+     * @return bool
+     * @author  dew9163
+     * @added   2020/11/20
+     * @updated 2020/11/20
+     */
+    public static function exists(array $arr, $value): bool
+    {
+        foreach ($arr as $key => $item) {
+            if ($item == $value) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -114,7 +154,8 @@ class ArrayHelper
      * @added   2020/06/19
      * @updated 2020/06/19
      */
-    public static function getValueOfKeyIfExist($array, $key, $def = null) {
+    public static function getValueOfKeyIfExist($array, $key, $def = null)
+    {
         return isset($array) ? array_key_exists($key, $array) ? $array[$key] : $def : $def;
     }
 }
