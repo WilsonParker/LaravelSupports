@@ -483,4 +483,8 @@ abstract class BaseModel extends Model
         return self::get();
     }
 
+    public static function getModelWhereIn(array $idList, $prop = 'id')
+    {
+        return self::whereIn($prop, $idList)->get();
+    }
 }
