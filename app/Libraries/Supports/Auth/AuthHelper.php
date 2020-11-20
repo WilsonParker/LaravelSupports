@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Auth;
 
 
-use App\Models\Members\MemberModel;
+use FlyBookModels\Members\MemberModel;
 use Illuminate\Support\Facades\Auth;
 
 class AuthHelper

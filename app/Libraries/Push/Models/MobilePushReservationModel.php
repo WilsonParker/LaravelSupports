@@ -2,8 +2,8 @@
 
 namespace LaravelSupports\Libraries\Push\Models;
 
-use App\Models\ImagesModel;
 use DateTime;
+use FlyBookModels\ImagesModel;
 use Illuminate\Http\Request;
 use LaravelSupports\Libraries\Supports\Data\Traits\FileSaveTrait;
 

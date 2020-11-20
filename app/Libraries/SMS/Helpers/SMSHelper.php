@@ -4,9 +4,9 @@
 namespace LaravelSupports\Libraries\SMS\Helpers;
 
 
-use App\Models\Members\MemberModel;
-use App\Models\Members\PlusMemberModel;
 use Exception;
+use FlyBookModels\Members\MemberModel;
+use FlyBookModels\Members\PlusMemberModel;
 use GuzzleHttp\Client;
 use LaravelSupports\Libraries\SMS\Models\SMSModel;
 use LaravelSupports\Libraries\Supports\Date\DateHelper;

@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Push\Events\Members\Abstracts;
 
 
-use App\Models\Push\MemberAlimModel;
+use FlyBookModels\Push\MemberAlimModel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;

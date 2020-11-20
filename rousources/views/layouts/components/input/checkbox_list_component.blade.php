@@ -13,9 +13,9 @@
     </div>
     @if($values[$component::KEY_IS_OTHER] == true)
         @php($otherID = $values[$component::KEY_KEY])
-        @php($otherInputID = $values[$component::KEY_KEY].'_input')
+        @php($otherInputID = $otherID.'_input')
         <div class="input-group mb-3">
-            <input type="text" class="form-control" id="{{ $otherInputID }}" placeholder="기타 이유를 적어주세요"
+            <input type="text" class="form-control" id="{{ $otherInputID }}" name="{{ $otherInputID }}" placeholder="기타 이유를 적어주세요"
                    aria-label="기타 이유를 적어주세요" readonly>
         </div>
 

@@ -4,9 +4,9 @@
 namespace LaravelSupports\Libraries\Pay;
 
 
-use App\Models\Membership\MembershipPaymentModel;
-use App\Models\Payments\PaymentModuleModel;
 use App\Services\Membership\MembershipService;
+use FlyBookModels\Membership\MembershipPaymentModel;
+use FlyBookModels\Payments\PaymentModuleModel;
 use LaravelSupports\Libraries\Coupon\CouponService;
 use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractResponseObject;
