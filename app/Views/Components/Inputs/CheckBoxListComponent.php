@@ -13,6 +13,7 @@ class CheckBoxListComponent extends BaseComponent
     const KEY_NAME = 'name';
     const KEY_CHECKED = 'checked';
     const KEY_IS_OTHER = 'is_other';
+    const KEY_OTHER_VALUE = 'other_value';
 
     protected string $view = 'input.checkbox_list_component';
 
@@ -47,21 +48,22 @@ class CheckBoxListComponent extends BaseComponent
      * @param string $name
      * @param bool $isChecked
      * @param bool $isOther
+     * @param string $otherValue
      * @return array
      * @author  dew9163
      * @added   2020/11/05
      * @updated 2020/11/18
      */
-    public static function buildDataWithArray(array &$arr, string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false): array
+    public static function buildDataWithArray(array &$arr, string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false, string $otherValue = ''): array
     {
-        $result = self::buildData($key, $text, $value, $name, $isChecked, $isOther);
+        $result = self::buildData($key, $text, $value, $name, $isChecked, $isOther, $otherValue);
         if (isset($arr)) {
             array_push($arr, $result);
         }
         return $result;
     }
 
-    public static function buildData(string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false): array
+    public static function buildData(string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false, string $otherValue = ''): array
     {
         $val = isset($value) ? $value : $key;
         return [
@@ -71,6 +73,7 @@ class CheckBoxListComponent extends BaseComponent
             self::KEY_VALUE => $val,
             self::KEY_CHECKED => $isChecked,
             self::KEY_IS_OTHER => $isOther,
+            self::KEY_OTHER_VALUE => $otherValue,
         ];
     }
 }
