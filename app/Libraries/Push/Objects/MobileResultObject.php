@@ -18,8 +18,9 @@ class MobileResultObject {
      * @updated : 2019-04-11
      */
     var $results;
+    var $additionalResults;
 
-    function bind($data){
+    function bind($data, $list){
         $json = json_decode($data);
         if($json != null){
             $this->multicast_id = $json->multicast_id;
@@ -28,10 +29,16 @@ class MobileResultObject {
             $this->canonical_ids = $json->canonical_ids;
             $this->results = $json->results;
 
-            collect($this->results)->divide(function ($item, $key) {
-                $arr = (array) $item;
-                return array_keys($arr)[0] == 'error';
+            $this->additionalResults = collect($this->results)->transform(function ($item, $key) use($list) {
+                $item->id = $list[$key];
+                return collect((array) $item);
             });
+
+            $filteredList = $this->additionalResults->divide(function ($item) {
+                return !isset($item['error']);
+            });
+            $this->successList = $filteredList['true'];
+            $this->failureList = $filteredList['false'];
 
         }
     }

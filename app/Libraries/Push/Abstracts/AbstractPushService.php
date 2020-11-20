@@ -105,7 +105,7 @@ abstract class AbstractPushService
         return $resultList;
     }
 
-    protected function push(string $type, array $tokens, $data)
+    protected function push(string $type, array $tokens, $data, $list = [])
     {
         $fcmData = [];
         if ($type == self::TYPE_ANDROID) {
@@ -143,7 +143,7 @@ abstract class AbstractPushService
             'body' => $json,
         ]);
 
-        return $this->getResult($tokens, $response->getBody()->getContents());
+        return $this->getResult($tokens, $response->getBody()->getContents(), $list);
     }
 
     /**
@@ -157,10 +157,10 @@ abstract class AbstractPushService
      * @added   2020/05/29
      * @updated 2020/05/29
      */
-    protected function getResult(array $tokens, string $result)
+    protected function getResult(array $tokens, string $result, $list = [])
     {
         $model = new MobileResultObject();
-        $model->bind($result);
+        $model->bind($result, $list);
         if ($this->clearJunk) {
             $junkList = self::setJunkTokens($model, $tokens);
             $tokenModel = new $this->tokenModelClass();
