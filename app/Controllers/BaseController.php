@@ -259,9 +259,10 @@ abstract class BaseController extends Controller
         return $length;
     }
 
-    protected function backWithConfig($prefix)
+    protected function backWithConfig($prefix, bool $isSuccess = true)
     {
-        return $this->backWithMessage(config($prefix . '.success.message'));
+        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        return $this->backWithMessage($message);
     }
 
     protected function backWithMessage(string $message)
