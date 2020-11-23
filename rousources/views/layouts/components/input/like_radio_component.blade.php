@@ -13,12 +13,12 @@
                    checked
                    @endif
                    style="display: none">
-            <i class="" aria-hidden="true"
-               style="margin-right: 5px"
-               data-checked="fa {{ $values[$component::KEY_CHECKED] }}"
-               data-non-checked="fa {{ $values[$component::KEY_NON_CHECKED] }}"
-            ></i>
             <label class="form-check-label" for="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}">
+                <i class="" aria-hidden="true"
+                   style="margin-right: 5px"
+                   data-checked="fa {{ $values[$component::KEY_CHECKED] }}"
+                   data-non-checked="fa {{ $values[$component::KEY_NON_CHECKED] }}"
+                ></i>
                 {{ $values[$component::KEY_TEXT] }}
             </label>
         </div>

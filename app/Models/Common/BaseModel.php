@@ -505,7 +505,7 @@ abstract class BaseModel extends Model
      *
      * @param  bool $excludeDeleted
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function newQuery($excludeDeleted = true) : Builder
     {

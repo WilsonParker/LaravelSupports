@@ -259,17 +259,23 @@ abstract class BaseController extends Controller
         return $length;
     }
 
-    protected function backWithConfig($prefix, bool $isSuccess = true)
+    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true)
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
-        return $this->backWithMessage($message);
+        return $this->backWithMessage($message, $redirect);
     }
 
-    protected function backWithMessage(string $message)
+    protected function backWithMessage(string $message, bool $redirect = true)
     {
-        return redirect()->back()->with([
-            'message' => $message
-        ]);
+        if ($redirect) {
+            return redirect()->back()->with([
+                'message' => $message
+            ]);
+        } else {
+            return back()->with([
+                'message' => $message
+            ]);
+        }
     }
 
     protected function backWithErrors(Throwable $e)
