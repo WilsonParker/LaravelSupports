@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
@@ -42,6 +43,16 @@ abstract class BaseModel extends Model
     protected string $tableType = '';
 
     protected $guarded = [];
+
+    protected array $geometry = [];
+
+    /**
+     * Select geometrical attributes as text from database.
+     *
+     * @var bool
+     */
+    protected bool $geometryAsText = false;
+
 
     /**
      * value of pagination limit
@@ -486,5 +497,30 @@ abstract class BaseModel extends Model
     public static function getModelWhereIn(array $idList, $prop = 'id')
     {
         return self::whereIn($prop, $idList)->get();
+    }
+
+    /**
+     * Get a new query builder for the model's table.
+     * Manipulate in case we need to convert geometrical fields to text.
+     *
+     * @param  bool $excludeDeleted
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQuery($excludeDeleted = true) : Builder
+    {
+        if (!empty($this->geometry) && $this->geometryAsText === true)
+        {
+            $raw = '';
+            foreach ($this->geometry as $column)
+            {
+                $raw .= 'AsText(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
+            }
+            $raw = substr($raw, 0, -2);
+
+            return parent::newQuery()->addSelect('*', DB::raw($raw));
+        }
+
+        return parent::newQuery();
     }
 }
