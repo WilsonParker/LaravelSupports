@@ -181,6 +181,11 @@ class BaseViewModel extends ViewModel
         return $this->formatDate($date, $this->getDateFormat());
     }
 
+    public function imageURL($path, $image)
+    {
+        return config('image.images_url').'/'.$path.'/'.$image;
+    }
+
     public function getDateFormat()
     {
         return $this->dateFormat;
