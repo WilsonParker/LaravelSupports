@@ -11,11 +11,11 @@ use DateTime;
  *
  * @author  dew9163
  * @added   2020/03/16
- * @updated 2020/03/16
+ * @updated 2020/11/25
  */
 class DateHelper
 {
-    private $date;
+    private Carbon $date;
     const DEF_FORMAT = 'Y-m-d H:i:s';
     const YEARS = 'years';
     const MONTHS = 'months';
@@ -29,7 +29,7 @@ class DateHelper
 
     public function __construct()
     {
-        $this->date = new DateTime();
+        $this->date = Carbon::now();
     }
 
     public function getCurrentTime($format = self::DEF_FORMAT)
@@ -37,12 +37,17 @@ class DateHelper
         return date($format);
     }
 
-    public function getCurrentMonth()
+    public function getCurrentMonth(): int
     {
-        return date("n");
+        return $this->date->month;
     }
 
-    public function getLastDayOfAMonth()
+    public function getPrevMonth(): int
+    {
+        return $this->date->month - 1;
+    }
+
+    public function getLastDayOfAMonth(): int
     {
         return $this->date->format('t');
     }
