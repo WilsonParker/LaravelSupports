@@ -176,62 +176,16 @@ class SMSHelper
                             return;
                         }
 
-                        $message = '[플라이북]
-#{이름}님! #{prevMonth}에 받은 책은 어떠셨나요?
+                        $config = config('sms.plus.send.feedback');
 
-아래 링크에 피드백을 남겨주시면 #{currentMonth} 추천에 반영되며, 변경된 정보는 플라이북 앱에 자동 업데이트됩니다. (~#{currentMonth}/#{일}일 까지)
-또한 플라이북 앱에 읽고 싶은 책, 읽은 책, 별점 등을 남겨주시면 #{이름}님에게 더 맞는 책을 받으실 수 있어요!
-
-궁금한 점이 있으시면 카카오톡(ID:플라이북)으로 연락주세요.
-감사합니다.';
-
+                        $message = $config['message'];
                         $dateHelper = new DateHelper();
                         $message = str_replace("#{이름}", $member->realname, $message);
                         $message = str_replace("#{일}", 13, $message);
                         $message = str_replace("#{prevMonth}", $dateHelper->getPrevMonth() . '월', $message);
                         $message = str_replace("#{currentMonth}", $dateHelper->getCurrentMonth() . '월', $message);
 
-                        $btnText = '피드백 남기러가기';
-                        $btnUrl = 'http://web.flybook.kr/bplus/feedback/' . $send->id;
-                        $this->send('fb2', $phone, $message, $btnText, $btnUrl);
-                    });
-                    break;
-                case self::TEMPLATE_PLUS_FEEDBACK2 :
-                    collect($data)->each(function ($send) use ($template) {
-                        $member = $send->member;
-                        $phone = $this->convertContact($member->phone);
-
-                        if (!isset($phone)) {
-                            return;
-                        }
-
-                        $date = new \DateTime();
-                        $month = array();
-                        $month['this'] = $date->format("n");
-                        $date->sub(new \DateInterval('P1M'));
-                        $month['priv'] = $date->format("n");
-
-                        $message = "[플라이북]
-#{이름} 님! #{privMonth}에 받은 책은 어떠셨나요?
-
-아래 링크에 피드백을 남겨주시면  #{thisMonth} 추천에 반영되며, 변경하신 상태 정보는 플라이북에 자동 업데이트됩니다!(~#{thisMonth}/13일까지)
-
-또한 플라이북 앱에서 읽고싶은책, 읽은책, 별점 기록 등 독서 활동을 많이 할수록 #{이름}님에게 더 맞는 책을 받으실 수 있어요! :)";
-
-                        $bplus_member = $send->plusMember;
-                        $msg = $message;
-                        $msg = str_replace("#{회원번호}", $bplus_member->id, $msg);
-                        $msg = str_replace("#{이름}", $bplus_member->receiver_name, $msg);
-                        $pattern = array();
-                        $replacement = array();
-                        $pattern[0] = '/#{thisMonth}/';
-                        $replacement[0] = "{$month['this']}월";
-                        $pattern[1] = '/#{privMonth}/';
-                        $replacement[1] = "{$month['priv']}월";
-                        $msg = preg_replace($pattern, $replacement, $msg);
-                        $btn_text = '피드백 링크';
-                        $btn_url = 'http://www.flybook.kr/bplus/survey/' . $bplus_member->id;
-                        $this->send(213, $phone, $msg, $btn_text, $btn_url);
+                        $this->send($config['code'], $phone, $message, $config['button'], $config['url'].$send->id);
                     });
                     break;
                 case self::TEMPLATE_PLUS_COUPON :
