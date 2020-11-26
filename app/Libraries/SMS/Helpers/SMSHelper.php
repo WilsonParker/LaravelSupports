@@ -184,8 +184,8 @@ class SMSHelper
                         $message = str_replace("#{일}", 13, $message);
                         $message = str_replace("#{prevMonth}", $dateHelper->getPrevMonth() . '월', $message);
                         $message = str_replace("#{currentMonth}", $dateHelper->getCurrentMonth() . '월', $message);
-
-                        $this->send($config['code'], $phone, $message, $config['button'], $config['url'].$send->id);
+                        $url = $config['urls'].$send->id;
+                        $this->send($config['code'], $phone, $message, $config['button_types'], $config['buttons'], $url);
                     });
                     break;
                 case self::TEMPLATE_PLUS_COUPON :
@@ -270,23 +270,17 @@ class SMSHelper
      * @param string $templateCode
      * @param string $phone
      * @param string $message
+     * @param string $btnTypes
      * @param string $btnText
-     * @param string $btnUrl
+     * @param string $btnUrls
      * @return SMSModel
      * @author  dew9163
      * @added   2020/04/16
      * @updated 2020/04/16
      * @updated 2020/11/25
      */
-    public function send(string $templateCode, string $phone, string $message, string $btnText = '', string $btnUrl = '')
+    public function send(string $templateCode, string $phone, string $message, string $btnTypes = '', string $btnText = '', string $btnUrls = '')
     {
-        /*dd(
-            $templateCode,
-            $phone,
-            $btnText,
-            $btnUrl,
-            $message,
-        );*/
         try {
             $client = new Client();
             $res = $client->request('POST', 'http://api.apistore.co.kr/kko/1/msg/flybook', [
@@ -303,8 +297,9 @@ class SMSHelper
                     'failed_msg' => $message,
                     'apiVersion' => '1',
                     'client_id' => 'flybook',
+                    'btn_types' => $btnTypes,
                     'url_button_txt' => $btnText,
-                    'url' => $btnUrl,
+                    'url' => $btnUrls,
                 ]
             ]);
 
