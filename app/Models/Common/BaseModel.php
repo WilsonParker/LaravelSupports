@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
 {
-//    use SoftDeletes;
+    // use SoftDeletes;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -107,7 +107,7 @@ abstract class BaseModel extends Model
     protected function addSelectScope()
     {
         static::addGlobalScope('selectScope', function (Builder $builder) {
-            if(isset($this->selectScope)) {
+            if (isset($this->selectScope)) {
                 $builder->select($this->selectScope);
             }
             $this->buildOrderScope($builder);
@@ -342,7 +342,7 @@ abstract class BaseModel extends Model
         // $hasProperties 의 값을 Model 의 속성에 적용합니
         foreach ($hasProperties as $property) {
             // setter method 이름을 생성합니다
-            $methodName = 'set'.Str::ucfirst(Str::camel($property));
+            $methodName = 'set' . Str::ucfirst(Str::camel($property));
             if (method_exists($this, $methodName)) {
                 $this->{$methodName}($data[$property]);
             } else {
@@ -464,7 +464,8 @@ abstract class BaseModel extends Model
         return $model;
     }
 
-    public function getPrimaryValue() {
+    public function getPrimaryValue()
+    {
         return $this->{$this->primaryKey};
     }
 
@@ -503,17 +504,15 @@ abstract class BaseModel extends Model
      * Get a new query builder for the model's table.
      * Manipulate in case we need to convert geometrical fields to text.
      *
-     * @param  bool $excludeDeleted
+     * @param bool $excludeDeleted
      *
      * @return Builder
      */
-    public function newQuery($excludeDeleted = true) : Builder
+    public function newQuery($excludeDeleted = true): Builder
     {
-        if (!empty($this->geometry) && $this->geometryAsText === true)
-        {
+        if (!empty($this->geometry) && $this->geometryAsText === true) {
             $raw = '';
-            foreach ($this->geometry as $column)
-            {
+            foreach ($this->geometry as $column) {
                 $raw .= 'AsText(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
             }
             $raw = substr($raw, 0, -2);
