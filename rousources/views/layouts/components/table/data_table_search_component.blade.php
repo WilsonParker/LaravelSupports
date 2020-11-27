@@ -1,5 +1,5 @@
 @inject('baseViewModel', 'LaravelSupports\ViewModels\BaseViewModel)
-@inject('tableSearchComponent', 'LaravelSupports\Views\Components\Tables\DataTableSearchComponent)
+@inject('dataTableSearchComponent', 'LaravelSupports\Views\Components\Tables\DataTableSearchComponent)
 
 @push('styles')
     <style>
@@ -56,11 +56,23 @@
                                 @foreach($search as $key => $values)
                                     <label>{{ $values[$baseViewModel::KEY_SEARCH_LABEL] }}
                                         <select class="custom-select custom-select-sm form-control form-control-sm"
-                                                name="{{$key}}">
+                                                @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE))
+                                                name="{{$key}}[]"
+                                                @else
+                                                name="{{$key}}"
+                                                @endif
+                                                @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE)
+                                                multiple
+                                            @endif
+                                        >
                                             @foreach($values[$baseViewModel::KEY_SEARCH_VALUES] as $itemKey => $itemValue)
                                                 <option value="{{ $itemKey }}"
-                                                        @if(isset($searchData[$key]) && $searchData[$key] == $itemKey)
+                                                        @if(isset($searchData[$key]))
+                                                        @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE && in_array($itemKey, $searchData[$key]))
                                                         selected
+                                                        @elseif($searchData[$key] == $itemKey)
+                                                        selected
+                                                    @endif
                                                     @endif
                                                 >{{ $itemValue }}</option>
                                             @endforeach
@@ -74,8 +86,7 @@
                         <div class="input-group mb-3 dataTables_length">
                             <input type="text" class="form-control" name="{{ $dataTableSearchComponent::KEY_KEYWORD }}"
                                    value="{{ $searchData[$dataTableSearchComponent::KEY_KEYWORD] ?? '' }}"
-                                   aria-label="Search Text">
-
+                                   aria-label="Text input with segmented dropdown button">
                             <button type="button" class="btn btn-primary" onclick="tableSearch()"><i
                                     class="fas fa-search fa-sm"></i></button>
                             <button type="button" class="btn btn-success" onclick="clearAndReloadPage()">clear
@@ -110,7 +121,7 @@
         <script>
             $(document).ready(function () {
                 $('#dataTable').DataTable({
-                    "scrollX": true
+                    "scrollX": true,
                 });
                 $('.dataTables_length').addClass('bs-select');
             });
