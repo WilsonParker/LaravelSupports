@@ -15,9 +15,9 @@
         @php($otherID = $values[$component::KEY_KEY])
         @php($otherInputID = $otherID.'_input')
         <div class="input-group mb-3">
-            <input type="text" class="form-control" id="{{ $otherInputID }}" name="{{ $otherInputID }}" placeholder="기타 이유를 적어주세요"
+            <input type="text" class="form-control others-input" id="{{ $otherInputID }}" name="{{ $otherInputID }}" placeholder="{{ $values[$component::KEY_OTHER_HINT] }}"
                    value="{{ $values[$component::KEY_OTHER_VALUE] }}"
-                   aria-label="기타 이유를 적어주세요"
+                   aria-label="{{ $values[$component::KEY_OTHER_HINT] }}"
                    @if(!$values[$component::KEY_CHECKED])
                    readonly
                 @endif

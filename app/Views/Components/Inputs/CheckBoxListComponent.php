@@ -14,6 +14,7 @@ class CheckBoxListComponent extends BaseComponent
     const KEY_CHECKED = 'checked';
     const KEY_IS_OTHER = 'is_other';
     const KEY_OTHER_VALUE = 'other_value';
+    const KEY_OTHER_HINT = 'other_hint';
 
     protected string $view = 'input.checkbox_list_component';
 
@@ -49,21 +50,22 @@ class CheckBoxListComponent extends BaseComponent
      * @param bool $isChecked
      * @param bool $isOther
      * @param string $otherValue
+     * @param string $otherHint
      * @return array
      * @author  dew9163
      * @added   2020/11/05
      * @updated 2020/11/18
      */
-    public static function buildDataWithArray(array &$arr, string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false, string $otherValue = ''): array
+    public static function buildDataWithArray(array &$arr, string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false, string $otherValue = '', string $otherHint = ''): array
     {
-        $result = self::buildData($key, $text, $value, $name, $isChecked, $isOther, $otherValue);
+        $result = self::buildData($key, $text, $value, $name, $isChecked, $isOther, $otherValue, $otherHint);
         if (isset($arr)) {
             array_push($arr, $result);
         }
         return $result;
     }
 
-    public static function buildData(string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false, string $otherValue = ''): array
+    public static function buildData(string $key, string $text, string $value = null, string $name = '', bool $isChecked = false, bool $isOther = false, string $otherValue = '', string $otherHint = ''): array
     {
         $val = isset($value) ? $value : $key;
         return [
@@ -74,6 +76,7 @@ class CheckBoxListComponent extends BaseComponent
             self::KEY_CHECKED => $isChecked,
             self::KEY_IS_OTHER => $isOther,
             self::KEY_OTHER_VALUE => $otherValue,
+            self::KEY_OTHER_HINT => $otherHint,
         ];
     }
 }
