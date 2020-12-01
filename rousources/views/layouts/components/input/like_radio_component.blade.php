@@ -5,19 +5,24 @@
     @endif
 
     @foreach($items as $values)
+        @php($checked = $values[$component::KEY_IS_CHECKED])
         <div class="{{ $divClass }}">
-            <input class="{{ $inputClass }}" type="radio" id="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}"
+            <input class="{{ $inputClass }}" type="radio"
+                   id="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}"
                    name="{{ $name }}"
                    value="{{ $values[$component::KEY_VALUE] }}"
-                   @if($values[$component::KEY_IS_CHECKED])
-                       checked
+                   @if($checked)
+                   checked
                    @endif
                    style="display: none">
-            <label class="{{ $labelClass }}" for="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}">
+            <label class=""
+                   data-checked="fa {{ $values[$component::KEY_CHECKED_LABEL] }}"
+                   data-non-checked="fa {{ $values[$component::KEY_NON_CHECKED_LABEL] }}"
+                   for="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}">
                 <i class="" aria-hidden="true"
                    style="margin-right: 5px"
-                   data-checked="fa {{ $values[$component::KEY_CHECKED] }}"
-                   data-non-checked="fa {{ $values[$component::KEY_NON_CHECKED] }}"
+                   data-checked="fa {{ $values[$component::KEY_CHECKED_ICON] }}"
+                   data-non-checked="fa {{ $values[$component::KEY_NON_CHECKED_ICON] }}"
                 ></i>
                 {{ $values[$component::KEY_TEXT] }}
             </label>
@@ -37,8 +42,12 @@
     function setIcons() {
         $('.input_radio').each(function (index, item) {
             let i = $($(item).parent()[0].querySelector('i'));
-            let cls = this.checked ? i.attr('data-checked') : i.attr('data-non-checked');
-            i.attr('class', 'fa ' + cls);
+            let label = $($(item).parent()[0].querySelector('label'));
+            let callback = function (checked, tag) {
+                return checked ? tag.attr('data-checked') : tag.attr('data-non-checked');
+            };
+            i.attr('class', 'fa ' + callback(this.checked, i));
+            label.attr('class', '{{ $labelClass }}' + callback(this.checked, label));
         });
     }
 </script>

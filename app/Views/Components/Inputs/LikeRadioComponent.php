@@ -9,9 +9,11 @@ class LikeRadioComponent extends BaseComponent
 {
     const KEY_TEXT = 'text';
     const KEY_VALUE = 'value';
-    const KEY_CHECKED = 'checked';
-    const KEY_NON_CHECKED = 'non_checked';
     const KEY_IS_CHECKED = 'is_checked';
+    const KEY_CHECKED_ICON = 'checked_icon';
+    const KEY_NON_CHECKED_ICON = 'non_checked_icon';
+    const KEY_CHECKED_LABEL = 'checked_label';
+    const KEY_NON_CHECKED_LABEL = 'non_checked_label';
     const KEY_DIV_CLASS = 'div_class';
     const KEY_INPUT_CLASS = 'input_class';
     const KEY_LABEL_CLASS = 'label_class';
@@ -48,30 +50,34 @@ class LikeRadioComponent extends BaseComponent
      * @param array $arr
      * @param string $text
      * @param string $value
-     * @param string $checked
-     * @param string $nonChecked
+     * @param string $checkedIcon
+     * @param string $nonCheckedIcon
+     * @param string $checkedLabel
+     * @param string $nonCheckedLabel
      * @param bool $isChecked
      * @return array
      * @author  dew9163
      * @added   2020/11/05
      * @updated 2020/11/05
      */
-    public static function buildDataWithArray(array &$arr, string $text, string $value, string $checked, string $nonChecked, bool $isChecked = false): array
+    public static function buildDataWithArray(array &$arr, string $text, string $value, string $checkedIcon = '', string $nonCheckedIcon = '', string $checkedLabel = '', string $nonCheckedLabel = '', bool $isChecked = false): array
     {
-        $result = self::buildData($text, $value, $checked, $nonChecked, $isChecked);
+        $result = self::buildData($text, $value, $checkedIcon, $nonCheckedIcon, $checkedLabel, $nonCheckedLabel, $isChecked);
         if (isset($arr)) {
             array_push($arr, $result);
         }
         return $result;
     }
 
-    public static function buildData(string $text, string $value, string $checked, string $nonChecked, bool $isChecked = false): array
+    public static function buildData(string $text, string $value, string $checkedIcon = '', string $nonCheckedIcon = '', string $checkedLabel = '', string $nonCheckedLabel = '', bool $isChecked = false): array
     {
         return [
             self::KEY_TEXT => $text,
             self::KEY_VALUE => $value,
-            self::KEY_CHECKED => $checked,
-            self::KEY_NON_CHECKED => $nonChecked,
+            self::KEY_CHECKED_ICON => $checkedIcon,
+            self::KEY_NON_CHECKED_ICON => $nonCheckedIcon,
+            self::KEY_CHECKED_LABEL => $checkedLabel,
+            self::KEY_NON_CHECKED_LABEL => $nonCheckedLabel,
             self::KEY_IS_CHECKED => $isChecked,
         ];
     }
