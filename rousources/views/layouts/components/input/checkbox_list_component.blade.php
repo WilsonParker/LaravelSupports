@@ -2,11 +2,12 @@
 
 @foreach($items as $values)
     <div class="{{ $divClass }}">
-        <input type="checkbox" id="{{ $values[$component::KEY_KEY] }}" name="{{ $values[$component::KEY_NAME] }}" class="{{ $inputClass }}"
+        <input type="checkbox" id="{{ $values[$component::KEY_KEY] }}" name="{{ $values[$component::KEY_NAME] }}"
+               class="{{ $inputClass }}"
                value="{{ $values[$component::KEY_VALUE] }}"
                @if($values[$component::KEY_CHECKED])
                checked
-                @endif
+            @endif
         >
         <label class="{{ $labelClass }}"
                for="{{ $values[$component::KEY_KEY] }}">{{ $values[$component::KEY_TEXT] }}</label>
@@ -15,12 +16,15 @@
         @php($otherID = $values[$component::KEY_KEY])
         @php($otherInputID = $otherID.'_input')
         <div class="input-group mb-3">
-            <input type="text" class="{{ $othersClass }}" id="{{ $otherInputID }}" name="{{ $otherInputID }}" placeholder="{{ $values[$component::KEY_OTHER_HINT] }}"
+            <input type="text" class="{{ $othersClass }}" id="{{ $otherInputID }}" name="{{ $otherInputID }}"
+                   placeholder="{{ $values[$component::KEY_OTHER_HINT] }}"
+                   @if($values[$component::KEY_CHECKED])
                    value="{{ $values[$component::KEY_OTHER_VALUE] }}"
+                   @endif
                    aria-label="{{ $values[$component::KEY_OTHER_HINT] }}"
                    @if(!$values[$component::KEY_CHECKED])
                    readonly
-                   @endif
+                @endif
             >
         </div>
 

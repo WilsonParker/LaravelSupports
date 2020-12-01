@@ -16,8 +16,8 @@
                    @endif
                    style="display: none">
             <label class=""
-                   data-checked="fa {{ $values[$component::KEY_CHECKED_LABEL] }}"
-                   data-non-checked="fa {{ $values[$component::KEY_NON_CHECKED_LABEL] }}"
+                   data-checked="{{ $values[$component::KEY_CHECKED_LABEL] }}"
+                   data-non-checked="{{ $values[$component::KEY_NON_CHECKED_LABEL] }}"
                    for="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}">
                 <i class="" aria-hidden="true"
                    style="margin-right: 5px"
@@ -43,11 +43,18 @@
         $('.input_radio').each(function (index, item) {
             let i = $($(item).parent()[0].querySelector('i'));
             let label = $($(item).parent()[0].querySelector('label'));
-            let callback = function (checked, tag) {
-                return checked ? tag.attr('data-checked') : tag.attr('data-non-checked');
-            };
-            i.attr('class', 'fa ' + callback(this.checked, i));
-            label.attr('class', '{{ $labelClass }}' + callback(this.checked, label));
+            toggleClass('fa', this.checked, i)
+            toggleClass('{{ $labelClass }}', this.checked, label)
         });
+    }
+
+    function toggleClass(prefix, checked, tag) {
+        let checkedClass = prefix + ' ' + tag.attr('data-checked');
+        let nonCheckedClass = prefix + ' ' + tag.attr('data-non-checked');
+        if (checked) {
+            tag.attr('class', checkedClass);
+        } else {
+            tag.attr('class', nonCheckedClass);
+        }
     }
 </script>
