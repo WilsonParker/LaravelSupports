@@ -18,10 +18,11 @@ class CheckBoxListComponent extends BaseComponent
 
     protected string $view = 'input.checkbox_list_component';
 
-    public array $items;
-    public string $divClass;
-    public string $inputClass;
-    public string $labelClass;
+    public array $items = [];
+    public string $divClass = '';
+    public string $inputClass = '';
+    public string $labelClass = '';
+    public string $othersClass = '';
 
     /**
      * CheckBoxListComponent constructor.
@@ -30,13 +31,15 @@ class CheckBoxListComponent extends BaseComponent
      * @param string $divClass
      * @param string $inputClass
      * @param string $labelClass
+     * @param string $othersClass
      */
-    public function __construct(array $items = [], string $divClass = '', string $inputClass = '', string $labelClass = '')
+    public function __construct(array $items = [], string $divClass = '', string $inputClass = '', string $labelClass = '', string $othersClass = 'form-control others-input')
     {
         $this->items = $items;
         $this->divClass = $divClass;
         $this->inputClass = $inputClass;
         $this->labelClass = $labelClass;
+        $this->othersClass = $othersClass;
     }
 
     /**

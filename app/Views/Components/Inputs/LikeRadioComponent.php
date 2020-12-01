@@ -12,22 +12,34 @@ class LikeRadioComponent extends BaseComponent
     const KEY_CHECKED = 'checked';
     const KEY_NON_CHECKED = 'non_checked';
     const KEY_IS_CHECKED = 'is_checked';
+    const KEY_DIV_CLASS = 'div_class';
+    const KEY_INPUT_CLASS = 'input_class';
+    const KEY_LABEL_CLASS = 'label_class';
 
     protected string $view = 'input.like_radio_component';
 
-    public string $name;
     public array $items;
+    public string $name;
+    public string $divClass;
+    public string $inputClass;
+    public string $labelClass;
 
     /**
      * RadioComponent constructor.
      *
      * @param string $name
      * @param array $items
+     * @param string $divClass
+     * @param string $inputClass
+     * @param string $labelClass
      */
-    public function __construct(string $name = '', array $items = [])
+    public function __construct(string $name = '', array $items = [], string $divClass = 'form-check form-check-inline', string $inputClass = 'form-check-input input_radio', string $labelClass = 'form-check-label')
     {
         $this->name = $name;
         $this->items = $items;
+        $this->divClass = $divClass;
+        $this->inputClass = $inputClass;
+        $this->labelClass = $labelClass;
     }
 
     /**

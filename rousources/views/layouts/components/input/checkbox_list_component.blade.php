@@ -1,4 +1,4 @@
-@inject('component','LaravelSupports\Views\Components\Inputs\InlineCheckBoxListComponent')
+@inject('component','LaravelSupports\Views\Components\Inputs\CheckBoxListComponent')
 
 @foreach($items as $values)
     <div class="{{ $divClass }}">
@@ -6,7 +6,7 @@
                value="{{ $values[$component::KEY_VALUE] }}"
                @if($values[$component::KEY_CHECKED])
                checked
-            @endif
+                @endif
         >
         <label class="{{ $labelClass }}"
                for="{{ $values[$component::KEY_KEY] }}">{{ $values[$component::KEY_TEXT] }}</label>
@@ -15,12 +15,12 @@
         @php($otherID = $values[$component::KEY_KEY])
         @php($otherInputID = $otherID.'_input')
         <div class="input-group mb-3">
-            <input type="text" class="form-control others-input" id="{{ $otherInputID }}" name="{{ $otherInputID }}" placeholder="{{ $values[$component::KEY_OTHER_HINT] }}"
+            <input type="text" class="{{ $othersClass }}" id="{{ $otherInputID }}" name="{{ $otherInputID }}" placeholder="{{ $values[$component::KEY_OTHER_HINT] }}"
                    value="{{ $values[$component::KEY_OTHER_VALUE] }}"
                    aria-label="{{ $values[$component::KEY_OTHER_HINT] }}"
                    @if(!$values[$component::KEY_CHECKED])
                    readonly
-                @endif
+                   @endif
             >
         </div>
 

@@ -5,15 +5,15 @@
     @endif
 
     @foreach($items as $values)
-        <div class="form-check form-check-inline">
-            <input class="form-check-input input_radio" type="radio" id="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}"
+        <div class="{{ $divClass }}">
+            <input class="{{ $inputClass }}" type="radio" id="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}"
                    name="{{ $name }}"
                    value="{{ $values[$component::KEY_VALUE] }}"
                    @if($values[$component::KEY_IS_CHECKED])
-                   checked
+                       checked
                    @endif
                    style="display: none">
-            <label class="form-check-label" for="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}">
+            <label class="{{ $labelClass }}" for="input_radio_{{ $name }}_{{ $values[$component::KEY_VALUE] }}">
                 <i class="" aria-hidden="true"
                    style="margin-right: 5px"
                    data-checked="fa {{ $values[$component::KEY_CHECKED] }}"
