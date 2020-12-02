@@ -42,7 +42,7 @@
     $(function () {
         $('#basicModal').on('show.bs.modal', function (e) {
             let loadURL = $(e.relatedTarget).data('load-url');
-            $(this).find('.modal-body').load(loadURL);
+            $(this).find('#basicModal .modal-body').load(loadURL);
         });
     })
 </script>
