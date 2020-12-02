@@ -2,6 +2,7 @@
 
 namespace LaravelSupports\ViewModels;
 
+use App\Services\Library\API\Traits\HasDataWithDefaultTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -9,6 +10,8 @@ use Spatie\ViewModels\ViewModel;
 
 class BaseViewModel extends ViewModel
 {
+    use HasDataWithDefaultTrait;
+
     public const DATE_FORMAT = 'Y-m';
     public const KEY_SEARCH_LABEL = 'search_label';
     public const KEY_SEARCH_VALUES = 'search_values';
@@ -221,5 +224,18 @@ class BaseViewModel extends ViewModel
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    public function defaultData($data, $key, $default = '')
+    {
+        $result = $default;
+
+        if (is_array($data)) {
+            $result = $data[$key] ?? $default;
+        } else {
+            $result = $data->{$key} ?? $default;
+        }
+
+        return $result;
     }
 }
