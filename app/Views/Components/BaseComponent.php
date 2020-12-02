@@ -38,4 +38,5 @@ class BaseComponent extends Component
     {
         return view($this->prefix . $this->view);
     }
+
 }

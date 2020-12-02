@@ -10,7 +10,7 @@ class GridCheckBoxListComponent extends CheckBoxListComponent
     public string $colClass = '';
     public int $rows = 1;
 
-    public function __construct(array $items = [], string $rowClass = '', string $colClass = '', string $inputClass = '', string $labelClass = '', string $othersClass = 'form-control others-input', int $rows = 1)
+    public function __construct(array $items = [], string $rowClass = '', string $colClass = '', string $inputClass = '', string $labelClass = '', string $othersClass = 'form-control others-input', int $rows = 1, int $maxSelectableSize = 0)
     {
         $this->items = $items;
         $this->rowClass = $rowClass;
@@ -19,5 +19,6 @@ class GridCheckBoxListComponent extends CheckBoxListComponent
         $this->labelClass = $labelClass;
         $this->othersClass = $othersClass;
         $this->rows = $rows;
+        $this->maxSelectableSize = $maxSelectableSize;
     }
 }
