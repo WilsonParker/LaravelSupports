@@ -11,18 +11,43 @@ class CollectionServiceProvider extends ServiceProvider
     public function register()
     {
         /**
-         * $value 으로 이루어진 collection 에서 같은 $prop 값을 가진 item 이 있는지 체크 합니다
+         * $value 으로 이루어진 collection 에서 $needle 과 곂치는 부분이 있는지 확인 합니다
+         * array 일 경우 해당 값이 $prop 에 존재하는지 확인 합니다
+         * collection 또는 $prop 값을 가진 item 이 있는지 확인 합니다
          *
          * @author  dew9163
          * @added   2020/11/11
          * @updated 2020/11/11
+         * @updated 2020/12/03
+         *
          */
-        Collection::macro('exists', function ($value, string $prop = 'id'): bool {
-            foreach ($this as $item) {
-                if ($item->{$prop} == $value->{$prop}) {
-                    return true;
+        Collection::macro('exists', function ($needle, string $prop = 'id'): bool {
+            $objCallback = function ($item, $needle) use($prop) {
+                return $item->{$prop} == $needle->{$prop};
+            };
+
+            if ($needle instanceof Collection) {
+                foreach ($this as $item) {
+                    foreach ($needle as $needleItem) {
+                        if ($objCallback($item, $needleItem)) {
+                            return true;
+                        }
+                    }
+                }
+            } else if (is_array($needle)) {
+                foreach ($this as $item) {
+                    if (in_array($item->{$prop}, $needle)) {
+                        return true;
+                    }
+                }
+            } else {
+                foreach ($this as $item) {
+                    if ($objCallback($item, $needle)) {
+                        return true;
+                    }
                 }
             }
+
             return false;
         });
 
