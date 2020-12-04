@@ -36,7 +36,7 @@ abstract class BaseModel extends Model
     // protected array $selectScope = ['*'];
     protected array $selectScope;
     // 이미지, 파일을 저장하는 suffix 경로 입니다
-    protected string $path = '';
+//    protected string $path = '';
     // 이미지, 파일을 저장하는 prefix 경로 입니다
     protected string $uploadPath = '';
     // 이미지, 파일을 저장하는 table 의 type 입니다
