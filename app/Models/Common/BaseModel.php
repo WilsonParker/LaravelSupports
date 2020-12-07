@@ -17,6 +17,11 @@ abstract class BaseModel extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    const KEY_SEARCH_TYPE = "search_type";
+    const KEY_KEYWORD = "keyword";
+
+    protected static array $bootedWithRelationships;
+
     /**
      * 둘 다 사용하지 않을 경우 false
      *
@@ -31,8 +36,6 @@ abstract class BaseModel extends Model
     protected $primaryKey = "id";
     protected $table = "";
 
-    const KEY_SEARCH_TYPE = "search_type";
-    const KEY_KEYWORD = "keyword";
     // protected array $selectScope = ['*'];
     protected array $selectScope;
     // 이미지, 파일을 저장하는 suffix 경로 입니다
@@ -470,6 +473,29 @@ abstract class BaseModel extends Model
     }
 
     /**
+     * Get a new query builder for the model's table.
+     * Manipulate in case we need to convert geometrical fields to text.
+     *
+     * @param bool $excludeDeleted
+     *
+     * @return Builder
+     */
+    public function newQuery($excludeDeleted = true): Builder
+    {
+        if (!empty($this->geometry) && $this->geometryAsText === true) {
+            $raw = '';
+            foreach ($this->geometry as $column) {
+                $raw .= 'AsText(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
+            }
+            $raw = substr($raw, 0, -2);
+
+            return parent::newQuery()->addSelect('*', DB::raw($raw));
+        }
+
+        return parent::newQuery();
+    }
+
+    /**
      * create an instance using the connection
      *
      * @param string $connection
@@ -501,25 +527,32 @@ abstract class BaseModel extends Model
     }
 
     /**
-     * Get a new query builder for the model's table.
-     * Manipulate in case we need to convert geometrical fields to text.
+     * relationship 과 함께 boot 합니다
      *
-     * @param bool $excludeDeleted
-     *
-     * @return Builder
+     * @return void
+     * @author  dew9163
+     * @added   2020/12/07
+     * @updated 2020/12/07
      */
-    public function newQuery($excludeDeleted = true): Builder
+    protected static function booted()
     {
-        if (!empty($this->geometry) && $this->geometryAsText === true) {
-            $raw = '';
-            foreach ($this->geometry as $column) {
-                $raw .= 'AsText(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
-            }
-            $raw = substr($raw, 0, -2);
-
-            return parent::newQuery()->addSelect('*', DB::raw($raw));
+        if (isset(self::$bootedWithRelationships)) {
+            self::with(self::$bootedWithRelationships);
         }
-
-        return parent::newQuery();
+        self::additionalBooted();
     }
+
+    /**
+     * 추가 적으로 boot 할 내용을 추가 합니다
+     *
+     * @return void
+     * @author  dew9163
+     * @added   2020/12/07
+     * @updated 2020/12/07
+     */
+    protected static function additionalBooted()
+    {
+
+    }
+
 }
