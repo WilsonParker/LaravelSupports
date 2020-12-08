@@ -158,4 +158,21 @@ class ArrayHelper
     {
         return isset($array) ? array_key_exists($key, $array) ? $array[$key] : $def : $def;
     }
+
+    /**
+     * $from 에서 $to 에 포함되지 않는 데이터를 제공 합니다
+     *
+     * @param array $from
+     * @param array $to
+     * @return array
+     * @author  dew9163
+     * @added   2020/12/08
+     * @updated 2020/12/08
+     */
+    public static function exclude(array $from, array $to): array
+    {
+        return collect($from)->filter(function ($item) use ($to) {
+            return !self::exists($to, $item);
+        })->toArray();
+    }
 }

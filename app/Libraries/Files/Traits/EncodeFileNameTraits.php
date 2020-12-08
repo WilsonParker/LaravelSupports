@@ -46,4 +46,8 @@ trait EncodeFileNameTraits
         return $extension;
     }
 
+    public static function getStaticFileNameExtension(string $name): string
+    {
+        return Str::afterLast($name, '.');
+    }
 }

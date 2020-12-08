@@ -9,6 +9,7 @@ use LaravelSupports\Views\Components\Inputs\CheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\GridCheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\InlineCheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\LikeRadioComponent;
+use LaravelSupports\Views\Components\Inputs\UploadImageComponent;
 use LaravelSupports\Views\Components\Tables\DataTableComponent;
 use LaravelSupports\Views\Components\Tables\DataTableSearchComponent;
 use LaravelSupports\Views\Components\Tables\TableSearchComponent;
@@ -40,5 +41,6 @@ class PackageComponentProvider extends ServiceProvider
         Blade::component('inline-checkbox-list', InlineCheckBoxListComponent::class);
         Blade::component('grid-checkbox-list', GridCheckBoxListComponent::class);
         Blade::component('card-search', CardSearchComponent::class);
+        Blade::component('upload-image', UploadImageComponent::class);
     }
 }

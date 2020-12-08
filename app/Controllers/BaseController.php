@@ -259,6 +259,17 @@ abstract class BaseController extends Controller
         return $length;
     }
 
+    /**
+     * config 정보를 포함하여 이전 페이지로 이동 합니다
+     *
+     * @param string $prefix
+     * @param bool $redirect
+     * @param bool $isSuccess
+     * @return \Illuminate\Http\RedirectResponse
+     * @author  dew9163
+     * @added   2020/12/08
+     * @updated 2020/12/08
+     */
     protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true)
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
@@ -280,7 +291,32 @@ abstract class BaseController extends Controller
 
     protected function backWithErrors(Throwable $e)
     {
-        return redirect()->back()->withErrors($e->getMessage());
+        return back()->withInput()->withErrors($e->getMessage());
+    }
+
+    /**
+     * config 정보를 포함하여 $route 로 $params 를 전달하여 이동 합니다
+     *
+     * @param string $prefix
+     * @param string $route
+     * @param array $params
+     * @param bool $isSuccess
+     * @return \Illuminate\Http\RedirectResponse
+     * @author  dew9163
+     * @added   2020/12/08
+     * @updated 2020/12/08
+     */
+    protected function redirectWithConfig(string $prefix, string $route, array $params, bool $isSuccess = true)
+    {
+        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        return $this->redirectWithMessage($message, $route, $params);
+    }
+
+    protected function redirectWithMessage(string $message, string $route, array $params)
+    {
+        return redirect()->route($route, $params)->with([
+            'message' => $message
+        ]);
     }
 
     protected function setTitleAndDescription(string $title, string $description)

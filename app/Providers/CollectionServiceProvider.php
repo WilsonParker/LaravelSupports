@@ -15,6 +15,9 @@ class CollectionServiceProvider extends ServiceProvider
          * array 일 경우 해당 값이 $prop 에 존재하는지 확인 합니다
          * collection 또는 $prop 값을 가진 item 이 있는지 확인 합니다
          *
+         * @param Collection | array | Model $needle
+         * @param string $pros
+         * @return bool
          * @author  dew9163
          * @added   2020/11/11
          * @updated 2020/11/11
@@ -22,7 +25,7 @@ class CollectionServiceProvider extends ServiceProvider
          *
          */
         Collection::macro('exists', function ($needle, string $prop = 'id'): bool {
-            $objCallback = function ($item, $needle) use($prop) {
+            $objCallback = function ($item, $needle) use ($prop) {
                 return $item->{$prop} == $needle->{$prop};
             };
 
@@ -52,11 +55,34 @@ class CollectionServiceProvider extends ServiceProvider
         });
 
         /**
+         * collection 에 $keys 중 하나라도 일치하는 key 값이 있는지 확인 합니다
+         *
+         * @param Collection | array $keys
+         * @return bool
+         * @author  dew9163
+         * @added   2020/12/08
+         * @updated 2020/12/08
+         */
+        Collection::macro('existKey', function ($keys): bool {
+            if ($keys instanceof Collection || is_array($keys)) {
+                foreach ($keys as $key) {
+                    if ($this->has($key)) {
+                        return true;
+                    }
+                }
+            } else {
+                return $this->has($keys);
+            }
+            return false;
+        });
+
+        /**
          * $prop 으로 비교하여 $collection 에 해당하는 item 들을 포함한 Collection 을 제공 합니다
          * $collection 에 단일 item 을 넘길 수 있습니다
          *
-         * @param   $collection Collection | array | Model
-         * @param   $prop
+         * @param Collection | array | Model $collection
+         * @param string $prop
+         * @return Collection
          * @author  dew9163
          * @added   2020/11/12
          * @updated 2020/11/12
@@ -78,6 +104,9 @@ class CollectionServiceProvider extends ServiceProvider
         /**
          * $prop 으로 비교하여 $collection 에 해당하는 item 들을 제외시킨 Collection 을 제공 합니다
          *
+         * @param Collection $collection
+         * @param string $prop
+         * @return Collection
          * @author  dew9163
          * @added   2020/11/11
          * @updated 2020/11/11
@@ -89,9 +118,26 @@ class CollectionServiceProvider extends ServiceProvider
         });
 
         /**
+         * key 값이 $arr 에 포함되지 않는 데이터를 제공 합니다
+         *
+         * @param array $arr
+         * @return Collection
+         * @author  dew9163
+         * @added   2020/11/11
+         * @updated 2020/11/11
+         */
+        Collection::macro('excludeKey', function (array $arr): Collection {
+            return $this->filter(function ($item, $key) use ($arr) {
+                return !in_array($key, $arr);
+            });
+        });
+
+        /**
          * filter 를 위한 $callback 을 이용하여
          * true, false 결과에 맞게 분할 합니다
          *
+         * @param $callback
+         * @return Collection
          * @author  dew9163
          * @added   2020/11/13
          * @updated 2020/11/13
