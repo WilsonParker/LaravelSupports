@@ -11,6 +11,7 @@ class UploadImageComponent extends BaseComponent
 
     public string $imgClass;
     public string $id;
+    public string $rootDivAttr;
     public string $divAttr;
     public string $inputAttr;
     public string $name;
@@ -28,9 +29,10 @@ class UploadImageComponent extends BaseComponent
      * @param string $text
      * @param string $divAttr
      * @param string $inputAttr
+     * @param string $rootDivAttr
      * @param bool $needPreview
      */
-    public function __construct(string $id = '', string $name = '', string $src = '...', string $imgClass = '', string $text = 'upload', string $divAttr = '', string $inputAttr = '', bool $needPreview = false)
+    public function __construct(string $id = '', string $name = '', string $src = '...', string $imgClass = '', string $text = 'upload', string $divAttr = '', string $inputAttr = '', string $rootDivAttr = '', bool $needPreview = false)
     {
         $this->id = $id;
         $this->name = $name == '' ? $id : $name;
@@ -40,6 +42,7 @@ class UploadImageComponent extends BaseComponent
         $this->needPreview = $needPreview;
         $this->divAttr = $divAttr;
         $this->inputAttr = $inputAttr;
+        $this->rootDivAttr = $rootDivAttr;
     }
 
 

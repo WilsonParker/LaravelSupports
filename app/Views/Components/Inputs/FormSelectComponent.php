@@ -7,6 +7,8 @@ use LaravelSupports\Views\Components\BaseComponent;
 
 class FormSelectComponent extends BaseComponent
 {
+    public const KEY_OPTION_ATTR = 'option_attr';
+
     protected string $view = 'input.form_select_component';
 
     public string $divClass;
@@ -32,6 +34,7 @@ class FormSelectComponent extends BaseComponent
      * @param string $selectedValue
      * @param string $divAttr
      * @param string $selectAttr
+     * @param string $optionAttr
      * @param array $items
      */
     public function __construct(string $divClass = 'form-group', string $labelClass = '', string $selectClass = 'custom-select form-control', string $label = '', string $id = '', string $name = '', string $selectedValue = '', string $divAttr = '', string $selectAttr = '', $items = [])
@@ -49,10 +52,12 @@ class FormSelectComponent extends BaseComponent
     }
 
 
-    public static function buildItemData(string $text, string $value): array
+    public static function buildItemData(string $text, string $value, string $optionAttr = ''): array
     {
         return [
-            $text => $value
+            self::KEY_TEXT => $text,
+            self::KEY_VALUE => $value,
+            self::KEY_OPTION_ATTR => $optionAttr
         ];
     }
 }

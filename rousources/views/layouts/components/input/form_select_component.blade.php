@@ -8,13 +8,12 @@
             @endif
             name="{{ $name }}" {{ $selectAttr }}>
         @foreach($items as $item)
-            @foreach($item as $text => $value)
-                <option value="{{ $value }}"
-                        @if(isset($selectedValue) && $selectedValue == $value)
-                        selected
-                    @endif
-                >{{ $text }}</option>
-            @endforeach
+            <option value="{{ $item[$component::KEY_VALUE] }}"
+                    @if((old($name, '') == $item[$component::KEY_VALUE] || isset($selectedValue) && $selectedValue == $item[$component::KEY_VALUE]))
+                    selected
+                @endif
+                {{ $item[$component::KEY_OPTION_ATTR] }}
+            >{{ $item[$component::KEY_TEXT] }}</option>
         @endforeach
     </select>
 </div>

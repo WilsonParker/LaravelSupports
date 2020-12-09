@@ -1,5 +1,6 @@
 @inject('component','LaravelSupports\Views\Components\Inputs\UploadImageComponent')
 
+<div {{ $rootDivAttr }}>
 <div class="input-group mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text" id="{{ $id }}Addon">{{ $text }}</span>
@@ -19,6 +20,7 @@
 @if($needPreview)
     <img class="{{ $imgClass }}" id="img_{{ $id }}" src="{{ $src }}" alt=""/>
 @endif
+</div>
 
 <script>
     $(function () {
