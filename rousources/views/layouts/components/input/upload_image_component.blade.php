@@ -4,15 +4,20 @@
     <div class="input-group-prepend">
         <span class="input-group-text" id="{{ $id }}Addon">{{ $text }}</span>
     </div>
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" id="{{ $id }}"
-               data-id="{{ $id }}" name="{{ $id }}"
-               aria-describedby="{{ $id }}Addon" accept=".jpg,.gif,.png">
+    <div class="custom-file" {{ $divAttr }}>
+        <input type="file" class="custom-file-input"
+               @if($id != '')
+               id="{{ $id }}"
+               @endif
+               name="{{ $name }}"
+               aria-describedby="{{ $id }}Addon" accept=".jpg,.gif,.png"
+            {{ $inputAttr }}
+        >
         <label class="custom-file-label" for="{{ $id }}">Choose file</label>
     </div>
 </div>
 @if($needPreview)
-    <img class="{{ $imgClass }}" data-id="{{ $id }}" src="{{ $src }}" alt=""/>
+    <img class="{{ $imgClass }}" id="img_{{ $id }}" src="{{ $src }}" alt=""/>
 @endif
 
 <script>
@@ -24,9 +29,8 @@
             $(this).next('.custom-file-label').html(fileName);
 
             @if($needPreview)
-            let id = $(this).attr('data-id');
             let file = this.files[0];
-            let img = modelBuilder.selector.getModel('img', id);
+            let img = $("#img_" + this.id);
             let reader = new FileReader();
             // Set preview image into the popover data-content
             reader.onload = function (e) {

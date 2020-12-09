@@ -102,6 +102,21 @@ class CollectionServiceProvider extends ServiceProvider
         });
 
         /**
+         * key 값이 $arr 에 포함되는 데이터를 제공 합니다
+         *
+         * @param array $arr
+         * @return Collection
+         * @author  dew9163
+         * @added   2020/12/09
+         * @updated 2020/12/09
+         */
+        Collection::macro('includeKeys', function (array $arr): Collection {
+            return $this->filter(function ($item, $key) use ($arr) {
+                return in_array($key, $arr);
+            });
+        });
+
+        /**
          * $prop 으로 비교하여 $collection 에 해당하는 item 들을 제외시킨 Collection 을 제공 합니다
          *
          * @param Collection $collection
@@ -123,10 +138,10 @@ class CollectionServiceProvider extends ServiceProvider
          * @param array $arr
          * @return Collection
          * @author  dew9163
-         * @added   2020/11/11
-         * @updated 2020/11/11
+         * @added   2020/12/08
+         * @updated 2020/12/08
          */
-        Collection::macro('excludeKey', function (array $arr): Collection {
+        Collection::macro('excludeKeys', function (array $arr): Collection {
             return $this->filter(function ($item, $key) use ($arr) {
                 return !in_array($key, $arr);
             });

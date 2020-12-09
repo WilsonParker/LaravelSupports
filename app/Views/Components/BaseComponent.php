@@ -7,6 +7,11 @@ use Illuminate\View\View;
 
 class BaseComponent extends Component
 {
+    public const KEY_KEY = 'key';
+    public const KEY_VALUE = 'value';
+    public const KEY_TEXT = 'text';
+    public const KEY_NAME = 'name';
+
     public const KEY_SEARCH_LABEL = 'search_label';
     public const KEY_SEARCH_VALUES = 'search_values';
     public const KEY_SEARCH_TYPE = 'search_type';

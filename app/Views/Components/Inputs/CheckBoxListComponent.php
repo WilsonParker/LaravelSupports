@@ -7,10 +7,6 @@ use LaravelSupports\Views\Components\BaseComponent;
 
 class CheckBoxListComponent extends BaseComponent
 {
-    const KEY_KEY = 'key';
-    const KEY_VALUE = 'value';
-    const KEY_TEXT = 'text';
-    const KEY_NAME = 'name';
     const KEY_CHECKED = 'checked';
     const KEY_IS_OTHER = 'is_other';
     const KEY_OTHER_VALUE = 'other_value';
