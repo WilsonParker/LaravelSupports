@@ -60,6 +60,7 @@ class SMSHelper
      * */
     // 결제 실패 template code
     const TEMPLATE_PAYMENT_FAIL = "payment_fail";
+    const TEMPLATE_SUBSCRIBE_PAYMENT_FAIL_REASON = "subscribe_payment_fail_reason";
 
     private string $key = "NDU2Mi0xNDY0NjYzNjE3OTI1LWJlZjkxNjUyLTMwNzctNDNjZC1iOTE2LTUyMzA3N2YzY2Q3MQ==";
     private string $callback = "07050291422";
@@ -184,7 +185,7 @@ class SMSHelper
                         $message = str_replace("#{일}", 13, $message);
                         $message = str_replace("#{prevMonth}", $dateHelper->getPrevMonth() . '월', $message);
                         $message = str_replace("#{currentMonth}", $dateHelper->getCurrentMonth() . '월', $message);
-                        $url = $config['urls'].$send->id;
+                        $url = $config['urls'] . $send->id;
                         $this->send($config['code'], $phone, $message, $config['button_types'], $config['buttons'], $url);
                     });
                     break;
@@ -248,6 +249,13 @@ class SMSHelper
                         }
 
                         $this->send($template[self::KEY_TEMPLATE_CODE], $phone, $message);
+                    });
+                    break;
+                case self::TEMPLATE_SUBSCRIBE_PAYMENT_FAIL_REASON:
+                    collect($data)->each(function ($item) use ($template) {
+                        $message = str_replace("#{회원이름}", $item[self::KEY_NAME], $template[self::KEY_MESSAGE]);
+                        $message = str_replace("#{내용}", $item[self::KEY_CONTENT], $message);
+                        $this->send($template[self::KEY_TEMPLATE_CODE], $item['phone'], $message);
                     });
                     break;
             }

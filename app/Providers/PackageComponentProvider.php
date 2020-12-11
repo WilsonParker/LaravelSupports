@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use LaravelSupports\Views\Components\Cards\CardSearchComponent;
 use LaravelSupports\Views\Components\Inputs\CheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\FormInputComponent;
+use LaravelSupports\Views\Components\Inputs\FormMultipleInputComponent;
 use LaravelSupports\Views\Components\Inputs\FormSelectComponent;
 use LaravelSupports\Views\Components\Inputs\GridCheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\InlineCheckBoxListComponent;

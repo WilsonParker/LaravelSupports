@@ -20,6 +20,7 @@ class FormInputComponent extends BaseComponent
     public string $label;
     public string $help;
     public bool $hasHelp;
+    public bool $isTextArea;
     public $value;
 
     /**
@@ -37,8 +38,9 @@ class FormInputComponent extends BaseComponent
      * @param string $divAttr
      * @param string $inputAttr
      * @param bool $hasHelp
+     * @param bool $isTextArea
      */
-    public function __construct(string $divClass = 'form-group', string $labelClass = '', string $inputClass = 'form-control', string $helpClass = 'form-text text-muted', string $id = '', string $name = '', string $label = '', $value = null, string $help = '', string $divAttr = '', string $inputAttr = '', bool $hasHelp = false)
+    public function __construct(string $divClass = 'form-group', string $labelClass = '', string $inputClass = 'form-control', string $helpClass = 'form-text text-muted', string $id = '', string $name = '', string $label = '', $value = null, string $help = '', string $divAttr = '', string $inputAttr = '', bool $hasHelp = false, bool $isTextArea = false)
     {
         $this->divClass = $divClass;
         $this->labelClass = $labelClass;
@@ -49,6 +51,7 @@ class FormInputComponent extends BaseComponent
         $this->label = $label;
         $this->help = $help;
         $this->hasHelp = $hasHelp;
+        $this->isTextArea = $isTextArea;
         $this->value = $value;
         $this->divAttr = $divAttr;
         $this->inputAttr = $inputAttr;
