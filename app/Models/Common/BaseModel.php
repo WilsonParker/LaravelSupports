@@ -117,6 +117,20 @@ abstract class BaseModel extends Model
             $this->buildWhereScope($builder);
             $this->buildWithScope($builder);
         });
+
+        /**
+         * relationship 과 함께 boot 합니다
+         *
+         * @return void
+         * @author  dew9163
+         * @added   2020/12/11
+         * @updated 2020/12/11
+         */
+        static::addGlobalScope('relationshipScope', function (Builder $builder) {
+            if(isset(static::$bootedWithRelationships)) {
+                $builder->with(static::$bootedWithRelationships);
+            }
+        });
     }
 
     /**
@@ -524,35 +538,6 @@ abstract class BaseModel extends Model
     public static function getModelWhereIn(array $idList, $prop = 'id')
     {
         return self::whereIn($prop, $idList)->get();
-    }
-
-    /**
-     * relationship 과 함께 boot 합니다
-     *
-     * @return void
-     * @author  dew9163
-     * @added   2020/12/07
-     * @updated 2020/12/07
-     */
-    protected static function booted()
-    {
-        if (isset(self::$bootedWithRelationships)) {
-            self::with(self::$bootedWithRelationships);
-        }
-        self::additionalBooted();
-    }
-
-    /**
-     * 추가 적으로 boot 할 내용을 추가 합니다
-     *
-     * @return void
-     * @author  dew9163
-     * @added   2020/12/07
-     * @updated 2020/12/07
-     */
-    protected static function additionalBooted()
-    {
-
     }
 
 }
