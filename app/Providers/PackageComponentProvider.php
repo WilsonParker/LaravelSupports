@@ -15,6 +15,7 @@ use LaravelSupports\Views\Components\Inputs\LikeRadioComponent;
 use LaravelSupports\Views\Components\Inputs\UploadImageComponent;
 use LaravelSupports\Views\Components\Tables\DataTableComponent;
 use LaravelSupports\Views\Components\Tables\DataTableSearchComponent;
+use LaravelSupports\Views\Components\Tables\TableComponent;
 use LaravelSupports\Views\Components\Tables\TableSearchComponent;
 
 class PackageComponentProvider extends ServiceProvider
@@ -36,6 +37,7 @@ class PackageComponentProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::component('table', TableComponent::class);
         Blade::component('table-search', TableSearchComponent::class);
         Blade::component('data-table', DataTableComponent::class);
         Blade::component('data-table-search', DataTableSearchComponent::class);
