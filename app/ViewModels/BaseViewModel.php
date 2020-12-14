@@ -2,10 +2,10 @@
 
 namespace LaravelSupports\ViewModels;
 
-use App\Services\Library\API\Traits\HasDataWithDefaultTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use LaravelSupports\Libraries\Supports\Objects\HasDataWithDefaultTrait;
 use Spatie\ViewModels\ViewModel;
 
 class BaseViewModel extends ViewModel

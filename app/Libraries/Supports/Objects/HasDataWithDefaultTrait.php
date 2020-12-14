@@ -11,6 +11,11 @@ trait HasDataWithDefaultTrait
         return isset($array[$key]) ? $array[$key] : $def;
     }
 
+    protected function getDataWithDefault($key, $def = "")
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : $def;
+    }
+
     protected function getDataIfSet($data, $set, $default = '')
     {
         return isset($data) ? $set : $default;
