@@ -7,7 +7,7 @@ namespace App\Library\LaravelSupports\app\Libraries\Payment\EasyCard;
 class EasyCardService
 {
     // 전문구분[2]
-    public string $gubun = '';
+    public string $gubun = 'D1';
     // 현금영수증용도
     public string $cash_gubun = '';
     // 금액[9]
@@ -31,7 +31,7 @@ class EasyCardService
     // 타임아웃[2]
     public string $timeout = '20';
     // 부가세
-    public string $vat = 'A';
+    public string $vat = 'F';
     // 추가필드
     public string $addfield = '';
     // 수신핸들값
