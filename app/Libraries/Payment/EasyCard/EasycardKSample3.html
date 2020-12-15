@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR" />
+<title>EasyCard2</title>
+<style>
+*{margin:0; padding:0}html{width:100%; height:100%}body{font-size:12px; font-family:'malgun gothic', dotum,"돋움",sans-serif; color:#666}body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:1px; padding:0}
+ul,ol,li{list-style:none}img, fieldset{border:none; vertical-align:top}legend, caption{display:none}textarea, button{vertical-align:middle}input, select{height:16px; vertical-align:middle; background:#fff; border:1px solid #ddd; font-family:RixGo; color:#666}
+input{padding:3px}select{padding:2px}textarea{padding:3px; vertical-align:middle; background:#fff; border:1px solid #ddd; font-family:RixGo; color:#666}.checkbox{padding:0; border:0}table{border-collapse:collapse}
+.btn01 {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	background-color:#ededed;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;border:1px solid #dcdcdc;display:inline-block;color:#777777;font-family:'malgun gothic', dotum,"돋움",sans-serif;	font-size:12px;	font-weight:bold;	font-style:normal;
+	height:30px;	line-height:25px;	text-decoration:none;	text-align:center;	margin:5px;
+}
+.btn01:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+}.btn01:active {
+	position:relative;
+	top:1px;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+<script type="text/javascript">
+	function JSONtoString(object) {
+	    var results = [];
+	    for (var property in object) {
+	        var value = object[property];
+	        if (value)
+	            results.push(property.toString() + ': ' + value);
+	        }
+	                 
+	    return '{' + results.join(', ') + '}';
+	}
+	
+				
+	stringformat = function (text) {
+		if (arguments.length <= 1) return text;
+	
+		for (var i = 0; i <= arguments.length - 2; i++) {
+			text = text.replace(new RegExp("\\{" + i + "\\}", "gi"), arguments[i + 1]);
+		}
+	
+		return text;
+	}
+	
+	function bt_go(){
+		//makeMsg();
+		
+		document.getElementById("recv").innerText= "";
+		
+		$.ajax({
+			url:document.getElementById("ecurl").value, 
+			dataType : "jsonp",
+			jsonp : "callback",
+			data : { "REQ": stringformat(encodeURI(document.getElementById("comm").value))},
+			async : false,
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);
+			}
+		});
+				
+	}
+	
+	function goBarcode(){
+		cleanAll();
+		document.getElementById("comm").value="CR^FB^0E^02^^30^간편결제|바코드를 입력해주세요^true^";
+	}
+	
+	
+	function D1Sample(){
+		cleanAll();
+		document.getElementById("comm").value="D1^^51004^00^^^^TEST12345^^^^30^A^^^^^^^^^^^";
+	}
+	
+	function B1Sample(){
+		cleanAll();
+		document.getElementById("comm").value="B1^00^1004^^^^^TEST12345^^^^30^A^^^^^^^";
+	}
+	
+	function B3Sample(){
+		cleanAll();
+		document.getElementById("comm").value="B3^00^1004^^^^^^^^^30^^^^^^^^";
+	}
+	
+	function U1Sample(){
+		cleanAll();
+		document.getElementById("comm").value="U1^^1004^00^^^^TEST12345^^^^30^A^^^^^^^";
+	}
+	
+	function C1Sample(){
+		cleanAll();
+		document.getElementById("comm").value="C1^^100000^13^130614^^^^^^^^^^^0700081^^^^05201099040031";
+	}
+	
+	function TKSample(){
+		cleanAll();
+		document.getElementById("comm").value="TR^^L^^^^^^^^^15^^^^TK^^^^^^^^^^^^^^^^^";
+	}
+	
+	
+	function LA(){
+		cleanAll();
+		$.ajax({
+			url:document.getElementById("ecurl").value,
+			type:"GET",
+			data : { "REQ": stringformat("LA^")},
+			dataType : "jsonp",
+			jsonp:"callback",
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);     
+			}
+		});
+	
+	}
+		
+	
+	function cleanAll(){
+		document.getElementById("comm").value = "";
+		document.getElementById("recv").innerText= "";
+	}
+
+		
+	function makeMsg(){
+		var comm_string = "";
+		
+		comm_string += document.getElementById("gubun").value + "^";
+		comm_string += document.getElementById("cash_gubun").value + "^";
+		comm_string += document.getElementById("amount").value + "^";
+		comm_string += document.getElementById("install").value + "^";
+		comm_string += document.getElementById("yymmdd").value + "^";
+		comm_string += document.getElementById("appr_num").value + "^";
+		comm_string += document.getElementById("code").value + "^";
+		comm_string += document.getElementById("sell_num").value + "^";
+		comm_string += document.getElementById("message").value + "^";
+		comm_string += document.getElementById("keyin").value + "^";
+		comm_string += document.getElementById("multi_tid").value + "^";
+		comm_string += document.getElementById("timeout").value+ "^";
+		comm_string += document.getElementById("vat").value+ "^";
+		comm_string += document.getElementById("addfield").value+ "^";
+		comm_string += document.getElementById("handle").value+ "^";
+		comm_string += document.getElementById("catgubun").value+ "^";
+		comm_string += document.getElementById("discount").value+ "^";
+		comm_string += document.getElementById("passwd").value+ "^";
+		comm_string += document.getElementById("extend").value+ "^";
+		comm_string += document.getElementById("serialno").value + "^";
+		comm_string += document.getElementById("dongflag").value+ "^";
+		comm_string += document.getElementById("barcode").value+ "^";
+		comm_string += document.getElementById("tip").value+ "^";
+		comm_string += document.getElementById("charType").value+ "^";
+		comm_string += document.getElementById("bmp").value+ "^";
+		comm_string += document.getElementById("van").value+ "^";
+		comm_string += document.getElementById("cardnum").value+ "^";
+		comm_string += document.getElementById("yymm").value+ "^";
+		comm_string += document.getElementById("reqtype").value+ "^";
+		
+		comm_string += document.getElementById("display").value+ "^";
+		comm_string += document.getElementById("bonusAppNum").value+ "^";
+		comm_string += document.getElementById("oil").value+ "^";
+		comm_string += document.getElementById("token").value+ "^";
+		comm_string += document.getElementById("dspmsg").value+ "^";
+		
+		comm_string += document.getElementById("bonuswcc").value+ "^";
+		comm_string += document.getElementById("bonusno").value+ "^";	
+		
+		
+		document.getElementById("comm").value = comm_string;
+	}
+	
+	function goprint_sign(){
+		cleanAll();
+		var s;
+
+		s = "EP";
+		s = s + eval('"' + "\\x1B" +'"') + eval('"' + "\\x21" +'"') + eval('"' + "\\x11" +'"') + "    sign sample     " +eval('"' + "\\x1B" +'"') +eval('"' + "\\x21" +'"') +eval('"' + "\\x01" +'"') +eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+		s = s + eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+		s = s + eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+		s = s + "  ========================================" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "   [고객서명란] " + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  (SIGN)" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  ========================================" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s +eval('"' + "\\x1B" +'"') + "i" +eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+
+		$.ajax({
+				url:document.getElementById("ecurl").value, 
+			type:"POST",dataType : "jsonp",jsonp:"callback",
+			data : { 
+				"REQ": stringformat(encodeURI(s)),
+				"SEED": stringformat(document.getElementById("signseed").value)
+				},success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);         
+			}
+		});
+	}
+	
+	
+	function goprint_sign(){
+		cleanAll();
+		var s;
+
+		s = "EP";
+		s = s + eval('"' + "\\x1B" +'"') + eval('"' + "\\x21" +'"') + eval('"' + "\\x11" +'"') + "    sign sample     " +eval('"' + "\\x1B" +'"') +eval('"' + "\\x21" +'"') +eval('"' + "\\x01" +'"') +eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+		s = s + eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+		s = s + eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+		s = s + "  ========================================" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "   [고객서명란] " + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  (SIGN)" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  ========================================" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s +eval('"' + "\\x1B" +'"') + "i" +eval('"' + "\\x0D" +'"') + eval('"' + "\\x0A" +'"');
+
+		$.ajax({
+				url:document.getElementById("ecurl").value, 
+			type:"POST",dataType : "jsonp",jsonp:"callback",
+			data : { 
+				"REQ": stringformat(encodeURI(s)),
+				"SEED": stringformat(document.getElementById("signseed").value)
+				},success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);         
+			}
+		});
+	}
+	
+	function goprint_sign2(){
+		cleanAll();
+		var s;
+
+		s = "SD";
+		
+		$.ajax({
+				url:document.getElementById("ecurl").value, 
+			type:"GET",dataType : "jsonp",jsonp:"callback",
+			data : { 
+				"REQ": stringformat(encodeURI(s)),
+				"SEED": stringformat(document.getElementById("signseed").value)
+				},success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);         
+			}
+		});
+		
+	}
+	
+	function goprint(){
+		cleanAll();
+		var s;
+	  s = "EP";
+		//정렬(1B 61) 01 중앙
+		s = s + eval('"'+"\\x1B"+'"') + eval('"'+"\\x61"+'"') + eval('"'+"\\x01"+'"') 
+		//폰트크기(1B 21) 01
+		s = s + eval('"'+"\\x1B"+'"') + eval('"'+"\\x21"+'"') + eval('"'+"\\x01"+'"') + "    [RECEIPT]     " + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		//정렬(1B 61) 03 왼쪽
+		s = s + eval('"'+"\\x1B"+'"') + eval('"'+"\\x61"+'"') + eval('"'+"\\x03"+'"') + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  SALE DATE  : 2016-01-05  14:12:43 " + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  CASHIER    : 박한결" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  NO         : 123456789" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  ========================================" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		//폰트크기(1B 21) 11
+		s = s + eval('"'+"\\x1B"+'"') + eval('"'+"\\x21"+'"') + eval('"'+"\\x11"+'"') + "     CREDIT CARD     " + eval('"'+"\\x1B"+'"') + eval('"'+"\\x21"+'"') + eval('"'+"\\x01"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  CARD NAME : 신한프리미엄" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  CARD NO   : 465887**********" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  EXPIRY    : ****       DIV : 00" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  NET AMT   : 913" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  VAT AMT   : 91" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  TOTAL     : 1,004" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  APPROVAL DATE : 16년 03월 21일 16:01:43" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  APPROVAL      : 28244646" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  ACQUIRER      : 신한카드" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  MERCHANT      : 00404145" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  BILL          : 0700081" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + "  NOTICE        : " + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		//바코드
+		s = s + eval('"'+"\\x1D"+'"') + "h" + eval('"'+"\\x64"+'"');
+		s = s + eval('"'+"\\x1D"+'"') + "w" + eval('"'+"\\x02"+'"');
+		//0B는 16000000912 길이만큼의 hex값 (11의 16진수)
+		s = s + eval('"'+"\\x1D"+'"') + eval('"'+"\\x6B"+'"') + eval('"'+"\\x49"+'"') + eval('"'+"\\x0B"+'"') + "16000000912" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+		s = s + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"'); 
+		//(1B i ) 는 cutting
+		s = s + eval('"'+"\\x1B"+'"') + "i" + eval('"'+"\\x0D"+'"') + eval('"'+"\\x0A"+'"');
+
+		$.ajax({
+			url:document.getElementById("ecurl").value,
+			dataType : "jsonp",
+			type : "POST",
+			jsonp : "callback",
+			data : {"REQ": stringformat(encodeURI(s))},
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);         
+			}
+		});
+	}
+
+	function goSignReq(){
+		var s = "SR^";
+		$.ajax({
+			url:document.getElementById("ecurl").value,
+			dataType : "jsonp",
+			type : "GET",
+			jsonp : "callback",
+			data : {"REQ": s},
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);
+			}
+		});
+	}	
+	
+	function goClose(){
+		var s = "CC^";
+		$.ajax({
+			url:document.getElementById("ecurl").value,
+			dataType : "jsonp",
+			type : "GET",
+			jsonp : "callback",
+			data : {"REQ": s},
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);
+			}
+		});
+	}
+	
+	
+	function EJ(){
+		var s = "EJ^";
+		$.ajax({
+			url:document.getElementById("ecurl").value,
+			dataType : "jsonp",
+			type : "GET",
+			jsonp : "callback",
+			data : {"REQ": s},
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);
+			}
+		});
+	}
+	
+	function FB0604(){
+		var s = "CR^FB^06^04^2신용"+ eval('"'+"\\x1F"+'"') +"현금IC"+ eval('"'+"\\x1F"+'"') +"^20^현금IC 사용유무|서명패드 화면에서 거래를 선택해주세요^true^";
+		$.ajax({
+			url:document.getElementById("ecurl").value,
+			dataType : "jsonp",
+			type : "GET",
+			jsonp : "callback",
+			data : {"REQ": s},
+			success: function(data){
+				document.getElementById("recv").innerText= JSONtoString(data);
+			}
+		});
+	}
+	
+	
+</script>
+</head>
+<form>
+<body style="margin-top:30px;background-color:#ddd;" >
+<table align="center" cellspacing="0" cellpadding="0" style="width:800px; border:1px solid #ddd;background-color:#FFF;">
+<tr height="80px">
+	<td colspan="2" >
+		<img src="https://www.kicc.co.kr/kr/images/logo.gif" style="margin-left:20px; margin-top:20px"/>
+	</td>
+</tr>
+<tr height="20px"><td></td><td></td></tr>
+<tr height="40px">
+	<td align="center">이지카드URL</td>
+	<td>
+		<input type="text" id="ecurl" name="ecurl" style="width: 200px; height: 15px" value="http://127.0.0.1:8090/" >
+		EasyCard2 : 80포트 설치 / EasyCardK : 8090포트 설치
+	</td>
+</tr>
+<tr height="200px">
+	<td align="center" style="width: 100px;">요청전문</td>
+	<td>
+		(1)전문구분[2]<input type="text" id="gubun" name="gubun" style="width: 20px; height: 15px" value="D1" maxlength="2"> &nbsp;&nbsp;&nbsp;
+		(2)현금영수증용도<input type="text" id="cash_gubun" name="cash_gubun" style="width: 20px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(3)금액[9]<input type="text" id="amount" name="amount" style="width: 70px; height: 15px" value="1004" maxlength="9">&nbsp;&nbsp;&nbsp;
+		(4)할부[2]<input type="text" id="install" name="install" style="width: 20px; height: 15px" value="00" maxlength="2">
+		<br/>
+		(5)(취소시) 원승인일자[yymmdd]<input type="text" id="yymmdd" name="yymmdd" style="width: 60px; height: 15px" value="" maxlength="6">&nbsp;&nbsp;&nbsp;
+		(6)(취소시) 원승인번호[12]<input type="text" id="appr_num" name="appr_num" style="width: 90px; height: 15px" value="" maxlength="12">
+		<br/>
+		(7)상품코드[2]<input type="text" id="code" name="code" style="width: 20px; height: 15px" value="" maxlength="2"> &nbsp;&nbsp;&nbsp;
+		(8)임시판매번호[10]<input type="text" id="sell_num" name="sell_num" style="width: 90px; height: 15px" value="" maxlength="10">&nbsp;&nbsp;&nbsp;
+		(9)웹전송메세지[N]<input type="text" id="message" name="message" style="width: 180px; height: 15px" value="">
+		<br/>
+		(10)이지카드옵션[N]<input type="text" id="keyin" name="keyin" style="width: 20px; height: 15px" value="" maxlength="3"> &nbsp;&nbsp;&nbsp;
+		(11)멀티사업자 단말기ID[N]<input type="text" id="multi_tid" name="multi_tid" style="width: 70px; height: 15px" value="">&nbsp;&nbsp;&nbsp;
+		(12)타임아웃[2]<input type="text" id="timeout" name="timeout" style="width: 20px; height: 15px" value="20" maxlength="2"> &nbsp;&nbsp;&nbsp;
+		<br/>
+		(13)부가세 <input type="text" id="vat" name="vat" style="width: 20px; height: 15px" value="A" > &nbsp;&nbsp;&nbsp;
+		(14)추가필드 <input type="text" id="addfield" name="addfield" style="width: 100px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(15)수신핸들값 <input type="text" id="handle" name="handle" style="width: 40px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(16)단말기구분[2] <input type="text" id="catgubun" name="catgubun" style="width: 20px; height: 15px" value="" maxlength="2"> &nbsp;&nbsp;&nbsp;
+		<br/>
+		(17)할인/적립구분[1] <input type="text" id="discount" name="discount" style="width: 20px; height: 15px" value="" maxlength="1"> &nbsp;&nbsp;&nbsp;
+		(18)비밀번호 <input type="text" id="passwd" name="passwd" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(19)거래확장옵션 <input type="text" id="extend" name="extend" style="width: 200px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		<br/>
+		(20)(취소시) 거래고유번호 <input type="text" id="serialno" name="serialno" style="width: 200px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(21)동글Flag <input type="text" id="dongflag" name="dongflag" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		<br/>		
+		(22)EzGW바코드 <input type="text" id="barcode" name="barcode" style="width: 20px; height: 15px" value="" maxlength="13"> &nbsp;&nbsp;&nbsp;
+	  (23)봉사료 <input type="text" id="tip" name="tip" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(24)문자셋 <input type="text" id="charType" name="charType" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		<br/>
+		(25)BMP String <input type="text" id="bmp" name="bmp" style="width: 200px; height: 15px" value=""> &nbsp;&nbsp;&nbsp;
+	  (26)VAN <input type="text" id="van" name="van" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;	
+		<br/>
+		(27)EzGW카드번호 <input type="text" id="cardnum" name="cardnum" style="width: 200px; height: 15px" value="" maxlength=""> &nbsp;&nbsp;&nbsp;
+	  (28)EzGW유효기간<input type="text" id="yymm" name="yymm" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(29)승인방법구분 <input type="text" id="reqtype" name="reqtype" style="width: 40px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(30)화면표시 <input type="text" id="display" name="display" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(31)보너스승인번호 <input type="bonusAppNum" id="bonusAppNum" name="reqtype" style="width: 60px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(32)정유 <input type="text" id="oil" name="oil" style="width: 80px; height: 15px" value="" >  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		(33)토큰 <input type="text" id="token" name="token" style="width: 150px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(34)DSPMSG <input type="text" id="dspmsg" name="dspmsg" style="width: 150px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		<br/>
+		(35)보너스WCC <input type="text" id="bonuswcc" name="bonuswcc" style="width: 150px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		(36)보너스번호 <input type="text" id="bonusno" name="bonusno" style="width: 150px; height: 15px" value="" > &nbsp;&nbsp;&nbsp;
+		<br/>
+	</td>
+</tr>bonuswcc
+<tr height="80px">
+	<td align="center">이지카드호출</td>
+	<td>
+		<a href="javascript:makeMsg();"><span class="btn01" style="width:90px;">요청전문생성</span></a>
+		<a href="javascript:cleanAll();"><span class="btn01" style="width:90px;">요청전문삭제</span></a></br>
+		<a href="javascript:bt_go();"><span class="btn01" style="width:80px;">요청</span></a>
+		<input type="text" id="comm" name="comm" style="width: 500px; height: 15px" value="">
+	</td>
+</tr>
+<tr height="150px">
+	<td align="center">응답전문</td>
+	<td>  
+		<textarea id="recv" name="recv" style="width:600px; height:120px"></textarea>
+	</td>
+</tr>
+<tr height="70px">
+	<td align="center">샘플</td>
+	<td>
+		<a href="javascript:D1Sample();"><span class="btn01" style="width:90px;">신용승인샘플</span></a>
+		<a href="javascript:B1Sample();"><span class="btn01" style="width:90px;">현금영수증샘플</span></a>
+		<a href="javascript:B3Sample();"><span class="btn01" style="width:90px;">자진발급샘플</span></a>
+		<a href="javascript:U1Sample();"><span class="btn01" style="width:90px;">은련카드샘플</span></a>
+		<a href="javascript:C1Sample();"><span class="btn01" style="width:90px;">수표조회샘플</span></a>
+		<a href="javascript:TKSample();"><span class="btn01" style="width:90px;">토큰발행샘플</span></a>
+	</td>
+</tr>
+<tr height="100px">
+	<td align="center">기타</td>
+	<td>
+		<a href="javascript:LA();"><span class="btn01" style="width:80px;">재전송</span></a>
+		<a href="javascript:goClose();"><span class="btn01" style="width:100px;">이지카드창 종료</span></a>
+		<a href="javascript:goprint();"><span class="btn01" style="width:80px;">출력</span></a>
+		<a href="javascript:goSignReq();"><span class="btn01" style="width:80px;">서명요청</span></a>
+		<a href="javascript:goBarcode();"><span class="btn01" style="width:80px;">바코드(705)</span></a>
+		<br/>	
+		서명 Key : <input type="text" id="signseed" name="signseed" style="width: 250px; height: 15px" value="0700081 404154457717160204154457" maxlength="32">
+		<a href="javascript:goprint_sign2();"><span class="btn01" style="width:95px;">서명데이터</span></a>
+		<a href="javascript:EJ();"><span class="btn01" style="width:80px;">EJ</span></a>
+		<a href="javascript:FB0604();"><span class="btn01" style="width:80px;">FB0604</span></a>
+	</td>
+</tr>
+<tr height="100px">
+	<td colspan="2">
+		<img src="http://svc.kicc.co.kr/heykyul/kicc_logo.png" style="margin-left:20px; margin-top:40px"/>
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
