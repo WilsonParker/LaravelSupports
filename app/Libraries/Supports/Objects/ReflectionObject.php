@@ -31,4 +31,9 @@ class ReflectionObject
         }
     }
 
+    public function bindArray(array $arr) {
+        foreach ($arr as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
 }

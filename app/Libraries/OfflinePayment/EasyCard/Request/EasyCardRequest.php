@@ -1,11 +1,14 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Payment\EasyCard;
+namespace LaravelSupports\Libraries\OfflinePayment\EasyCard\Request;
 
 
-class EasyCardService
+use LaravelSupports\Libraries\Supports\Objects\ReflectionObject;
+
+class EasyCardRequest extends ReflectionObject
 {
+
     // 전문구분[2]
     public string $gubun = 'D1';
     // 현금영수증용도
@@ -118,20 +121,7 @@ class EasyCardService
         'bonusno',
     ];
 
-    /**
-     * EasyCardService constructor.
-     */
-    public function __construct()
-    {
-        $this->init();
-    }
-
-    protected function init()
-    {
-    }
-
-
-    public function buildRequest()
+    public function buildRequest() : string
     {
         return collect($this->dataSort)->reduce(function ($carry, $item) {
             return $carry . $this->{$item} . '^';
