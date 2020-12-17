@@ -344,6 +344,7 @@ abstract class BaseController extends Controller
             $result = Cache::get($key);
         } else {
             $result = $callback();
+            Cache::forget($key);
             Cache::add($key, $result, $expired);
         }
         return $result;
