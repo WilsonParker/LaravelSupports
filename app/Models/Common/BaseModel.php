@@ -143,7 +143,7 @@ abstract class BaseModel extends Model
      * @added   2020/04/29
      * @updated 2020/04/29
      */
-    protected function buildWhereQuery($query, $where)
+    protected function buildWhereQuery($query, $where): Builder
     {
         $builder = function ($query, $where) {
             if (is_callable($where)) {
@@ -178,7 +178,7 @@ abstract class BaseModel extends Model
      * @added   2020/04/29
      * @updated 2020/04/29
      */
-    protected function buildWithQuery($query, $with)
+    protected function buildWithQuery($query, $with): Builder
     {
         if (is_array($with)) {
             foreach ($with as $withItem) {
@@ -200,7 +200,7 @@ abstract class BaseModel extends Model
      * @added   2020/04/29
      * @updated 2020/04/29
      */
-    protected function buildOrderQuery($query, $order)
+    protected function buildOrderQuery($query, $order): Builder
     {
         $builder = function ($query, $order) {
             if (is_callable($order)) {
@@ -291,7 +291,7 @@ abstract class BaseModel extends Model
         return $query;
     }
 
-    protected function isLikeSearchType($searchType)
+    protected function isLikeSearchType($searchType): bool
     {
         return collect($this->likeQuery)->contains($searchType);
     }

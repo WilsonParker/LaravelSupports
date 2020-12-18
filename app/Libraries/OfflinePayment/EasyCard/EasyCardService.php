@@ -26,9 +26,9 @@ class EasyCardService
         $this->request->bindArray($data);
     }
 
-    public function buildResponse(string $data)
+    public function buildResponse(array $data)
     {
-        $this->response->bindJson($data);
+        $this->response->bindArray($data);
     }
 
     /**
