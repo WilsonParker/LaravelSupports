@@ -151,7 +151,7 @@ class BaseViewModel extends ViewModel
         $this->subSearch = $this->buildSearchArray($this->subSearch, $label, $key, $value, $searchType);
     }
 
-    protected function buildSearchArray(array $array, string $label, string $key, $value, string $searchType = '')
+    protected function buildSearchArray(array $array, string $label, string $key, $value, string $searchType = ''): array
     {
         if (Arr::has($array, $key)) {
             Arr::forget($array, $key);
@@ -174,22 +174,22 @@ class BaseViewModel extends ViewModel
         ]);
     }
 
-    public function formatDate(string $date, string $format)
+    public function formatDate(string $date, string $format): string
     {
         return isset($date) ? Carbon::parse($date)->format($format) : '';
     }
 
-    public function formatDefaultDate($date)
+    public function formatDefaultDate($date): string
     {
         return $this->formatDate($date, $this->getDateFormat());
     }
 
-    public function imageURL($path, $image)
+    public function imageURL($path, $image): string
     {
         return config('image.images_url').'/'.$path.'/'.$image;
     }
 
-    public function getDateFormat()
+    public function getDateFormat(): string
     {
         return $this->dateFormat;
     }
@@ -226,10 +226,8 @@ class BaseViewModel extends ViewModel
         $this->description = $description;
     }
 
-    public function defaultData($data, $key, $default = '')
+    public function defaultData($data, $key, $default = ''): string
     {
-        $result = $default;
-
         if (is_array($data)) {
             $result = $data[$key] ?? $default;
         } else {
