@@ -126,4 +126,5 @@ class EasyCardResponse extends ReflectionObject
     {
         return $this->RS04 == '0000';
     }
+
 }

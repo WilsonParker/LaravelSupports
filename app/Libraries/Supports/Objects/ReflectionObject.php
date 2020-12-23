@@ -15,7 +15,7 @@ class ReflectionObject
     public function bindStd($std)
     {
         foreach ($this->getProps() as $prop) {
-            if(isset($std->{$prop})) {
+            if (isset($std->{$prop})) {
                 $this->{$prop} = $std->{$prop};
             }
         }
@@ -25,15 +25,31 @@ class ReflectionObject
     {
         $data = json_decode($json, true);
         foreach ($this->getProps() as $prop) {
-            if(isset($data["$prop"])) {
+            if (isset($data["$prop"])) {
                 $this->{$prop} = $data["$prop"];
             }
         }
     }
 
-    public function bindArray(array $arr) {
-        foreach ($arr as $key => $value) {
-            $this->{$key} = $value ?? '';
+    public function bindArray(array $arr, bool $onlyProps = false)
+    {
+        if ($onlyProps) {
+            foreach ($this->getProps() as $prop) {
+                $this->{$prop} = $arr[$prop] ?? '';
+            }
+        } else {
+            foreach ($arr as $key => $value) {
+                $this->{$key} = $value ?? '';
+            }
         }
+    }
+
+    public function toArray(): array
+    {
+        $result = [];
+        foreach ($this->getProps() as $prop) {
+            $result[$prop] = $this->{$prop};
+        }
+        return $result;
     }
 }

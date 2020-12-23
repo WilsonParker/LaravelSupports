@@ -28,7 +28,7 @@ class EasyCardService
 
     public function buildResponse(array $data)
     {
-        $this->response->bindArray($data);
+        $this->response->bindArray($data, true);
     }
 
     /**
