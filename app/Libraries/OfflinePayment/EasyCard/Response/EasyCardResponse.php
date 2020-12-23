@@ -112,6 +112,16 @@ class EasyCardResponse extends ReflectionObject
     // 보너스 승인 번호
     public string $RS34 = '';
 
+    public function getTid(): string
+    {
+        return $this->RS08;
+    }
+
+    public function getCid(): string
+    {
+        return $this->RS09;
+    }
+
     public function isSuccess(): bool
     {
         return $this->RS04 == '0000';
