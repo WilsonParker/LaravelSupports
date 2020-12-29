@@ -17,7 +17,7 @@
         @endisset
 
         <div class="table-responsive">
-            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered dataTable" id="{{ $id }}" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     {!! $header !!}
@@ -40,7 +40,7 @@
     <!-- Page level custom scripts -->
     <script>
         $(document).ready(function () {
-            $('#dataTable').DataTable({
+            $('#{{ $id }}').DataTable({
                 "scrollX": true,
                 "order": [[ "{{ $sort[0] }}", "{{ $sort[1] }}" ]]
             });

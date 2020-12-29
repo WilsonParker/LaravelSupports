@@ -16,6 +16,7 @@ class TableSearchComponent extends BaseComponent
     public array $searchData;
     public $link;
     public string $url;
+    public string $id;
     public string $title;
     public string $header;
     public string $tableRoot;
@@ -23,6 +24,7 @@ class TableSearchComponent extends BaseComponent
     /**
      * Create a new component instance.
      *
+     * @param string $id
      * @param string $title
      * @param string $header
      * @param string $tableRoot
@@ -34,8 +36,9 @@ class TableSearchComponent extends BaseComponent
      * @param array $searchData
      * @param string $url
      */
-    public function __construct(string $title = '', string $header = '', string $tableRoot = '', $length = [10, 25, 50, 100], $search = ['name' => '이름'], $subSearch = [], $sort = [], $link = '', $searchData = [], $url = '')
+    public function __construct(string $id = 'table_search_component', string $title = '', string $header = '', string $tableRoot = '', $length = [10, 25, 50, 100], $search = ['name' => '이름'], $subSearch = [], $sort = [], $link = '', $searchData = [], $url = '')
     {
+        $this->id = $id;
         $this->title = $title;
         $this->header = $header;
         $this->tableRoot = $tableRoot;
@@ -61,7 +64,7 @@ class TableSearchComponent extends BaseComponent
     {
         $result = '';
         foreach ($search as $key => $values) {
-            $result .= '<label>' . $values[self::KEY_SEARCH_LABEL].'&nbsp;';
+            $result .= '<label>' . $values[self::KEY_SEARCH_LABEL] . '&nbsp;';
             $result .= '<select class="custom-select custom-select-sm form-control form-control-sm" name="';
             if ($values[self::KEY_SEARCH_TYPE] == self::KEY_SEARCH_TYPE_MULTIPLE) {
                 $result .= $key . '[]';

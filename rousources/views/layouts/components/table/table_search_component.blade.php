@@ -41,7 +41,7 @@
                                 {{ $tableTotal }}
                             @else
                                 <span style="margin-left: 15px">
-                        Total : {{ $link->total() }}
+                        Total : {{ number_format($link->total()) }}
                     </span>
                             @endisset
                         </div>
@@ -58,7 +58,7 @@
                                                 <option value="{{ $itemKey }}"
                                                         @if(isset($searchData[$key]) && $searchData[$key] == $itemKey)
                                                         selected
-                                                        @endif
+                                                    @endif
                                                 >{{ $itemValue }}</option>
                                             @endforeach
                                         </select>
@@ -72,9 +72,6 @@
                             {{ $footerAdded }}
                         </div>
                     @endisset
-
-                    @php($usableSubSearch = isset($searchData[$baseViewModel::KEY_SEARCH_KEYWORD_TYPE]) && $searchData[$baseViewModel::KEY_SEARCH_KEYWORD_TYPE] == $baseViewModel::KEY_SEARCH_KEYWORD_TYPE_MULTIPLE)
-
                     <div class="col-sm-12 col-md-9 row">
                         <div class="input-group mb-3 dataTables_length">
                             @isset($tableSearch)
@@ -83,7 +80,32 @@
                             @isset($tableBasicSearch)
                                 {{ $tableBasicSearch }}
                             @else
-                                {!! $buildSearchHtml($search) !!}
+                                @foreach($search as $key => $values)
+                                    <label>{{ $values[$baseViewModel::KEY_SEARCH_LABEL] }}
+                                        <select class="custom-select custom-select-sm form-control form-control-sm"
+                                                @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE))
+                                                    name="{{$key}}[]"
+                                                @else
+                                                    name="{{$key}}"
+                                                @endif
+                                                @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE)
+                                                    multiple
+                                                @endif
+                                        >
+                                            @foreach($values[$baseViewModel::KEY_SEARCH_VALUES] as $itemKey => $itemValue)
+                                                <option value="{{ $itemKey }}"
+                                                        @if(isset($searchData[$key]))
+                                                            @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE && in_array($itemKey, $searchData[$key]))
+                                                            selected
+                                                            @elseif($searchData[$key] == $itemKey)
+                                                            selected
+                                                            @endif
+                                                        @endif
+                                                >{{ $itemValue }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>&nbsp;
+                                @endforeach
                             @endisset
                         </div>
                     </div>
@@ -91,52 +113,20 @@
                         <div class="input-group mb-3 dataTables_length">
                             <input type="text" class="form-control" name="{{ $tableSearchComponent::KEY_KEYWORD }}"
                                    value="{{ $searchData[$tableSearchComponent::KEY_KEYWORD] ?? '' }}"
-                                   aria-label="Search text">
-
-                            @if(!$usableSubSearch)
-                                <button type="button" class="btn btn-primary" onclick="tableSearch()"><i class="fas fa-search fa-sm"></i></button>
-                                <button type="button" class="btn btn-success" onclick="clearAndReloadPage()">clear</button>
-                            @endif
-                        </div>
-                    </div>
-                    @if($usableSubSearch)
-                        <div class="col-sm-12 col-md-9 row">
-                            <div class="input-group mb-3 dataTables_length">
-                                {!! $buildSearchHtml($subSearch) !!}
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-9 row">
-                            <div class="input-group mb-3 dataTables_length">
-                                <select class="custom-select form-control"
-                                        name="{{ $tableSearchComponent::KEY_SEARCH_OPERATOR }}">
-                                    <option value="{{ $tableSearchComponent::KEY_SEARCH_OPERATOR_AND }}"
-                                            @if(isset($searchData[$tableSearchComponent::KEY_SEARCH_OPERATOR]) && $searchData[$tableSearchComponent::KEY_SEARCH_OPERATOR] == $tableSearchComponent::KEY_SEARCH_OPERATOR_AND)
-                                            selected
-                                            @endif
-                                    >AND</option>
-                                    <option value="{{ $tableSearchComponent::KEY_SEARCH_OPERATOR_OR }}"
-                                            @if(isset($searchData[$tableSearchComponent::KEY_SEARCH_OPERATOR]) && $searchData[$tableSearchComponent::KEY_SEARCH_OPERATOR] == $tableSearchComponent::KEY_SEARCH_OPERATOR_OR)
-                                            selected
-                                            @endif
-                                    >OR</option>
-                                </select>
-                                <input type="text" class="form-control"
-                                       name="{{ $tableSearchComponent::KEY_SUB_KEYWORD }}"
-                                       value="{{ $searchData[$tableSearchComponent::KEY_SUB_KEYWORD] ?? '' }}"
-                                       aria-label="Search text">
+                                   aria-label="Text input with segmented dropdown button">
+                            <div class="input-group-append">
                                 <button type="button" class="btn btn-primary" onclick="tableSearch()"><i
                                         class="fas fa-search fa-sm"></i></button>
                                 <button type="button" class="btn btn-success" onclick="clearAndReloadPage()">clear
                                 </button>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </form>
             </div>
             <div class="row">
                 @empty($tableRoot)
-                    <table class="table table-bordered" width="100%" cellspacing="0" id="table_search_component">
+                    <table class="table table-bordered" width="100%" cellspacing="0" id="{{ $id }}">
                         @else
                             {!! $tableRoot !!}
                         @endif
@@ -189,7 +179,7 @@
         }
 
         function getTableObject() {
-            return $("#table_search_component");
+            return $("#{{ $id }}");
         }
     </script>
 @endpush

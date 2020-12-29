@@ -30,7 +30,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div id="{{ $id }}" class="dataTables_wrapper dt-bootstrap4">
                 <form name="frm" action="{{ $url ?? '' }}">
                     <input type="hidden" name="page" value="1"/>
                     <div class="col-sm-12 col-md-9 row">
@@ -63,17 +63,17 @@
                                                 @endif
                                                 @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE)
                                                 multiple
-                                            @endif
+                                                @endif
                                         >
                                             @foreach($values[$baseViewModel::KEY_SEARCH_VALUES] as $itemKey => $itemValue)
                                                 <option value="{{ $itemKey }}"
                                                         @if(isset($searchData[$key]))
-                                                        @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE && in_array($itemKey, $searchData[$key]))
-                                                        selected
-                                                        @elseif($searchData[$key] == $itemKey)
-                                                        selected
-                                                    @endif
-                                                    @endif
+                                                            @if($values[$baseViewModel::KEY_SEARCH_TYPE] == $baseViewModel::KEY_SEARCH_TYPE_MULTIPLE && in_array($itemKey, $searchData[$key]))
+                                                            selected
+                                                            @elseif($searchData[$key] == $itemKey)
+                                                            selected
+                                                            @endif
+                                                        @endif
                                                 >{{ $itemValue }}</option>
                                             @endforeach
                                         </select>
@@ -120,7 +120,7 @@
     <!-- Page level custom scripts -->
         <script>
             $(document).ready(function () {
-                $('#dataTable').DataTable({
+                $('#{{ $id }}').DataTable({
                     "scrollX": true,
                 });
                 $('.dataTables_length').addClass('bs-select');
@@ -141,7 +141,7 @@
             }
 
             function getTableObject() {
-                return $("#table_search_component");
+                return $("#{{ $id }}");
             }
         </script>
 @endpush
