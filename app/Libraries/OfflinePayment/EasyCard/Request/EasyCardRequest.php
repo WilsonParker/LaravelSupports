@@ -32,7 +32,7 @@ class EasyCardRequest extends ReflectionObject
     // 멀티사업자 단말기ID[N]
     public string $multi_tid = '';
     // 타임아웃[2]
-    public string $timeout = '20';
+    public string $timeout = '60';
     // 부가세
     public string $vat = 'F';
     // 추가필드
