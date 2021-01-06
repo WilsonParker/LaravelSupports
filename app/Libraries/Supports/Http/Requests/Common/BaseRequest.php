@@ -25,12 +25,12 @@ abstract class BaseRequest extends FormRequest
     {
     }
 
-    public function rules()
+    public function rules(): array
     {
         return $this->rules;
     }
 
-    public function messages()
+    public function messages(): array
     {
         return $this->messages;
     }
@@ -54,7 +54,7 @@ abstract class BaseRequest extends FormRequest
      * @added   2020/06/22
      * @updated 2020/06/22
      */
-    protected function getConflictValidationCallback($from, $to, $message)
+    protected function getConflictValidationCallback($from, $to, $message): Closure
     {
         return function ($validator) use ($from, $to, $message) {
             $validator->after(function (Validator $validator) use ($from, $to, $message) {
