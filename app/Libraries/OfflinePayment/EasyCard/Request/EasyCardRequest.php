@@ -56,7 +56,7 @@ class EasyCardRequest extends ReflectionObject
     // 봉사료
     public string $tip = '';
     // 문자셋
-    public string $charType = '';
+    public string $charType = 'EUC-KR';
     // BMP String
     public string $bmp = '';
     // VAN
