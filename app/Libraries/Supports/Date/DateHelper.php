@@ -44,7 +44,8 @@ class DateHelper
 
     public function getPrevMonth(): int
     {
-        return $this->date->month - 1;
+        $date = $this->date->clone()->addMonths(-1);
+        return $date->month;
     }
 
     public function getLastDayOfAMonth(): int

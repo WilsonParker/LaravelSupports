@@ -21,25 +21,25 @@ trait GetPaymentAttributes
     // 사업자 번호
     public function getBusinessNumber(): string
     {
-        return '220-88-65167';
+        return '722-86-00064';
     }
 
     // 대표자
     public function getExponent(): string
     {
-        return '김준현';
+        return '김영관';
     }
 
     // 전화번호
     public function getContact(): string
     {
-        return '070-5029-1422';
+        return '02-2155-0001';
     }
 
     // 주소
     public function getAddress(): string
     {
-        return '서울특별시 서초구 매헌로 16 5층';
+        return '서울특별시 서초구 매헌로 16';
     }
 
     // 결제 금액
