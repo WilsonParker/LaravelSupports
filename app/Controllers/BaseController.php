@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
@@ -55,12 +56,18 @@ abstract class BaseController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth:admin');
         $this->init();
     }
 
     protected function init()
     {
 
+    }
+
+    protected function guard()
+    {
+        return Auth::guard('admin');
     }
 
     /**
