@@ -56,18 +56,12 @@ abstract class BaseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:admin');
         $this->init();
     }
 
     protected function init()
     {
 
-    }
-
-    protected function guard()
-    {
-        return Auth::guard('admin');
     }
 
     /**
