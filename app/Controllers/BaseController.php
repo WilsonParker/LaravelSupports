@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
@@ -21,6 +20,9 @@ use Throwable;
 abstract class BaseController extends Controller
 {
     use TransactionTrait;
+
+    const KEY_START_DATE = 'start_date';
+    const KEY_END_DATE = 'end_date';
 
     /**
      * view root
@@ -50,6 +52,7 @@ abstract class BaseController extends Controller
     protected string $title = '';
     protected string $description = '';
     protected array $searchData = [];
+    protected string $dateFormat = 'Y-m-d';
 
     /**
      * BaseController constructor.
@@ -152,6 +155,45 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * buildSearchDataQueryList 로 인해 생성된 query list 를 검색에 적용
+     *
+     * @param Builder $query
+     * @return Builder
+     * @author  dew9163
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     */
+    protected function buildSearchDataQuery(Builder $query): Builder
+    {
+        foreach ($this->buildSearchDataQueryList($query) as $key => $callback) {
+            if ($this->isValidSearchData($key, $this->searchData)) {
+                $callback($query, $this->searchData[$key]);
+            }
+        }
+        return $query;
+    }
+
+    /**
+     * $searchData 를 검색하기 위해 필요한 query list
+     *
+     * @param Builder $query
+     * @return array
+     * @author  dew9163
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     * @example
+     * [
+     *  'key' => function ($query, $value) {
+     *      $query->where('column', $value);
+     *  }
+     * ]
+     */
+    protected function buildSearchDataQueryList(Builder $query): array
+    {
+        return [];
+    }
+
+    /**
      * build sort query
      *
      * @param Builder $query
@@ -168,7 +210,13 @@ abstract class BaseController extends Controller
 
     protected function getSearchKeys(): array
     {
-        return [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
+        $keys = [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
+        return array_merge($keys, $this->appendSearchKeys());
+    }
+
+    protected function appendSearchKeys(): array
+    {
+        return [];
     }
 
     /**
@@ -188,7 +236,9 @@ abstract class BaseController extends Controller
         if ($request->has([BaseComponent::KEY_SEARCH, BaseComponent::KEY_KEYWORD])) {
             $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
             $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
-            $query = $this->buildSearchQuery($query, $search, $keyword);
+            if ($this->isValidKeyword($search, $keyword)) {
+                $query = $this->buildSearchQuery($query, $search, $keyword);
+            }
         }
 
         if ($request->has([BaseComponent::KEY_SORT])) {
@@ -199,11 +249,14 @@ abstract class BaseController extends Controller
         }
 
         if ($request->has([BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SUB_KEYWORD])) {
-            $subSearch = $this->searchData[BaseComponent::KEY_SUB_SEARCH];
+            $subSearch = $this->searchData[BaseComponent::KEY_SUB_SEARCH] ?? '';
             $subKeyword = $this->searchData[BaseComponent::KEY_SUB_KEYWORD] ?? '';
-            $operator = $this->searchData[BaseComponent::KEY_SEARCH_OPERATOR];
-            $query = $this->buildSubSearchQuery($query, $subSearch, $subKeyword, $operator);
+            $operator = $this->searchData[BaseComponent::KEY_SEARCH_OPERATOR] ?? '';
+            if ($this->isValidKeyword($subSearch, $subKeyword)) {
+                $query = $this->buildSubSearchQuery($query, $subSearch, $subKeyword, $operator);
+            }
         }
+        $query = $this->buildSearchDataQuery($query);
         $query = $this->buildAdditionalSearchQuery($request, $query);
 
         return $query;
@@ -238,7 +291,7 @@ abstract class BaseController extends Controller
         $request->query = new ParameterBag($excepted);
     }
 
-    protected function getInputWithDefaultIfEmpty($request, $key, $default = '')
+    protected function getInputWithDefaultIfEmpty($request, $key, $default = ''): string
     {
         $value = $request->input($key, '');
         return isset($value) && !empty($value) ? $value : $default;
@@ -271,13 +324,13 @@ abstract class BaseController extends Controller
      * @added   2020/12/08
      * @updated 2020/12/08
      */
-    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true)
+    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true): \Illuminate\Http\RedirectResponse
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
         return $this->backWithMessage($message, $redirect);
     }
 
-    protected function backWithMessage(string $message, bool $redirect = true)
+    protected function backWithMessage(string $message, bool $redirect = true): \Illuminate\Http\RedirectResponse
     {
         if ($redirect) {
             return redirect()->back()->with([
@@ -290,7 +343,7 @@ abstract class BaseController extends Controller
         }
     }
 
-    protected function backWithErrors(Throwable $e)
+    protected function backWithErrors(Throwable $e): \Illuminate\Http\RedirectResponse
     {
         return back()->withInput()->withErrors($e->getMessage());
     }
@@ -307,13 +360,13 @@ abstract class BaseController extends Controller
      * @added   2020/12/08
      * @updated 2020/12/08
      */
-    protected function redirectWithConfig(string $prefix, string $route, array $params, bool $isSuccess = true)
+    protected function redirectWithConfig(string $prefix, string $route, array $params, bool $isSuccess = true): \Illuminate\Http\RedirectResponse
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
         return $this->redirectWithMessage($message, $route, $params);
     }
 
-    protected function redirectWithMessage(string $message, string $route, array $params)
+    protected function redirectWithMessage(string $message, string $route, array $params): \Illuminate\Http\RedirectResponse
     {
         return redirect()->route($route, $params)->with([
             'message' => $message
@@ -349,5 +402,46 @@ abstract class BaseController extends Controller
             Cache::put($key, $result, $expired);
         }
         return $result;
+    }
+
+    protected function getDate($data): array
+    {
+        $now = Carbon::now()->format($this->dateFormat);
+        $start = $data[self::KEY_START_DATE] ?? $now;
+        $end = $data[self::KEY_END_DATE] ?? $now;
+        return [
+            'start' => $start,
+            'end' => $end,
+        ];
+    }
+
+    /**
+     * 검색어 $keyword 가 유효한 지 확인 합니다
+     *
+     * @param string $search
+     * @param string $keyword
+     * @return bool
+     * @author  dew9163
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     */
+    protected function isValidKeyword(string $search, string $keyword): bool
+    {
+        return true;
+    }
+
+    /**
+     * $key 에 해당하는 $searchData 가 유효한 지 확인 합니다
+     *
+     * @param string $key
+     * @param array $searchData
+     * @return bool
+     * @author  dew9163
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     */
+    protected function isValidSearchData(string $key, array $searchData): bool
+    {
+        return isset($searchData[$key]);
     }
 }

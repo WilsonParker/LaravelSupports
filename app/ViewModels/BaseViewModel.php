@@ -33,6 +33,8 @@ class BaseViewModel extends ViewModel
     public array $sort = [];
     public string $title = '';
     public string $description = '';
+    public $startDate;
+    public $endDate;
 
     /**
      * Component name in $view
@@ -224,6 +226,22 @@ class BaseViewModel extends ViewModel
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate): void
+    {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @param mixed $endDate
+     */
+    public function setEndDate($endDate): void
+    {
+        $this->endDate = $endDate;
     }
 
     public function defaultData($data, $key, $default = ''): string
