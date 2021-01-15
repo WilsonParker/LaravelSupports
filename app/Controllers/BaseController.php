@@ -224,27 +224,28 @@ abstract class BaseController extends Controller
      *
      * @param Request $request
      * @param $query
+     * @param bool $clone
      * @return Builder
      * @author  dew9163
      * @added   2020/09/20
      * @updated 2020/11/04
      */
-    protected function buildQuery(Request $request, $query): Builder
+    protected function buildQuery(Request $request, $query, bool $clone = true): Builder
     {
-        $query = clone $query;
+        $rQuery = $clone ? clone $query : $query;
         $this->searchData = $request->only($this->getSearchKeys());
         if ($request->has([BaseComponent::KEY_SEARCH, BaseComponent::KEY_KEYWORD])) {
             $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
             $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
             if ($this->isValidKeyword($search, $keyword)) {
-                $query = $this->buildSearchQuery($query, $search, $keyword);
+                $rQuery = $this->buildSearchQuery($rQuery, $search, $keyword);
             }
         }
 
         if ($request->has([BaseComponent::KEY_SORT])) {
             $sort = $this->searchData[BaseComponent::KEY_SORT];
             if (isset($sort)) {
-                $query = $this->buildSortQuery($query, $sort);
+                $rQuery = $this->buildSortQuery($rQuery, $sort);
             }
         }
 
@@ -253,13 +254,13 @@ abstract class BaseController extends Controller
             $subKeyword = $this->searchData[BaseComponent::KEY_SUB_KEYWORD] ?? '';
             $operator = $this->searchData[BaseComponent::KEY_SEARCH_OPERATOR] ?? '';
             if ($this->isValidKeyword($subSearch, $subKeyword)) {
-                $query = $this->buildSubSearchQuery($query, $subSearch, $subKeyword, $operator);
+                $rQuery = $this->buildSubSearchQuery($rQuery, $subSearch, $subKeyword, $operator);
             }
         }
-        $query = $this->buildSearchDataQuery($query);
-        $query = $this->buildAdditionalSearchQuery($request, $query);
+        $rQuery = $this->buildSearchDataQuery($rQuery);
+        $rQuery = $this->buildAdditionalSearchQuery($request, $rQuery);
 
-        return $query;
+        return $rQuery;
     }
 
     /**
@@ -267,14 +268,15 @@ abstract class BaseController extends Controller
      *
      * @param Request $request
      * @param Builder $query
+     * @param bool $clone
      * @return Paginator
      * @author  dew9163
      * @added   2020/09/20
-     * @updated 2020/09/20
+     * @updated 2021/01/14
      */
-    protected function buildSearchQueryPagination(Request $request, Builder $query): Paginator
+    protected function buildSearchQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
     {
-        return $this->buildQuery($request, clone $query)->paginate($this->getLength($request));
+        return $this->buildQuery($request, $query, $clone)->paginate($this->getLength($request));
     }
 
     protected function mergeWhere($attributes, $array)

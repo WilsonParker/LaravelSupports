@@ -22,7 +22,7 @@ trait TransactionTrait
      * @param callable|null $validationCallback
      * @param bool $loggable
      * @return ResponseTemplate
-     * @author  TaehyunJeong
+     * @author  WilsonParker
      * @added   2019-08-27
      * @updated 2020-04-27
      *
@@ -82,7 +82,7 @@ trait TransactionTrait
      * @param   $callback
      * @param   $errorCallback
      * @return  mixed
-     * @author  TaehyunJeong
+     * @author  WilsonParker
      * @added   2019-08-27
      * @updated 2019-08-27
      */

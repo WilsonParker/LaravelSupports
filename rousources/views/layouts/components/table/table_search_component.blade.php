@@ -53,6 +53,7 @@
                                     <label>정렬
                                         <select class="custom-select custom-select-sm form-control form-control-sm"
                                                 name="{{$key}}"
+                                                onchange="tableSearch()"
                                         >
                                             @foreach($values[$baseViewModel::KEY_SORT_VALUES] as $itemKey => $itemValue)
                                                 <option value="{{ $itemKey }}"
@@ -159,7 +160,11 @@
     <script>
         function onLengthChanged(length) {
             let callback = function () {
-                location.href = "?" + helper.html.addQueryString("length", length);
+                let query = helper.html.buildQueryString({
+                    length : length,
+                    page : 1,
+                });
+                location.href = "?" + query;
             };
             loading.run(callback);
         }
