@@ -276,7 +276,13 @@ abstract class BaseController extends Controller
      */
     protected function buildSearchQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
     {
-        return $this->buildQuery($request, $query, $clone)->paginate($this->getLength($request));
+        return $this->buildQueryPagination($request, $this->buildQuery($request, $query, $clone), $clone);
+    }
+
+    protected function buildQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
+    {
+        $cloneQuery = $clone ? clone $query : $query;
+        return $cloneQuery->paginate($this->getLength($request));
     }
 
     protected function mergeWhere($attributes, $array)
