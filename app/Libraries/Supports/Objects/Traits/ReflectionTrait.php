@@ -6,47 +6,68 @@ namespace LaravelSupports\Libraries\Supports\Objects\Traits;
 
 trait ReflectionTrait
 {
-    public function getProps()
+    public function getProps(): array
     {
         return array_keys(get_object_vars($this));
     }
 
-    public function bind($data, $callback)
+    public function bind($data, $callback, bool $onlyProps = false)
     {
-        foreach ($this->getProps() as $prop) {
-            $callback($data, $prop);
+        if ($onlyProps) {
+            foreach ($this->getProps() as $prop) {
+                $callback($data, $prop, null);
+            }
+        } else {
+            foreach ($data as $key => $value) {
+                $callback($data, $key, $value);
+            }
         }
         $this->afterBind();
     }
 
-    public function bindStd($std)
+    public function bindStd($std, bool $onlyProps = false)
     {
-        $callback = function ($data, $prop) {
+        $callback = function ($data, $prop, $value) {
+            if (isset($value)) {
+                $this->{$prop} = $value;
+            } else if (isset($data->{$prop})) {
+                $this->{$prop} = $data->{$prop};
+            }
+        };
+        $this->bind($std, $callback, $onlyProps);
+    }
+
+    public function bindJson($json, bool $onlyProps = false)
+    {
+        $callback = function ($data, $prop, $value) {
             if (isset($data->{$prop})) {
                 $this->{$prop} = $data->{$prop};
             }
         };
-        $this->bind($std, $callback);
+        $this->bind($json, $callback, $onlyProps);
     }
 
-    public function bindJson($json)
+    public function bindArray($arr, bool $onlyProps = false)
     {
-        $data = json_decode($json, true);
-        $this->bindArray($data);
-    }
-
-    public function bindArray($arr)
-    {
-        $callback = function ($data, $prop) {
+        $callback = function ($data, $prop, $value) {
             if (isset($data[$prop])) {
                 $this->{$prop} = $data[$prop];
             }
         };
-        $this->bind($arr, $callback);
+        $this->bind($arr, $callback, $onlyProps);
     }
 
     public function afterBind()
     {
 
+    }
+
+    public function toArray(): array
+    {
+        $result = [];
+        foreach ($this->getProps() as $prop) {
+            $result[$prop] = $this->{$prop};
+        }
+        return $result;
     }
 }

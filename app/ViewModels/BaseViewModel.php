@@ -21,6 +21,8 @@ class BaseViewModel extends ViewModel
     public const KEY_SEARCH_KEYWORD_TYPE_MULTIPLE = 'search_keyword_type_multiple';
     public const KEY_SORT_LABEL = 'sort_label';
     public const KEY_SORT_VALUES = 'sort_values';
+    public const KEY_START_DATE = 'start_date';
+    public const KEY_END_DATE = 'end_date';
 
     protected string $dateFormat = self::DATE_FORMAT;
     protected string $viewPrefix = '';
@@ -242,6 +244,12 @@ class BaseViewModel extends ViewModel
     public function setEndDate($endDate): void
     {
         $this->endDate = $endDate;
+    }
+
+    public function setDate(array $data): void
+    {
+        $this->startDate = $data[self::KEY_START_DATE];
+        $this->endDate = $data[self::KEY_END_DATE];
     }
 
     public function defaultData($data, $key, $default = ''): string
