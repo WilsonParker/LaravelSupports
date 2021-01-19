@@ -21,9 +21,6 @@ abstract class BaseController extends Controller
 {
     use TransactionTrait;
 
-    const KEY_START_DATE = 'start_date';
-    const KEY_END_DATE = 'end_date';
-
     /**
      * view root
      *
@@ -415,11 +412,11 @@ abstract class BaseController extends Controller
     protected function getDate($data): array
     {
         $now = Carbon::now()->format($this->dateFormat);
-        $start = $data[self::KEY_START_DATE] ?? $now;
-        $end = $data[self::KEY_END_DATE] ?? $now;
+        $start = $data[BaseViewModel::KEY_START_DATE] ?? $now;
+        $end = $data[BaseViewModel::KEY_END_DATE] ?? $now;
         return [
-            'start' => $start,
-            'end' => $end,
+            BaseViewModel::KEY_START_DATE => $start,
+            BaseViewModel::KEY_END_DATE => $end,
         ];
     }
 
