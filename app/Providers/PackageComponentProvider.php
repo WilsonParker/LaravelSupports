@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use LaravelSupports\Views\Components\Cards\CardSearchComponent;
 use LaravelSupports\Views\Components\Inputs\CheckBoxListComponent;
+use LaravelSupports\Views\Components\Inputs\DatepickerComponent;
 use LaravelSupports\Views\Components\Inputs\FormInputComponent;
 use LaravelSupports\Views\Components\Inputs\FormMultipleInputComponent;
 use LaravelSupports\Views\Components\Inputs\FormSelectComponent;
@@ -52,5 +53,6 @@ class PackageComponentProvider extends ServiceProvider
         Blade::component('upload-image', UploadImageComponent::class);
 
         Blade::component('card-search', CardSearchComponent::class);
+        Blade::component('datepicker', DatepickerComponent::class);
     }
 }
