@@ -27,11 +27,15 @@
     * */
     $(function () {
         @if($errors->any())
-        alert("{{ implode('', $errors->all(':message')) }}");
+        modal.init('componentModal');
+        modal.setContent("{{ $errors->first() }}");
+        modal.show();
         @endif
 
         @if (session()->has('message'))
-        alert("{{ session()->get('message') }}");
+        modal.init('componentModal');
+        modal.setContent('{!! session()->get('message') !!}');
+        modal.show();
         @endif
     });
 </script>
