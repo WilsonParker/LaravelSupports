@@ -15,13 +15,6 @@
 <script src="{{ asset('resources/datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 
 <script>
-    function locateUrl(url) {
-        let callback = function () {
-            location.href = url;
-        };
-        loading.run(callback);
-    }
-
     /*
     * 에러 발생 시 alert 실행
     * */
