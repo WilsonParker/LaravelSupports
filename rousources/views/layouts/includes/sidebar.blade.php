@@ -38,7 +38,7 @@
         <div id="collapseBook" class="collapse" aria-labelledby="headingBook" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">문화 데이터</h6>
-                <a class="collapse-item" href="javascript:loading.loading.locateUrl(('{{ route('recommend.public_performance.index') }}')">공연 목록</a>
+                <a class="collapse-item" href="javascript:loading.loading.locateUrl('{{ route('recommend.public_performance.index') }}')">공연 목록</a>
             </div>
         </div>
     </li>
