@@ -226,17 +226,18 @@ abstract class BaseController extends Controller
      * @author  dew9163
      * @added   2020/09/20
      * @updated 2020/11/04
+     * @updated 2021/03/03
+     * set '' if keyword value does not exists
      */
     protected function buildQuery(Request $request, $query, bool $clone = true): Builder
     {
         $rQuery = $clone ? clone $query : $query;
         $this->searchData = $request->only($this->getSearchKeys());
-        if ($request->has([BaseComponent::KEY_SEARCH, BaseComponent::KEY_KEYWORD])) {
-            $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
-            $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
-            if ($this->isValidKeyword($search, $keyword)) {
-                $rQuery = $this->buildSearchQuery($rQuery, $search, $keyword);
-            }
+
+        $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
+        $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
+        if ($this->isValidKeyword($search, $keyword)) {
+            $rQuery = $this->buildSearchQuery($rQuery, $search, $keyword);
         }
 
         if ($request->has([BaseComponent::KEY_SORT])) {
