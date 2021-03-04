@@ -77,6 +77,37 @@ class CollectionServiceProvider extends ServiceProvider
         });
 
         /**
+         * $callback 에 해당하는 내용이 존재하는지 확인 합니다
+         *
+         * @param Collection | array | Model $needle
+         * @param $callback
+         * function($item, $needle)
+         * @return bool
+         * @author  dew9163
+         * @added   2021/03/04
+         * @updated 2021/03/04
+         */
+        Collection::macro('existsCallback', function ($needle, $callback): bool {
+            if ($needle instanceof Collection || is_array($needle)) {
+                foreach ($this as $item) {
+                    foreach ($needle as $needleItem) {
+                        if ($callback($item, $needleItem)) {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                foreach ($this as $item) {
+                    if ($callback($item, $needle)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        });
+
+        /**
          * $prop 으로 비교하여 $collection 에 해당하는 item 들을 포함한 Collection 을 제공 합니다
          * $collection 에 단일 item 을 넘길 수 있습니다
          *

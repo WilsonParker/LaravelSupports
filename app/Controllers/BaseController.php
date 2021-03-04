@@ -236,7 +236,7 @@ abstract class BaseController extends Controller
 
         $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
         $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
-        if ($this->isValidKeyword($search, $keyword)) {
+        if ($request->has([BaseComponent::KEY_SEARCH]) && $this->isValidKeyword($search, $keyword)) {
             $rQuery = $this->buildSearchQuery($rQuery, $search, $keyword);
         }
 
