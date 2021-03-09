@@ -188,11 +188,11 @@ class CollectionServiceProvider extends ServiceProvider
          * @added   2020/11/13
          * @updated 2020/11/13
          */
-        Collection::macro('divide', function ($callback): Collection {
+        Collection::macro('divide', function ($callback, $isKeys = false): Collection {
             $true = $this->filter(function ($item) use ($callback) {
                 return $callback($item);
             });
-            $false = $this->diff($true);
+            $false = $isKeys ? $this->diffKeys($true) : $this->diff($true);
 
             return collect([
                 'true' => $true,

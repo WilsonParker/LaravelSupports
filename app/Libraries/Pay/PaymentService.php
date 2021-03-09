@@ -11,11 +11,18 @@ use LaravelSupports\Libraries\Coupon\CouponService;
 use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractResponseObject;
 use LaravelSupports\Libraries\Pay\Common\Contracts\MembershipPayment;
+use LaravelSupports\Libraries\Pay\Common\Contracts\Payment;
 use LaravelSupports\Libraries\Pay\Delivery\DeliveryService;
 use LaravelSupports\Libraries\Pay\ImPort\ImPortPay;
 use LaravelSupports\Libraries\Pay\Kakao\KakaoPay;
 use Throwable;
 
+/**
+ *
+ * @author  dew9163
+ * @added   2021/03/08
+ * @updated 2021/03/08
+ */
 class PaymentService
 {
     const KEY_PAYMENT = 'payment';
@@ -27,6 +34,8 @@ class PaymentService
     protected $coupon;
     protected $payment;
     protected $data;
+
+    protected $changeWebhookURL = 'https://api2.flybook.kr/v3/membership/change/callback';
 
     /**
      * payment type
@@ -83,7 +92,7 @@ class PaymentService
      * self::KEY_RECOMMEND_CODE : 'recommend_code'
      *
      * @return mixed
-     * @throws Throwable
+     * @throws \Throwable
      * @author  dew9163
      * @added   2020/06/17
      * @updated 2020/06/17
@@ -123,7 +132,7 @@ class PaymentService
      * 결제 건을 승인 합니다
      *
      * @return mixed
-     * @throws Throwable
+     * @throws \Throwable
      * @author  dew9163
      * @added   2020/06/25
      * @updated 2020/06/25
@@ -134,20 +143,13 @@ class PaymentService
      * @updated 2020/07/27
      * @updated 2020/07/29
      * add coupon use count after use result is success
+     * @updated 2020/08/21
+     * run recommend, coupon, add membership .. before payment
      */
     public function approve()
     {
         $services = new $this->services[$this->paymentModule->code]($this->member, $this->payment, $this->coupon, $this->data);
-        $result = $services->approve();
-        $this->bindResponseApprove($this->payment, $result);
-
         $membershipService = new MembershipService($this->member);
-
-        // 결제 완료 event
-        event(new MembershipPaymentCompletedEvent($this->payment, $this->member));
-
-        // Membership 추가
-        $membershipService->addMembershipWithPayment($this->payment, $this->member);
 
         // 추천인 코드를 입력했을 경우 추천인 등록 혜택을 제공 합니다
         $recommendCode = $this->payment->getRecommendCode();
@@ -158,8 +160,37 @@ class PaymentService
 
         // 쿠폰 사용 처리를 합니다
         $couponService = new CouponService($this->coupon, $this->member);
-        // 쿠폰 사용 횟수 증가
-        if ($couponService->useCoupon($this->price, true)) {
+        // 쿠폰 사용 가능 여부 확인
+        $isUsableCoupon = $couponService->useCoupon($this->price, true);
+
+        // Membership 추가
+        $membershipService->addMembershipWithPayment($this->payment, $this->member);
+
+        $result = $services->approve();
+        $this->bindResponseApprove($this->payment, $result);
+
+        /**
+         * 정기결제 처리 결제 이후로 수정
+         *
+         * @author  seul
+         * @added   2021-02-23
+         * @updated 2021-02-23
+         */
+        if (!isset($result->status)) {
+            $membershipService->addMembershipSubscribe($this->payment, $this->member->id);
+            // 결제 완료 event
+            event(new MembershipPaymentCompletedEvent($this->payment, $this->member));
+        }
+
+        /**
+         * 쿠폰 사용 여부를 위에서 확인 후
+         * 결제 후에 쿠폰 사용 처리
+         *
+         * @author  dew9163
+         * @added   2020/08/26
+         * @updated 2020/08/26
+         */
+        if ($isUsableCoupon) {
             $this->payment->addCouponUsedCount();
             $this->payment->save();
         }
@@ -176,19 +207,29 @@ class PaymentService
      * nice_pay : 'model':MemberCard
      *
      * @return mixed
-     * @throws Throwable
+     * @throws \Throwable
      * @author  dew9163
      * @added   2020/07/01
      * @updated 2020/07/01
      * @updated 2020/07/22
+     * @updated 2020/12/28
+     * 쿠폰 사용이 되지 않았는데 쿠폰 사용 횟수가 증가하는 문제 처리
      */
     public function subscribe()
     {
         $payment = $this->data[self::KEY_PAYMENT];
         $service = new DeliveryService();
+        /**
+         * 결제수단 변경으로 인해 description 재설정 추가
+         *
+         * @author  seul
+         * @added   2020-10-20
+         * @updated 2020-10-20
+         */
         $options = [
             // 배송비 설정
             'delivery_cost' => $service->getDeliveryCost($this->member->address),
+            'description' => $this->price->description,
         ];
 
         /**
@@ -213,19 +254,106 @@ class PaymentService
 
         $this->bindResponseSubscription($paymentModel, $result);
         $membershipService = new MembershipService($this->member);
+        /**
+         * 자동 결제 시 카카오 알림톡 보내지 않음
+         * @author  dew9163
+         * @added   2020/08/14
+         * @updated 2020/08/14
+         */
         // 결제 완료 event
-        event(new MembershipPaymentCompletedEvent($this->payment, $this->member));
+        // event(new MembershipPaymentCompletedEvent($this->payment, $this->member));
+
         // Membership 추가
         $membershipService->addMembershipWithPayment($this->payment, $this->member);
+
+        /**
+         *  정기결제 업데이트 분리
+         *
+         * @author  seul
+         * @added   2021-02-24
+         * @updated 2021-02-24
+         */
+        $membershipService->addMembershipSubscribe($this->payment, $this->member->id);
         // 쿠폰 사용 횟수 증가
         $paymentModel->setStatus(Payment::STATUS_PAID);
-        $paymentModel->addCouponUsedCount();
+        if($paymentModel->isRemainedBenefit()) {
+            $paymentModel->addCouponUsedCount();
+        }
         $paymentModel->save();
 
         return $result->getResult();
     }
 
-    public function payWithCoupon()
+    /**
+     * Membership 결제수단을 업데이트할 준비를 합니다.
+     *
+     * @param
+     * @return
+     * @author  seul
+     * @added   2020-10-19
+     * @updated 2020-10-19
+     */
+    public function readyToUpdate()
+    {
+        // 결제 정보를 초기화 합니다.
+        $options = [
+            'aid' => null,
+            'tid' => null,
+            'cid' => null,
+            'sid' => null,
+            'uid' => null,
+            'pg_tid' => null,
+            'pg_provider' => null,
+            'token' => null,
+            'payment_type' => null,
+            'status' => 'ready',
+            'description' => $this->price->description.' - 결제 수단 변경',
+            'ref_payment_module_code' => $this->paymentModule->code,
+            'error_message' => null,
+        ];
+
+        $paymentModel = MembershipPaymentModel::createModelWithSelf($this->payment, $options, false);
+
+        $paymentModel->price = 0;
+        $paymentModel->sale_amount = 0;
+        $paymentModel->delivery_cost = 0;
+        $paymentModel->pay_amount = 0;
+
+        $this->payment = $paymentModel;
+        $service = new $this->services[$this->paymentModule->code]($this->member, $paymentModel, $this->coupon, $this->data);
+        $service->setWebHookURL($this->changeWebhookURL);
+        $result = $service->ready();
+
+        // 결제 금액 0원으로 변경한 부분 수정
+        $paymentModel->refresh();
+
+        $this->bindResponseReady($paymentModel, $result);
+        return $result->getResult();
+    }
+
+    /**
+     * Membership 결제수단을 업데이트 합니다.
+     *
+     * @return mixed
+     * @author  seul
+     * @added   2020-10-16
+     * @updated 2020-10-16
+     */
+    public function updateSubscribe()
+    {
+        $services = new $this->services[$this->paymentModule->code]($this->member, $this->payment, $this->coupon, $this->data);
+
+        $result = $services->storeSubscribeUser();
+        $this->bindResponseApprove($this->payment, $result);
+
+        $subscriber = $this->member->subscriber;
+        $subscriber->ref_membership_payment_id = $this->payment->id;
+        $subscriber->save();
+
+        return $result->getResult();
+    }
+
+    public function payWithCoupon($data = [])
     {
         $options = [
             'status' => 'paid',
@@ -235,8 +363,11 @@ class PaymentService
             'ref_member_id' => $this->member->id,
             'coupon_used_count' => 1,
             'coupon_benefit_count' => $this->coupon->getCouponBenefitCount(),
+            'pay_amount' => '0',
+            'ref_coupon_code' => $this->coupon->code,
         ];
-        return MembershipPaymentModel::createModel($this->paymentModule, $this->price, $this->member, $options);
+        $result = array_merge($options, $data);
+        return MembershipPaymentModel::createModel($this->paymentModule, $this->price, $this->member, $result);
     }
 
     /**
@@ -251,6 +382,14 @@ class PaymentService
     public function getPayService()
     {
         return isset($this->services[$this->type]) ? $this->services[$this->type] : null;
+    }
+
+    /**
+     * @param mixed $payment
+     */
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
     }
 
     /**
