@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseAgainObject;
+use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseCancelObject;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseOnTimeObject;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseStoreSubscribeUserObject;
 use LaravelSupports\Libraries\Pay\ImPort\Response\ImPortResponseSubscribeUserObject;
@@ -95,6 +96,14 @@ class ImPortPay extends AbstractPayService
         ];
     }
 
+    public function getCancelData()
+    {
+        return [
+            'merchant_uid' => $this->getUID(),
+            'amount' => $this->data['cancel_amount'],
+            'reason' => $this->data['reason'],
+        ];
+    }
 
     /**
      * PG 사 정보
@@ -233,9 +242,23 @@ class ImPortPay extends AbstractPayService
         return $obj;
     }
 
+    /**
+     * 결제 취소
+     *
+     * @return ImPortResponseCancelObject
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
+     * @author  seul
+     * @added   2020-08-31
+     * @updated 2020-08-31
+     */
     public function cancel()
     {
+        $result = $this->call("/payments/cancel?_token={$this->token}", $this->getCancelData(), 'POST');
+        $obj = new ImPortResponseCancelObject();
+        $obj->bindStd($result);
 
+        return $obj;
     }
 
     public function order()
@@ -256,6 +279,11 @@ class ImPortPay extends AbstractPayService
 
     public function getCID()
     {
+    }
+
+    protected function getUID()
+    {
+        return $this->payment->getUID();
     }
 
     public function getCIDSecret()
