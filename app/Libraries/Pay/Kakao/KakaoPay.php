@@ -7,6 +7,7 @@ namespace LaravelSupports\Libraries\Pay\Kakao;
 
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractPayService;
 use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseApproveObject;
+use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseCancelObject;
 use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseReadyObject;
 
 class KakaoPay extends AbstractPayService
