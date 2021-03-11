@@ -75,6 +75,16 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
+    public function getCancelData()
+    {
+        return [
+            'cid' => $this->getCID(),
+            'tid' => $this->getTID(),
+            'cancel_amount' => $this->data['cancel_amount'],
+            'cancel_vat_amount' => 0,
+            'cancel_tax_free_amount' => $this->data['cancel_amount'],
+        ];
+    }
 
     public function ready()
     {
@@ -102,7 +112,10 @@ class KakaoPay extends AbstractPayService
 
     public function cancel()
     {
-        return $this->call("/v1/payment/cancel", []);
+        return $this->call("/v1/payment/cancel", $this->getCancelData());
+        $obj = new KakaoResponseCancelObject();
+        $obj->bindStd($result);
+        return $obj;
     }
 
     public function order()
@@ -138,6 +151,11 @@ class KakaoPay extends AbstractPayService
     public function getSID()
     {
         return $this->payment->getSID();
+    }
+
+    public function getTID()
+    {
+        return $this->payment->getTID();
     }
 
     protected function getCallbackUrl($url)
