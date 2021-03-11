@@ -232,7 +232,7 @@ abstract class BaseController extends Controller
     protected function buildQuery(Request $request, $query, bool $clone = true): Builder
     {
         $rQuery = $clone ? clone $query : $query;
-        $this->searchData = $request->only($this->getSearchKeys());
+        $this->buildSearchData($request);
 
         $search = $this->searchData[BaseComponent::KEY_SEARCH] ?? '';
         $keyword = $this->searchData[BaseComponent::KEY_KEYWORD] ?? '';
@@ -281,6 +281,19 @@ abstract class BaseController extends Controller
     {
         $cloneQuery = $clone ? clone $query : $query;
         return $cloneQuery->paginate($this->getLength($request));
+    }
+
+    /**
+     * build search data
+     *
+     * @param Request $request
+     * @return void
+     * @author  dew9163
+     * @added   2021/03/10
+     * @updated 2021/03/10
+     */
+    protected function buildSearchData(Request $request) {
+        $this->searchData = $request->only($this->getSearchKeys());
     }
 
     protected function mergeWhere($attributes, $array)
