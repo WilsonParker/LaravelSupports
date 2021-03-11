@@ -560,8 +560,10 @@ class LoanPaymentService
             $book = $item->book;
             $offlineStock = OfflineLoanBookModel::findStock($book->id, 26);
             if ($offlineStock) {
-                $offlineStock->decrement('loaned_quantity', 1);
-                $offlineStock->increment('remained_quantity', 1);
+                if ($offlineStock->loaned_qunatity > 1) {
+                    $offlineStock->decrement('loaned_quantity', 1);
+                    $offlineStock->increment('remained_quantity', 1);
+                }
             }
         });
 
