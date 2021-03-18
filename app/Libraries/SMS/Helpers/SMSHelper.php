@@ -116,8 +116,7 @@ class SMSHelper
                     });
                     break;
                 case self::TEMPLATE_LAST_MEMBER :
-                    $plusMemberModel = new PlusMemberModel();
-                    $plusExpireMembers = $plusMemberModel->plusExpireInAMonth();
+                    $plusExpireMembers = PlusMemberModel::getPlusExpireInAMonthQuery()->whereDoesntHave('dusanCouponUsedMember')->count();
 //                    $plusExpireMembers = PlusMemberModel::where('member_id', 146973)->get();
 //                     dd($plusExpireMembers);
 
