@@ -4,12 +4,14 @@
 namespace LaravelSupports\Libraries\Book;
 
 
-
+use App\ViewModels\Admin\Books\BookLoanPaymentViewModel;
 use FlyBookModels\Books\BookInformationModel;
 use FlyBookModels\Books\BookModel;
+use FlyBookModels\Books\LoanBookPaymentGoodsModel;
 use FlyBookModels\Books\LoanBookPaymentModel;
 use FlyBookModels\Books\LoanPenaltyPaymentModel;
 use FlyBookModels\Offline\OfflineStoreModel;
+use LaravelSupports\Libraries\Payment\Exceptions\GoodStatusException;
 use LaravelSupports\Libraries\Supports\Objects\HasDataWithDefaultTrait;
 
 class LoanPaymentDetailService
@@ -146,7 +148,7 @@ class LoanPaymentDetailService
                         })->count();
                         if ($countDoesntHavePickupDate != count($returnBook)) {
                             if ($countDoesntHavePickupDate > 0) {
-                                $result['return_status_text'] = $countDoesntHavePickupDate. '권 방문 예정 / 도서 상태 확인중';
+                                $result['return_status_text'] = $countDoesntHavePickupDate . '권 방문 예정 / 도서 상태 확인중';
                             } else {
                                 $result['return_status_text'] = '도서 상태 확인중';
                             }
@@ -381,11 +383,5 @@ class LoanPaymentDetailService
     {
         $payment->loan_type = $loanType;
         return $this->bindPaymentInformation($payment, $status);
-    }
-
-    public function updateGoodsStatus($data)
-    {
-        $goodIDs = $data['good_ids'];
-        $status = $data['status'];
     }
 }
