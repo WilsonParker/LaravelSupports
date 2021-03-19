@@ -127,7 +127,7 @@ abstract class BaseModel extends Model
          * @updated 2020/12/11
          */
         static::addGlobalScope('relationshipScope', function (Builder $builder) {
-            if(isset(static::$bootedWithRelationships)) {
+            if (isset(static::$bootedWithRelationships)) {
                 $builder->with(static::$bootedWithRelationships);
             }
         });
