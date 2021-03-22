@@ -7,7 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -284,6 +286,28 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * If paginator items are filtered, paginate again.
+     *
+     * @param Collection $items
+     * @return LengthAwarePaginator
+     * @author  dew9163
+     * @added   2021/03/22
+     * @updated 2021/03/22
+     */
+    protected function buildFilteredPaginate(Collection $items): LengthAwarePaginator
+    {
+        $pageStart = request('page', 1);
+        $offSet = ($pageStart * $this->paginate) - $this->paginate;
+        $itemsForCurrentPage = $items->slice($offSet, $this->paginate);
+
+        return new LengthAwarePaginator(
+            $itemsForCurrentPage, $items->count(), $this->paginate,
+            \Illuminate\Pagination\Paginator::resolveCurrentPage(),
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
+    }
+
+    /**
      * build search data
      *
      * @param Request $request
@@ -292,7 +316,8 @@ abstract class BaseController extends Controller
      * @added   2021/03/10
      * @updated 2021/03/10
      */
-    protected function buildSearchData(Request $request) {
+    protected function buildSearchData(Request $request)
+    {
         $this->searchData = $request->only($this->getSearchKeys());
     }
 

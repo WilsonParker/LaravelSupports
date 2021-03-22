@@ -252,6 +252,14 @@ class BaseViewModel extends ViewModel
         $this->endDate = $data[self::KEY_END_DATE];
     }
 
+    /**
+     * @param mixed|null $data
+     */
+    public function setData($data): void
+    {
+        $this->data = $data;
+    }
+
     public function defaultData($data, $key, $default = ''): string
     {
         if (is_array($data)) {
