@@ -144,7 +144,7 @@ class LoanPaymentDetailService
                     if ($returnBook->count()) {
                         $countDoesntHavePickupDate = $returnBook->filter(function ($item) {
                             $history = $item->history;
-                            return $history->return_date == null;
+                            return $history->pickup_date == null;
                         })->count();
                         if ($countDoesntHavePickupDate != count($returnBook)) {
                             if ($countDoesntHavePickupDate > 0) {
