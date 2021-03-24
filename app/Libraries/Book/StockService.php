@@ -6,15 +6,15 @@ namespace LaravelSupports\Libraries\Book;
 
 use FlyBookModels\Books\BookModel;
 use FlyBookModels\Books\BookStoreStockModel;
-use LaravelSupports\Libraries\Book\Booxen\BooxenStockService;
-use LaravelSupports\Libraries\Book\Yes24\Yes24StockService;
+use LaravelSupports\Libraries\Book\Booxen\BooxenStoreStockService;
+use LaravelSupports\Libraries\Book\Yes24\Yes24StoreStockService;
 
 class StockService
 {
     protected $book;
     private $services = [
-        'booxen' => BooxenStockService::class,
-        'yes24' => Yes24StockService::class,
+        'booxen' => BooxenStoreStockService::class,
+        'yes24' => Yes24StoreStockService::class,
     ];
 
     /**

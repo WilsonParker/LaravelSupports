@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Services\Book\Abstracts;
+namespace LaravelSupports\Libraries\Book\Abstracts;
 
 
-use App\Book;
+use FlyBookModels\Books\BookModel;
 
 abstract class AbstractStockService
 {
@@ -12,9 +12,9 @@ abstract class AbstractStockService
 
     /**
      * AbstractStockService constructor.
-     * @param Book $book
+     * @param BookModel $book
      */
-    public function __construct(Book $book)
+    public function __construct(BookModel $book)
     {
         $this->book = $book;
     }

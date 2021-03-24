@@ -3,10 +3,11 @@
 
 namespace LaravelSupports\Libraries\Book\Yes24;
 
-use App\Services\Book\Common\Abstracts\AbstractStockService;
+
+use LaravelSupports\Libraries\Book\Common\Abstracts\AbstractStoreStockService;
 use Symfony\Component\DomCrawler\Crawler;
 
-class Yes24StockService extends AbstractStockService
+class Yes24StoreStockService extends AbstractStoreStockService
 {
     protected $storeCode = 'yes24';
     protected $searchURL = 'http://www.yes24.com/searchcorner/Search?query=';

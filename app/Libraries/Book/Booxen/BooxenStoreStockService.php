@@ -3,13 +3,13 @@
 
 namespace LaravelSupports\Libraries\Book\Booxen;
 
-use App\Services\Book\Common\Abstracts\AbstractStockService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
+use LaravelSupports\Libraries\Book\Common\Abstracts\AbstractStoreStockService;
 
-class BooxenStockService extends AbstractStockService
+class BooxenStoreStockService extends AbstractStoreStockService
 {
-    protected $storeCode = '북센';
+    protected $storeCode = 'booxen';
     protected $apiURL = 'https://api-b.booxen.com/API/BookSaleInfo';
     protected $companyID = 50613;
     protected $apiKey = 'xmyox993wmmdg8b806mstbolwg0bvt';
@@ -36,22 +36,19 @@ class BooxenStockService extends AbstractStockService
 
             switch ($status) {
                 case '구판':
-                   $this->setStatus('old');
+                    $this->setStatus('old');
                     break;
                 case '구판절판':
                 case '절판':
-                   $this->setStatus('out');
+                    $this->setStatus('out');
                     break;
                 case '정상':
+                    $this->setStatus('sale');
+                    break;
                 case '품절':
                 case '장기품절':
                 case '비거래':
-                    break;
                 default:
-                    $data = [
-                        'book' => $this->book,
-                        'data' => $status,
-                    ];
                     break;
             }
         }

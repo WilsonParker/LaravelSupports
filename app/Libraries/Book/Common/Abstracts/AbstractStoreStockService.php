@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Book\Common\Abstracts;
+namespace LaravelSupports\Libraries\Book\Common\Abstracts;
 
-use App\Book;
-use App\Renewal\Models\Books\BookOrderedStoreModel;
+use FlyBookModels\Books\BookModel;
+use FlyBookModels\Books\BookOrderedStoreModel;
 use GuzzleHttp\Client;
 
-abstract class AbstractStockService
+abstract class AbstractStoreStockService
 {
     protected $storeCode;
     protected $book;
@@ -21,7 +21,7 @@ abstract class AbstractStockService
      * AbstractStockService constructor.
      * @param $book
      */
-    public function __construct(Book $book)
+    public function __construct(BookModel $book)
     {
         $this->book = $book;
         $this->store = BookOrderedStoreModel::findModelWhereCode($this->storeCode);
@@ -187,7 +187,7 @@ abstract class AbstractStockService
      */
     public function isOut()
     {
-        $bookModel = new Book();
+        $bookModel = new BookModel();
         $outStatus = $bookModel->outStatus;
 
         return in_array($this->getStatus(), $outStatus);

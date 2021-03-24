@@ -5,6 +5,7 @@ namespace LaravelSupports\Libraries\Book;
 
 use FlyBookModels\Books\LoanBookPaymentGoodsModel;
 use FlyBookModels\Offline\OfflineLoanBookModel;
+use LaravelSupports\Libraries\Book\Abstracts\AbstractStockService;
 
 class LoanStockService extends AbstractStockService
 {
@@ -24,8 +25,8 @@ class LoanStockService extends AbstractStockService
             $result['loanable_quantity'] = $bookStock->remained_quantity;
             if ($result['loanable_quantity'] > 0) {
                 $result['loan_store'] = $bookStock->offlineStore->code;
-                $result['loanable'] = true;
             }
+            $result['loanable'] = true;
         } else {
             $service = new StockService($this->book);
             $bookStock = $service->getBookStock();
@@ -48,6 +49,7 @@ class LoanStockService extends AbstractStockService
                 $result['loanable_quantity'] = !$hasOrder ? $stock : 0;
                 $result['loan_store'] = $storeCode;
                 $result['loanable'] = true;
+                $result['has_stock'] = $hasOrder;
             }
         }
 
@@ -69,7 +71,6 @@ class LoanStockService extends AbstractStockService
 
     public function getLoanStatus()
     {
-        $status = 'loanable';
         if (!$this->hasStock()) {
             $status = 'loaned';
             $stockService = new StockService($this->book);
@@ -81,6 +82,9 @@ class LoanStockService extends AbstractStockService
                 $hasOrder = LoanBookPaymentGoodsModel::existsOrderedBook($this->book->id, 1, [$date.' 00:00:00', $date.' 23:59:59']);
                 $status = $hasOrder ? $status : 'loanable';
             }
+        } else {
+            $stock = $this->findStock();
+            $status = $stock->remained_quantity ? 'loanable' : 'loaned';
         }
 
         return $status;
