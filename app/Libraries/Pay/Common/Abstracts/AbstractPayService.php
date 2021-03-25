@@ -350,7 +350,7 @@ abstract class AbstractPayService
      */
     public function getTaxFreeAmount()
     {
-        return 0;
+        return $this->payment->getTaxFreeAmount();
     }
 
     /**

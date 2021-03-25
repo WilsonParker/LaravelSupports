@@ -72,7 +72,7 @@ class KakaoPay extends AbstractPayService
             'quantity' => '1',
             'total_amount' => $this->getTotalAmount(),
             'vat_amount' => '0',
-            'tax_free_amount' => '0',
+            'tax_free_amount' => $this->getTaxFreeAmount(),
         ];
     }
 
@@ -82,8 +82,7 @@ class KakaoPay extends AbstractPayService
             'cid' => $this->getCID(),
             'tid' => $this->getTID(),
             'cancel_amount' => $this->data['cancel_amount'],
-            'cancel_vat_amount' => 0,
-            'cancel_tax_free_amount' => $this->data['cancel_amount'],
+            'cancel_tax_free_amount' => isset($this->data['tax_free']) ? $this->data['tax_free'] : $this->data['cancel_amount'],
         ];
     }
 

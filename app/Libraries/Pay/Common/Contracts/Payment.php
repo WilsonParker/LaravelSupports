@@ -80,4 +80,10 @@ interface Payment
     public function getDescription();
 
     public function setDescription($description);
+
+    public function getTotalAmount();
+
+    public function getTaxFreeAmount();
+
+    public function getMerchantUID();
 }

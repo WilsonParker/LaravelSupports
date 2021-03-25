@@ -51,6 +51,7 @@ class ImPortPay extends AbstractPayService
             'customer_uid' => $this->getCustomUID(),
             'merchant_uid' => $this->getMerchantUID(),
             'amount' => $this->getTotalAmount(),
+            'tax_free' => $this->getTaxFreeAmount(),
             'name' => $this->payment->description,
             'buyer_email' => $this->member->email,
             'buyer_name' => $this->member->realname,
@@ -70,6 +71,7 @@ class ImPortPay extends AbstractPayService
             'customer_uid' => $this->getCustomUID(),
             'merchant_uid' => $this->getMerchantUID(),
             'amount' => $this->getTotalAmount(),
+            'tax_free' => $this->getTaxFreeAmount(),
             'name' => $this->payment->description,
             'buyer_email' => $this->member->email,
             'buyer_name' => $this->member->realname,
@@ -101,6 +103,7 @@ class ImPortPay extends AbstractPayService
         return [
             'merchant_uid' => $this->getUID(),
             'amount' => $this->data['cancel_amount'],
+            'tax_free' => isset($this->data['tax_free']) ? $this->data['tax_free'] : $this->data['cancel_amount'],
             'reason' => $this->data['reason'],
         ];
     }
