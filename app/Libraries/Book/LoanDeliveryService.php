@@ -273,12 +273,17 @@ class LoanDeliveryService
         });
     }
 
-    public function updatePickupStatus()
+    public function updatePickupStatus($payments)
     {
-        $deliveries = LoanDeliveryHistoryModel::where('status', 'pickup')->whereNull('scheduled_pickup_date')->with('good')->get();
+        $deliveries = $payments->map(function ($item) {
+            return $item->goods()->whereHas('history', function ($query) {
+                $query->where('status', 'pickup')->whereNull('pickup_date');
+            })->with('payment', 'book')->get();
+        })->flatten(1);
+
         $members = $deliveries->map(function ($item) {
-            $payment = $item->good->payment;
-            $book = $item->good->book;
+            $payment = $item->payment;
+            $book = $item->book;
 
             return [
                 'member_id' => $payment->ref_member_id,
