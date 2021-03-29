@@ -158,8 +158,9 @@ class LoanDeliveryService
             $image = $item['notReceivedImageLocation'];
             $loanDate = $item['deliveryCompletedDate'];
             $released = $item['releasedAt'];
+            $pickupDate = $item['pickupDateCompleted'];
 
-            if ($orderNo == '') {
+            if ($orderNo == '' && $pickupDate) {
                 $deliveryNum = mb_substr($deliveryNum, 1, 10);
 
                 $delivery = DeliveryModel::where('delivery_num', $deliveryNum)->first();
@@ -178,7 +179,7 @@ class LoanDeliveryService
                     foreach ($goods as $good) {
                         $history = $good->history;
                         if ($history->status == 'pickup' && is_null($history->pickup_date)) {
-                            $history->pickup_date = now();
+                            $history->pickup_date = $pickupDate ? Carbon::create($pickupDate)->addHours(9) : null;
                             $history->save();
 
                             $cnt++;
