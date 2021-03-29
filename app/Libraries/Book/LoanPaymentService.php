@@ -15,6 +15,7 @@ use FlyBookModels\Delivery\DeliveryModel;
 use FlyBookModels\Members\MemberCardModel;
 use FlyBookModels\Members\MemberPointModel;
 use FlyBookModels\Offline\OfflineLoanBookModel;
+use FlyBookModels\Payments\PaymentModuleModel;
 use LaravelSupports\Libraries\Book\Exceptions\LocationException;
 use LaravelSupports\Libraries\Pay\Common\Abstracts\AbstractResponseObject;
 use LaravelSupports\Libraries\Pay\Common\Exception\CardException;
@@ -42,8 +43,7 @@ class LoanPaymentService
     protected $deliveryRuleCode = 'loan';
     protected $deliveryRuleModel;
     protected $paymentModule;
-//    protected $webHookURL = 'https://api2.flybook.kr/v3/book/loan/payment/callback';
-    protected $webHookURL = 'http://test.api2.flybook.kr/v3/book/loan/payment/callback';
+    protected $webHookURL = 'https://api2.flybook.kr/v3/book/loan/payment/callback';
     protected $services = [
         'kakao_pay' => KakaoPay::class,
         'nice_pay' => ImPortPay::class,
@@ -61,7 +61,7 @@ class LoanPaymentService
 
         if (isset($data['type'])) {
             $this->type = $data['type'];
-            $this->paymentModule = \FlyBookModels\Payments\PaymentModuleModel::getModel($this->type);
+            $this->paymentModule = PaymentModuleModel::getModel($this->type);
         }
 
         $this->deliveryRuleModel = ConfigDeliveryCostModel::getModelWhereCode($this->deliveryRuleCode);
