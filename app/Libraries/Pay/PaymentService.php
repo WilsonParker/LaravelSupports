@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Pay;
 
 
+use App\Events\Membership\MembershipPaymentCompletedEvent;
 use App\Services\Membership\MembershipService;
 use FlyBookModels\Membership\MembershipPaymentModel;
 use FlyBookModels\Payments\PaymentModuleModel;
