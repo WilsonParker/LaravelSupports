@@ -15,6 +15,7 @@ use LaravelSupports\Libraries\Pay\Common\Contracts\Payment;
 use LaravelSupports\Libraries\Pay\Delivery\DeliveryService;
 use LaravelSupports\Libraries\Pay\ImPort\ImPortPay;
 use LaravelSupports\Libraries\Pay\Kakao\KakaoPay;
+use LaravelSupports\Libraries\RecommendUser\RecommendedMemberService;
 use Throwable;
 
 /**
