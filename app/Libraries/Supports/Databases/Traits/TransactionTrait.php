@@ -18,12 +18,13 @@ trait TransactionTrait
 
     private function runAction(callable $callback)
     {
-        $result = true;
         // transaction 을 시작합니다
         DB::beginTransaction();
         // $callback 이 함수인지 확인합니다
         if (is_callable($callback)) {
             $result = $callback();
+        } else {
+            $result = null;
         }
         DB::commit();
         return $result;
@@ -74,7 +75,7 @@ trait TransactionTrait
         try {
             $result = $this->runAction($callback);
             // transaction 중 에러 발생 시
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
             return $result;
@@ -91,7 +92,7 @@ trait TransactionTrait
                 throw new LockTimeoutException();
             }
             // transaction 중 에러 발생 시
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
             $lock->release();
