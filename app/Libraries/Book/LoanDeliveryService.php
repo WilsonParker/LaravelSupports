@@ -358,8 +358,8 @@ class LoanDeliveryService
                             'member_id' => '2234',
                             'target_id' => $member->id,
                             'message' => $message,
-                            'page' => 'ReturnedPage',
-                            'page_idx' => 0,
+                            'page' => 'BookDetailPage',
+                            'page_idx' => $book->id,
                         ];
 
                         MemberAlimModel::create($data);
