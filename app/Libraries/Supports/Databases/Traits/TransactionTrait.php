@@ -89,13 +89,13 @@ trait TransactionTrait
             if ($lock->get()) {
                 $result = $this->runAction($callback);
             } else {
-                throw new LockTimeoutException();
+                $lock->block(10);
             }
             // transaction 중 에러 발생 시
         } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
-            $lock->release();
+            optional($lock)->release();
             return $result;
         }
     }
