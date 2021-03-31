@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Traits;
 
 
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -82,11 +83,12 @@ trait TransactionTrait
 
     function runTransactionWithLock(string $lock = '', int $second = 5, callable $callback = null, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
     {
-        $result = null;
         try {
             $lock = Cache::lock($lock, $second);
             if ($lock->get()) {
                 $result = $this->runAction($callback);
+            } else {
+                throw new LockTimeoutException();
             }
             // transaction 중 에러 발생 시
         } catch (Throwable $t) {
