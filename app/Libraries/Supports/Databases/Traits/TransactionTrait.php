@@ -86,11 +86,10 @@ trait TransactionTrait
     {
         try {
             $lock = Cache::lock($lock, $second);
-            if ($lock->get()) {
-                $result = $this->runAction($callback);
-            } else {
+            if (!$lock->get()) {
                 $lock->block(10);
             }
+            $result = $this->runAction($callback);
             // transaction 중 에러 발생 시
         } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
