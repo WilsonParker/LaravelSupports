@@ -152,9 +152,28 @@ abstract class BaseController extends Controller
      * @author  dew9163
      * @added   2020/11/10
      * @updated 2020/11/10
+     * add date
+     * @updated 2021/03/31
      */
     protected function buildAdditionalSearchQuery(Request $request, Builder $query): Builder
     {
+        $data = $this->bindDateData($request->all());
+
+        $this->searchData = array_merge($this->searchData, $data);
+
+        $startDate = $data['start_date'] . $this->startTime;
+        $endDate = $data['end_date'] . $this->endTime;
+
+        if (isset($data['date_all']) == false || $data['date_all'] != 'Y') {
+            $query->when($startDate, function ($query, $startDate) {
+                $query->where('created_at', '>=', $startDate);
+            });
+
+            $query->when($endDate, function ($query, $endDate) {
+                $query->where('created_at', '<=', $endDate);
+            });
+        }
+
         return $query;
     }
 
