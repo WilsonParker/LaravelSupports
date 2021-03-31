@@ -3,12 +3,10 @@
 
 namespace LaravelSupports\Libraries\RecommendUser;
 
-
-use App\BplusMember;
-use App\Member;
 use App\Services\Membership\MembershipService;
-use App\Services\Models\Members\RecommendedMemberModel;
-use Exception;
+use FlyBookModels\Members\Contracts\Member;
+use FlyBookModels\Members\PlusMemberModel;
+use FlyBookModels\Members\RecommendedMemberModel;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\AlreadyRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\DoNotSelfRecommendedException;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\NotFoundRecommendedException;
@@ -46,7 +44,7 @@ class RecommendedMemberService
      */
     public function recommend($recommendCode, $priceModel, $throwException = false)
     {
-        $recommendedPlusMember = BplusMember::getInfoWithRecommendCode($recommendCode);
+        $recommendedPlusMember = PlusMemberModel::getInfoWithRecommendCode($recommendCode);
         $recommendedMember = $recommendedPlusMember->member;
         if ($this->isValidate($recommendedPlusMember, $priceModel, $throwException)) {
             $this->offerRecommendBenefit($recommendedMember);
@@ -66,9 +64,9 @@ class RecommendedMemberService
      * @added   2020/06/25
      * @updated 2020/06/25
      */
-    public function isValidateWithCode($recommendCode, $priceModel, $throwException = false)
+    public function isValidateWithCode($recommendCode, $priceModel, $throwException = false): bool
     {
-        $recommendedPlusMember = BplusMember::getInfoWithRecommendCode($recommendCode);
+        $recommendedPlusMember = PlusMemberModel::getInfoWithRecommendCode($recommendCode);
         return $this->isValidate($recommendedPlusMember, $priceModel, $throwException);
     }
 
@@ -86,7 +84,7 @@ class RecommendedMemberService
      * @added   2020/06/23
      * @updated 2020/06/23
      */
-    public function isValidate($recommendedPlusMember, $priceModel, $throwException = false)
+    public function isValidate($recommendedPlusMember, $priceModel, $throwException = false): bool
     {
         try {
             // 이미 추천인을 등록했는지 여부
@@ -101,7 +99,7 @@ class RecommendedMemberService
             throw_if($throwException && !$priceModel->isUsableRecommendCode(), new NotUsableRecommendedException());
             // 구독 방식 멤버십 회원일 경우 추천인 혜택 지급 불가
             throw_if($throwException && $recommendedMember->isSubscribe(), new SubscriberRecommendedException());
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             if ($throwException) {
                 throw $e;
             } else {

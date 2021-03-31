@@ -54,6 +54,11 @@ class CollectionServiceProvider extends ServiceProvider
             return false;
         });
 
+        /*Collection::macro('exists2', function (Collection $needle, string $prop = 'id'): bool {
+            $this->contains();
+        });*/
+
+
         /**
          * collection 에 $keys 중 하나라도 일치하는 key 값이 있는지 확인 합니다
          *

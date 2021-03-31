@@ -4,15 +4,15 @@
 namespace LaravelSupports\Libraries\Coupon;
 
 
-use App\Services\Models\Coupons\CouponModel;
-use App\Services\Models\Coupons\CouponUsedMemberModel;
-use App\Services\Models\Membership\ConvertMarkMessageTrait;
-use App\Services\Models\Membership\MembershipModel;
-use App\Services\Models\Membership\MembershipPriceModel;
-use App\Supports\Date\DateHelper;
+use FlyBookModels\Coupons\CouponModel;
+use FlyBookModels\Coupons\CouponUsedMemberModel;
+use FlyBookModels\Membership\MemberShipModel;
+use FlyBookModels\Membership\MembershipPriceModel;
 use LaravelSupports\Libraries\Coupon\Exceptions\AlreadyUsedException;
 use LaravelSupports\Libraries\Coupon\Exceptions\DuplicatedException;
 use LaravelSupports\Libraries\Coupon\Exceptions\NotMetConditionException;
+use LaravelSupports\Libraries\Supports\Data\ConvertMarkMessageTrait;
+use LaravelSupports\Libraries\Supports\Date\DateHelper;
 use Throwable;
 
 class CouponService
@@ -261,7 +261,7 @@ class CouponService
         $code = $benefit->ref_coupon_benefit_type_code;
         $value = $benefit->value;
         if ($code == self::PROVIDE_MEMBERSHIP) {
-            return MembershipModel::getModel($value);
+            return MemberShipModel::getModel($value);
         } else if ($code == self::PROVIDE_REFERENCE_MEMBERSHIP) {
             return MembershipPriceModel::getModel($value)->membership;
         }
