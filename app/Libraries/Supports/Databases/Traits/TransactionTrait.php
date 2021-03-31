@@ -4,8 +4,8 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Traits;
 
 
-use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
@@ -14,11 +14,50 @@ use Throwable;
 
 trait TransactionTrait
 {
+
+    private function runAction(callable $callback)
+    {
+        $result = true;
+        // transaction 을 시작합니다
+        DB::beginTransaction();
+        // $callback 이 함수인지 확인합니다
+        if (is_callable($callback)) {
+            $result = $callback();
+        }
+        DB::commit();
+        return $result;
+    }
+
+    private function rollbackAction(Throwable $t, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
+    {
+        // DB rollback 을 실행합니다
+        DB::rollback();
+        if ($loggable) {
+            $logger = new ExceptionLogger();
+            $logger->report($t);
+        }
+
+        // not working
+        if (is_callable($validationCallback) && $t instanceof ValidationException) {
+            $result = $validationCallback($t);
+            // $errorCallback 이 함수인지 확인합니다
+        } else if (is_callable($errorCallback)) {
+            $result = $errorCallback($t);
+        } else {
+            // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
+            $result = new ResponseTemplate($t->getCode(), $t->getMessage(), [
+                "line" => $t->getLine(),
+                "string" => $t->getTraceAsString()
+            ]);
+        }
+        return $result;
+    }
+
     /**
      * $callback 을 실행시키면서 Exception 이 발생 시 Rollback 을 시키고 $errorCallback 을 실행합니다
      *
      * @param callable $callback
-     * @param callable $errorCallback
+     * @param callable|null $errorCallback
      * @param callable|null $validationCallback
      * @param bool $loggable
      * @return ResponseTemplate
@@ -31,43 +70,33 @@ trait TransactionTrait
      */
     function runTransaction(callable $callback, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
     {
-        $result = true;
         try {
-            // transaction 을 시작합니다
-            DB::beginTransaction();
-            // $callback 이 함수인지 확인합니다
-            if (is_callable($callback)) {
-                $result = $callback();
-            }
-            DB::commit();
+            $result = $this->runAction($callback);
             // transaction 중 에러 발생 시
-        } catch (Throwable $e) {
-            // DB rollback 을 실행합니다
-            DB::rollback();
-            if($loggable) {
-                $logger = new ExceptionLogger();
-                $logger->report($e);
-            }
-
-            // not working
-            if (is_callable($validationCallback) && $e instanceof ValidationException) {
-                $result = $validationCallback($e);
-                // $errorCallback 이 함수인지 확인합니다
-            } else if (is_callable($errorCallback)) {
-                $result = $errorCallback($e);
-            } else {
-                // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
-                $result = new ResponseTemplate($e->getCode(), $e->getMessage(), [
-                    "line" => $e->getLine(),
-                    "string" => $e->getTraceAsString()
-                ]);
-            }
+        } catch (Throwable $t) {
+            $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
             return $result;
         }
     }
 
-    function runTransactionWithDefaultValidation(callable $callback, callable $errorCallback)
+    function runTransactionWithLock(callable $callback, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true, string $lock = '', int $second = 5)
+    {
+        try {
+            $lock = Cache::lock($lock, $second);
+            if ($lock->get()) {
+                $result = $this->runAction($callback);
+            }
+            // transaction 중 에러 발생 시
+        } catch (Throwable $t) {
+            $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
+        } finally {
+            $lock->release();
+            return $result;
+        }
+    }
+
+    function runTransactionWithDefaultValidation(callable $callback, callable $errorCallback): ResponseTemplate
     {
         $validationCallback = function (ValidationException $e) {
             return new ResponseTemplate(Response::HTTP_BAD_REQUEST, $e->getCode(), $e->getMessage());
