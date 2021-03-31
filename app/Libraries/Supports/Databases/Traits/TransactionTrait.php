@@ -82,6 +82,7 @@ trait TransactionTrait
 
     function runTransactionWithLock(string $lock = '', int $second = 5, callable $callback = null, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
     {
+        $result = null;
         try {
             $lock = Cache::lock($lock, $second);
             if ($lock->get()) {
