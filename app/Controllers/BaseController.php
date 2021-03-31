@@ -53,6 +53,11 @@ abstract class BaseController extends Controller
     protected array $searchData = [];
     protected string $dateFormat = 'Y-m-d';
 
+    protected string $strStartDate;
+    protected string $strEndDate;
+    protected string $startTime;
+    protected string $endTime;
+
     /**
      * BaseController constructor.
      */
@@ -319,6 +324,60 @@ abstract class BaseController extends Controller
     protected function buildSearchData(Request $request)
     {
         $this->searchData = $request->only($this->getSearchKeys());
+    }
+
+    protected function bindDateData($data)
+    {
+        $data['start_date'] = isset($data['start_date']) && $data['start_date'] != '' ? $data['start_date'] : $this->getDefaultStartDate();
+        $data['end_date'] = isset($data['end_date']) && $data['end_date'] != '' ? $data['end_date'] : $this->getDefaultEndDate();
+
+        $data['date_all'] = isset($data['date_all']) ? $data['date_all'] : 'N';
+
+        return $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStrStartDate(): string
+    {
+        return $this->strStartDate;
+    }
+
+    /**
+     * @param string $strStartDate
+     */
+    public function setStrStartDate(string $strStartDate): void
+    {
+        $this->strStartDate = $strStartDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStrEndDate(): string
+    {
+        return $this->strEndDate;
+    }
+
+    /**
+     * @param string $strEndDate
+     */
+    public function setStrEndDate(string $strEndDate): void
+    {
+        $this->strEndDate = $strEndDate;
+    }
+
+    public function getDefaultStartDate()
+    {
+        $strDate = $this->getStrStartDate();
+        return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
+    }
+
+    public function getDefaultEndDate()
+    {
+        $strDate = $this->getStrEndDate();
+        return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
     }
 
     protected function mergeWhere($attributes, $array)
