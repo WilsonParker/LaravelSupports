@@ -16,8 +16,8 @@ use Throwable;
 abstract class AbstractPayService
 {
 
-    protected $host;
-    protected $webHookURL;
+    protected string $host;
+    protected string $webHookURL;
     protected $member;
     protected $price;
     protected $coupon;

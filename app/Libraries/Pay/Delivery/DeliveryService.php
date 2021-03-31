@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\Pay\Delivery;
 
 
-use Exception;
+use FlyBookModels\Delivery\DeliveryAreaModel;
 
 class DeliveryService
 {
@@ -27,13 +27,13 @@ class DeliveryService
      * @added   2020/06/22
      * @updated 2020/06/22
      */
-    public function getDeliveryCost($address)
+    public function getDeliveryCost($address): int
     {
         try {
             $convertedAddress = $this->convertAddressForDelivery($address);
-            $model = BplusDeliveryArea::where('area', 'like', $convertedAddress)->firstOrFail();
+            $model = DeliveryAreaModel::where('area', 'like', $convertedAddress)->firstOrFail();
             return $model->cost;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return 0;
         }
     }

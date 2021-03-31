@@ -13,8 +13,8 @@ use LaravelSupports\Libraries\Pay\Kakao\Response\KakaoResponseReadyObject;
 class KakaoPay extends AbstractPayService
 {
 
-    protected $webHookURL = 'https://api2.flybook.kr/v3/membership/pay/callback';
-    protected $host = 'https://kapi.kakao.com';
+    protected string $webHookURL = 'http://api.flybook.kr/membership/pay/callback';
+    protected string $host = 'https://kapi.kakao.com';
 
     protected function init()
     {
@@ -30,7 +30,13 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
-    public function getReadyData()
+    /**
+     * @author  seul
+     * @updated 2020/11/19
+     * 비과세금액 필수로 결제금액과 동일하게 제공되도록 수정하였습니다.
+     * (카카오페이 자동발행 현금영수증 관련 요청 사항)
+     */
+    public function getReadyData(): array
     {
         return [
             'cid' => $this->getCID(),
@@ -47,7 +53,7 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
-    public function getApproveData()
+    public function getApproveData(): array
     {
         return [
             'cid' => $this->getCID(),
@@ -58,10 +64,22 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
+    public function getOrderData(): array
+    {
+        return [
+            'cid' => $this->getCID(),
+            'tid' => $this->payment->getTID(),
+        ];
+    }
+
     /**
+     * add tax free amount
+     *
      * @inheritDoc
+     * @author  seul
+     * @updated 2020-11-19
      */
-    public function getSubscribeData()
+    public function getSubscribeData(): array
     {
         return [
             'cid' => $this->getCID(),
@@ -76,7 +94,7 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
-    public function getCancelData()
+    public function getCancelData(): array
     {
         return [
             'cid' => $this->getCID(),
@@ -86,7 +104,7 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
-    public function ready()
+    public function ready(): KakaoResponseReadyObject
     {
         $result = $this->call("/v1/payment/ready", $this->getReadyData());
         $obj = new KakaoResponseReadyObject();
@@ -94,7 +112,7 @@ class KakaoPay extends AbstractPayService
         return $obj;
     }
 
-    public function approve()
+    public function approve(): KakaoResponseApproveObject
     {
         $result = $this->call("/v1/payment/approve", $this->getApproveData());
         $obj = new KakaoResponseApproveObject();
@@ -102,7 +120,7 @@ class KakaoPay extends AbstractPayService
         return $obj;
     }
 
-    public function subscription()
+    public function subscription(): KakaoResponseApproveObject
     {
         $result = $this->call("/v1/payment/subscription", $this->getSubscribeData());
         $obj = new KakaoResponseApproveObject();
@@ -110,7 +128,7 @@ class KakaoPay extends AbstractPayService
         return $obj;
     }
 
-    public function cancel()
+    public function cancel(): KakaoResponseCancelObject
     {
         return $this->call("/v1/payment/cancel", $this->getCancelData());
         $obj = new KakaoResponseCancelObject();
@@ -158,16 +176,22 @@ class KakaoPay extends AbstractPayService
         return $this->payment->getTID();
     }
 
-    protected function getCallbackUrl($url)
+    protected function getCallbackUrl($url): string
     {
         return "{$this->webHookURL}{$url}?type=kakao_pay&payload={$this->getPayload()}";
     }
 
     /**
-     * @inheritDoc
+     * 정기결제를 신규로 추가합니다.
+     *
+     * @return KakaoResponseApproveObject
+     * @author  seul
+     * @added   2020-10-16
+     * @updated 2020-10-16
      */
-    public function storeSubscribeUser()
+    public function storeSubscribeUser(): KakaoResponseApproveObject
     {
+        return $this->approve();
     }
 
 }

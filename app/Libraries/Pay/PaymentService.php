@@ -17,7 +17,6 @@ use LaravelSupports\Libraries\Pay\Delivery\DeliveryService;
 use LaravelSupports\Libraries\Pay\ImPort\ImPortPay;
 use LaravelSupports\Libraries\Pay\Kakao\KakaoPay;
 use LaravelSupports\Libraries\RecommendUser\RecommendedMemberService;
-use Throwable;
 
 /**
  *
@@ -37,7 +36,7 @@ class PaymentService
     protected $payment;
     protected $data;
 
-    protected $changeWebhookURL = 'https://api2.flybook.kr/v3/membership/change/callback';
+    protected string $changeWebhookURL = 'https://api2.flybook.kr/v3/membership/change/callback';
 
     /**
      * payment type
@@ -49,9 +48,9 @@ class PaymentService
      * @example
      * kakao_pay | nice_pay
      */
-    private $type;
-    private $paymentModule;
-    private $services = [
+    private string $type;
+    private PaymentModuleModel $paymentModule;
+    private array $services = [
         'kakao_pay' => KakaoPay::class,
         'nice_pay' => ImPortPay::class,
     ];
@@ -73,18 +72,6 @@ class PaymentService
         $this->data = $data;
         $this->type = $type;
         $this->paymentModule = PaymentModuleModel::getModel($type);
-    }
-
-    public static function createServiceWithPayment(MembershipPayment $payment)
-    {
-        $service = new self(
-            $payment->getType(),
-            $payment->getMemberModel(),
-            $payment->getPriceModel(),
-            $payment->getCouponModel()
-        );
-        $service->payment = $payment;
-        return $service;
     }
 
     /**
@@ -178,11 +165,9 @@ class PaymentService
          * @added   2021-02-23
          * @updated 2021-02-23
          */
-        if (!isset($result->status)) {
-            $membershipService->addMembershipSubscribe($this->payment, $this->member->id);
-            // 결제 완료 event
-            event(new MembershipPaymentCompletedEvent($this->payment, $this->member));
-        }
+        // $membershipService->addMembershipSubscribe($this->payment, $this->member->id);
+        // 결제 완료 event
+        event(new MembershipPaymentCompletedEvent($this->payment, $this->member));
 
         /**
          * 쿠폰 사용 여부를 위에서 확인 후
@@ -258,6 +243,7 @@ class PaymentService
         $membershipService = new MembershipService($this->member);
         /**
          * 자동 결제 시 카카오 알림톡 보내지 않음
+         *
          * @author  dew9163
          * @added   2020/08/14
          * @updated 2020/08/14
@@ -275,10 +261,11 @@ class PaymentService
          * @added   2021-02-24
          * @updated 2021-02-24
          */
-        $membershipService->addMembershipSubscribe($this->payment, $this->member->id);
+        // $membershipService->addMembershipSubscribe($this->payment, $this->member->id);
+
         // 쿠폰 사용 횟수 증가
         $paymentModel->setStatus(Payment::STATUS_PAID);
-        if($paymentModel->isRemainedBenefit()) {
+        if ($paymentModel->isRemainedBenefit()) {
             $paymentModel->addCouponUsedCount();
         }
         $paymentModel->save();
@@ -309,7 +296,7 @@ class PaymentService
             'token' => null,
             'payment_type' => null,
             'status' => 'ready',
-            'description' => $this->price->description.' - 결제 수단 변경',
+            'description' => $this->price->description . ' - 결제 수단 변경',
             'ref_payment_module_code' => $this->paymentModule->code,
             'error_message' => null,
         ];
@@ -436,4 +423,15 @@ class PaymentService
         return $this->bindResponseApprove($payment, $result);
     }
 
+    public static function createServiceWithPayment(MembershipPayment $payment): self
+    {
+        $service = new self(
+            $payment->getType(),
+            $payment->getMemberModel(),
+            $payment->getPriceModel(),
+            $payment->getCouponModel()
+        );
+        $service->payment = $payment;
+        return $service;
+    }
 }
