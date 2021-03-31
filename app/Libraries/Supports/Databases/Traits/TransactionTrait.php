@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Traits;
 
 
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -17,12 +18,13 @@ trait TransactionTrait
 
     private function runAction(callable $callback)
     {
-        $result = true;
         // transaction 을 시작합니다
         DB::beginTransaction();
         // $callback 이 함수인지 확인합니다
         if (is_callable($callback)) {
             $result = $callback();
+        } else {
+            $result = null;
         }
         DB::commit();
         return $result;
@@ -73,7 +75,7 @@ trait TransactionTrait
         try {
             $result = $this->runAction($callback);
             // transaction 중 에러 발생 시
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
             return $result;
@@ -86,12 +88,14 @@ trait TransactionTrait
             $lock = Cache::lock($lock, $second);
             if ($lock->get()) {
                 $result = $this->runAction($callback);
+            } else {
+                $lock->block(10);
             }
             // transaction 중 에러 발생 시
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
-            $lock->release();
+            optional($lock)->release();
             return $result;
         }
     }
