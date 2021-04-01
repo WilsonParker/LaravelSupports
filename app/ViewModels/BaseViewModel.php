@@ -23,6 +23,7 @@ class BaseViewModel extends ViewModel
     public const KEY_SORT_VALUES = 'sort_values';
     public const KEY_START_DATE = 'start_date';
     public const KEY_END_DATE = 'end_date';
+    public const KEY_KEYWORD = 'keyword';
 
     protected string $dateFormat = self::DATE_FORMAT;
     protected string $viewPrefix = '';
@@ -190,7 +191,7 @@ class BaseViewModel extends ViewModel
 
     public function imageURL($path, $image): string
     {
-        return config('image.images_url').'/'.$path.'/'.$image;
+        return config('image.images_url') . '/' . $path . '/' . $image;
     }
 
     public function getDateFormat(): string
@@ -269,5 +270,31 @@ class BaseViewModel extends ViewModel
         }
 
         return $result;
+    }
+
+    /**
+     * keyword 강조 처리
+     *
+     * @param string $content
+     * @return string
+     * @author  seul
+     * @added   2021/04/01
+     * @updated 2021/04/01
+     */
+    public function highlight(string $content): string
+    {
+        if (isset($this->searchData[self::KEY_KEYWORD])) {
+            $keyword = str_replace(' ', '', $this->searchData[self::KEY_KEYWORD]);
+            $pregKeyword = implode('\s{0,}', mb_str_split($keyword));
+            preg_match("/{$pregKeyword}/i", $content, $matches);
+
+            foreach($matches as $match) {
+                $content = str_replace($match, '<span class="bg-highlight">'.$match.'</span>', $content);
+            }
+
+            return $content;
+        } else {
+            return $content;
+        }
     }
 }
