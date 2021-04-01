@@ -119,6 +119,7 @@ class LoanDeliveryService
             case 'shipping':
                 $history->status = 'loaned';
                 $history->loan_date = now();
+                $history->scheduled_return_date = now()->addDays(15);
                 break;
             case 'ready':
                 $history->status = is_null($history->status) ? 'ready' : $history->status;
