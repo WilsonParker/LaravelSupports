@@ -147,7 +147,7 @@ class LoanPaymentService
         $usedLoanCount = $freeLoanTotalCount > 0 ? (int)LoanBookPaymentModel::countGoodsWhereMonth($this->member) : 0;
         $usedLoanCount = $usedLoanCount > $freeLoanTotalCount ? $freeLoanTotalCount : $usedLoanCount;
         $loanCount = count($this->goods) - ($freeLoanTotalCount - $usedLoanCount);
-        $totalPrice =  $loanCount > 0 ? $loanCount * $this->loanCost : 0;
+        $totalPrice = $loanCount > 0 ? $loanCount * $this->loanCost : 0;
         $deliveryCost = $this->deliveryRuleModel->getDefaultDeliveryCost($totalPrice);
 
         $service = new LoanScheduleService();
@@ -641,5 +641,52 @@ class LoanPaymentService
                 'price' => $overduePrice,
                 'total_price' => $quantity * $overduePrice,
             ]);
+    }
+
+    public function storePenaltyPayment($data)
+    {
+        $payment = $this->payment;
+        $penaltyPayment = $payment->getPenaltyPayment();
+        if (!$penaltyPayment) {
+            $penaltyPayment = LoanPenaltyPaymentModel::createModel($payment);
+        }
+
+        foreach ($data['book_id'] as $key => $item) {
+            if ($key == 'new') {
+                foreach ($item as $itemKey => $bookID) {
+                    if ($bookID == '') {
+                        continue;
+                    }
+
+                    $quantity = $data['quantity']['new'][$itemKey];
+                    $price = $data['price']['new'][$itemKey];
+
+                    LoanPenaltyPaymentGoodsModel::create([
+                        'ref_payment_id' => $penaltyPayment->id,
+                        'ref_book_id' => $bookID,
+                        'status' => 'ready',
+                        'type' => $data['type']['new'][$itemKey],
+                        'quantity' => $quantity,
+                        'price' => $price,
+                        'total_price' => $quantity * $price,
+                    ]);
+                }
+            } else {
+                $goodMdoel = LoanPenaltyPaymentGoodsModel::findOrFail($key);
+                if ($goodMdoel->ref_payment_id != $penaltyPayment->id || $goodMdoel->ref_book_id != $item) {
+                    continue;
+                }
+
+                $quantity = $data['quantity'][$key];
+                $price = $data['price'][$key];
+
+                $goodMdoel->update([
+                    'type' => $data['type'][$key],
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'total_price' => $quantity * $price,
+                ]);
+            }
+        }
     }
 }
