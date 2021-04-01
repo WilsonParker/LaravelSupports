@@ -53,6 +53,7 @@ abstract class BaseController extends Controller
     protected array $searchData = [];
     protected string $dateFormat = 'Y-m-d';
 
+    protected string $searchDateAt = 'created_at';
     protected string $strStartDate;
     protected string $strEndDate;
     protected string $startTime;
@@ -284,11 +285,11 @@ abstract class BaseController extends Controller
 
             if (isset($data['date_all']) == false || $data['date_all'] != 'Y') {
                 $query->when($startDate, function ($query, $startDate) {
-                    $query->where('created_at', '>=', $startDate);
+                    $query->where($this->searchDateAt, '>=', $startDate);
                 });
 
                 $query->when($endDate, function ($query, $endDate) {
-                    $query->where('created_at', '<=', $endDate);
+                    $query->where($this->searchDateAt, '<=', $endDate);
                 });
             }
         }
