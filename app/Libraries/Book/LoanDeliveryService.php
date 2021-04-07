@@ -28,7 +28,9 @@ class LoanDeliveryService
 
     public function updateDeliveryPush($payments)
     {
-        $payments->each(function ($payment) {
+        $payments->filter(function ($payment) {
+            return !$payment->histories;
+        })->each(function ($payment) {
             $payment->goods->each(function ($good) {
                 if (in_array($good->status, ['paid', 'preparing', 'ordered'])) {
                     $good->update(['status' => 'shipping']);
