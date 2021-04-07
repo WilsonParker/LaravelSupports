@@ -161,56 +161,57 @@ class LoanDeliveryService
             $released = $item['releasedAt'];
             $pickupDate = $item['pickupDateCompleted'];
 
-            if ($orderNo == '' && $pickupDate) {
-                $deliveryNum = mb_substr($deliveryNum, 1, 10);
+            if (is_null($orderNo)) {
+                if ($pickupDate) {
+                    $deliveryNum = mb_substr($deliveryNum, 1, 10);
 
-                $delivery = DeliveryModel::where('delivery_num', $deliveryNum)->first();
-                if ($delivery) {
-                    $goods = LoanBookPaymentGoodsModel::where('ref_delivery_id', $delivery->id)
-                        ->whereIn('status', ['shipping'])
-                        ->with('payment', 'book', 'history')
-                        ->get();
+                    $delivery = DeliveryModel::where('delivery_num', $deliveryNum)->first();
+                    if ($delivery) {
+                        $goods = LoanBookPaymentGoodsModel::where('ref_delivery_id', $delivery->id)
+                            ->whereIn('status', ['shipping'])
+                            ->with('payment', 'book', 'history')
+                            ->get();
 
-                    $good = $goods->first();
-                    $payment = $good->payment;
-                    $member = $payment->member;
-                    $book = $good->book;
+                        $good = $goods->first();
+                        $payment = $good->payment;
+                        $member = $payment->member;
+                        $book = $good->book;
 
-                    $cnt = 0;
-                    foreach ($goods as $good) {
-                        $history = $good->history;
-                        if ($history->status == 'pickup' && is_null($history->pickup_date)) {
-                            $history->pickup_date = $pickupDate ? Carbon::create($pickupDate)->addHours(9) : null;
-                            $history->save();
+                        $cnt = 0;
+                        foreach ($goods as $good) {
+                            $history = $good->history;
+                            if ($history->status == 'pickup' && is_null($history->pickup_date)) {
+                                $history->pickup_date = $pickupDate ? Carbon::create($pickupDate)->addHours(9) : null;
+                                $history->save();
 
-                            $cnt++;
-                        }
-                    }
-
-                    if ($cnt > 0) {
-                        $bookName = mb_strlen($book->title) > 10 ? mb_substr($book->title, 0, 10) . "..." : $book->title;
-                        $bookCount = $cnt - 1;
-                        if ($bookCount) {
-                            $bookName .= " 외 {$bookCount}권";
+                                $cnt++;
+                            }
                         }
 
-                        $message = "대여하신 책 ({$bookName})을 수거 완료했습니다. 책 상태 확인 후 반납이 완료됩니다!";
-                        $data = [
-                            'category' => 'etc',
-                            'member_id' => '2234',
-                            'target_id' => $member->id,
-                            'message' => $message,
-                            'page' => 'LoanedPage',
-                            'page_idx' => 0,
-                        ];
+                        if ($cnt > 0) {
+                            $bookName = mb_strlen($book->title) > 10 ? mb_substr($book->title, 0, 10) . "..." : $book->title;
+                            $bookCount = $cnt - 1;
+                            if ($bookCount) {
+                                $bookName .= " 외 {$bookCount}권";
+                            }
 
-                        MemberAlimModel::create($data);
+                            $message = "대여하신 책 ({$bookName})을 수거 완료했습니다. 책 상태 확인 후 반납이 완료됩니다!";
+                            $data = [
+                                'category' => 'etc',
+                                'member_id' => '2234',
+                                'target_id' => $member->id,
+                                'message' => $message,
+                                'page' => 'LoanedPage',
+                                'page_idx' => 0,
+                            ];
 
-                        $service = new FCMPushService();
-                        $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+                            MemberAlimModel::create($data);
+
+                            $service = new FCMPushService();
+                            $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+                        }
                     }
                 }
-
             } else {
                 $payment = LoanBookPaymentModel::where('order_no', $orderNo)->first();
                 $member = $payment->member->load('device');
