@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\BookLibrary\Api\Response;
 
 
-use App\Library\LaravelSupports\app\Libraries\BookLibrary\Api\Response\Items\NaverSearchBookResponseItem;
+use LaravelSupports\Libraries\BookLibrary\Api\Response\Items\NaverSearchBookResponseItem;
 use LaravelSupports\Libraries\Supports\Objects\Traits\ReflectionTrait;
 
 class NaverSearchBookResponse

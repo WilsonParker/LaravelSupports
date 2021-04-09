@@ -44,4 +44,8 @@ class BaseComponent extends Component
         return view($this->prefix . $this->view);
     }
 
+    public function renderWithData()
+    {
+        return $this->render()->with($this->data());
+    }
 }
