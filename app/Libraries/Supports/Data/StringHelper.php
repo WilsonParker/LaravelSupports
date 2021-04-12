@@ -31,7 +31,7 @@ class StringHelper
      * @create  20181227
      * @update  20181227
      **/
-    public function contains(string $haystack, string $needle)
+    public function contains(string $haystack, string $needle): bool
     {
         return strpos($haystack, $needle) === false ? false : true;
     }
@@ -49,18 +49,18 @@ class StringHelper
      * @create  20181227
      * @update  20181227
      */
-    protected function matchesKey(string $reg, string $key)
+    protected function matchesKey(string $reg, string $key): string
     {
         preg_match_all($reg, $key, $matches);
         return $matches[0][0];
     }
 
-    public function defaultString(string $str, string $def)
+    public function defaultString(string $str, string $def): string
     {
         return is_null($str) ? $def : $str;
     }
 
-    public function explodeWithTrim(string $delimiter, string $str)
+    public function explodeWithTrim(string $delimiter, string $str): array
     {
         return array_map("trim", explode($delimiter, $str));
     }
@@ -113,7 +113,7 @@ class StringHelper
         return -1;
     }
 
-    public function substr(string $str, int $start, int $end)
+    public function substr(string $str, int $start, int $end): string
     {
         $chars = $this->strSplitUnicode($str);
         $partOfStr = '';

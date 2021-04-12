@@ -13,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
+use LaravelSupports\Libraries\Supports\Data\StringHelper;
 use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
 use LaravelSupports\ViewModels\BaseViewModel;
 use LaravelSupports\Views\Components\BaseComponent;
@@ -451,14 +452,17 @@ abstract class BaseController extends Controller
      * @param string $prefix
      * @param bool $redirect
      * @param bool $isSuccess
+     * @param array $replace
      * @return \Illuminate\Http\RedirectResponse
      * @author  dew9163
      * @added   2020/12/08
      * @updated 2020/12/08
      */
-    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true): \Illuminate\Http\RedirectResponse
+    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        $helper = new StringHelper();
+        $message = $helper->replaceWithCollection($replace, $message);
         return $this->backWithMessage($message, $redirect);
     }
 
@@ -487,14 +491,17 @@ abstract class BaseController extends Controller
      * @param string $route
      * @param array $params
      * @param bool $isSuccess
+     * @param array $replace
      * @return \Illuminate\Http\RedirectResponse
      * @author  dew9163
      * @added   2020/12/08
      * @updated 2020/12/08
      */
-    protected function redirectWithConfig(string $prefix, string $route, array $params, bool $isSuccess = true): \Illuminate\Http\RedirectResponse
+    protected function redirectWithConfig(string $prefix, string $route, array $params, bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        $helper = new StringHelper();
+        $message = $helper->replaceWithCollection($replace, $message);
         return $this->redirectWithMessage($message, $route, $params);
     }
 
@@ -503,6 +510,13 @@ abstract class BaseController extends Controller
         return redirect()->route($route, $params)->with([
             'message' => $message
         ]);
+    }
+
+    protected function bindConfigMessage(string $prefix, array $replace = [], bool $isSuccess = true): string
+    {
+        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        $helper = new StringHelper();
+        return $helper->replaceWithCollection($replace, $message);
     }
 
     protected function setTitleAndDescription(string $title, string $description)
