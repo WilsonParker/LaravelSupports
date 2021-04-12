@@ -29,7 +29,7 @@ class LoanDeliveryService
     public function updateDeliveryPush($payments)
     {
         $payments->filter(function ($payment) {
-            return !$payment->histories;
+            return !$payment->histories()->exists();
         })->each(function ($payment) {
             $payment->goods->each(function ($good) {
                 if (in_array($good->status, ['paid', 'preparing', 'ordered'])) {
