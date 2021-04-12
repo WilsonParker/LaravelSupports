@@ -31,6 +31,8 @@ class BookService
     {
         $bookTitle = html_entity_decode(strip_tags($title));
 
+        $isbn = strip_tags($isbn);
+
         /**
          * naver api 에서는
          * isbn : isbn10 isbn13
