@@ -394,4 +394,33 @@ class LoanDeliveryService
 
         }
     }
+
+    /**
+     * 준비된 패널티 결제가 있다면 결제를 진행합니다
+     *
+     * @param $payment
+     * @return void
+     * @author  seul
+     * @added   2021/04/13
+     * @updated 2021/04/13
+     */
+    public function payPenalty($payment)
+    {
+        if ($payment->getPenaltyPayment()) {
+            $member = $payment->member;
+
+            $service = new LoanPenaltyPaymentService($member, [
+                'type' => $payment->ref_payment_module_code,
+                'use_point' => 0,
+            ]);
+            $service->setPayment($payment);
+            $service->bindPenaltyPayment();
+
+            try {
+                $service->subscribe();
+            } catch (\Exception $e) {
+
+            }
+        }
+    }
 }
