@@ -2,10 +2,11 @@
 
 namespace LaravelSupports\Providers;
 
+use App\View\Components\Books\BookLoanGoodsComponent;
+use App\View\Components\Books\BookSimpleComponent;
+use App\View\Components\Member\MemberComponent;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use LaravelSupports\Views\Components\Books\BookLoanGoodsComponent;
-use LaravelSupports\Views\Components\Books\BookSimpleComponent;
 use LaravelSupports\Views\Components\Cards\CardSearchComponent;
 use LaravelSupports\Views\Components\Inputs\CheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\DatepickerComponent;
@@ -16,7 +17,6 @@ use LaravelSupports\Views\Components\Inputs\GridCheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\InlineCheckBoxListComponent;
 use LaravelSupports\Views\Components\Inputs\LikeRadioComponent;
 use LaravelSupports\Views\Components\Inputs\UploadImageComponent;
-use LaravelSupports\Views\Components\Member\MemberComponent;
 use LaravelSupports\Views\Components\Tables\DataTableComponent;
 use LaravelSupports\Views\Components\Tables\DataTableSearchComponent;
 use LaravelSupports\Views\Components\Tables\TableComponent;
