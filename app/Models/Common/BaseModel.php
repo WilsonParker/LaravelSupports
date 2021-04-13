@@ -527,7 +527,7 @@ abstract class BaseModel extends Model
 
     public static function getModel($id)
     {
-        return self::find($id);
+        return self::findOrFail($id);
     }
 
     public static function getList()
