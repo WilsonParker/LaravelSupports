@@ -4,6 +4,7 @@ namespace LaravelSupports\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use LaravelSupports\Views\Components\Books\BookLoanGoodsComponent;
 use LaravelSupports\Views\Components\Books\BookSimpleComponent;
 use LaravelSupports\Views\Components\Cards\CardSearchComponent;
 use LaravelSupports\Views\Components\Inputs\CheckBoxListComponent;
@@ -58,6 +59,7 @@ class PackageComponentProvider extends ServiceProvider
         Blade::component('datepicker', DatepickerComponent::class);
 
         Blade::component('book-simple', BookSimpleComponent::class);
+        Blade::component('book-loan-goods', BookLoanGoodsComponent::class);
         Blade::component('member', MemberComponent::class);
     }
 }
