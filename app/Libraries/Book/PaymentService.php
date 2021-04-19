@@ -38,7 +38,7 @@ class PaymentService
     protected $paymentModule;
     protected $deliveryRuleCode = 'book';
     protected $deliveryRuleModel;
-    protected $webHookURL = 'https://api2.flybook.kr/v3/book/payment/callback';
+    protected $webHookURL = 'https://api.flybook.kr/v3/book/payment/callback';
     private $services = [
         'kakao_pay' => KakaoPay::class,
         'nice_pay' => ImPortPay::class,
