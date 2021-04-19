@@ -146,13 +146,19 @@
                         </tbody>
                     </table>
             </div>
+            @if(method_exists($link, 'links'))
             <div class="row">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
                         {{ $link->appends($searchData)->links() }}
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="input-go-to-page" aria-describedby="inputGoToPageAddon" aria-label="Go to page">
+                            <button class="btn btn-outline-secondary" type="button" id="inputGoToPageAddon" onclick="goToPage()">Go</button>
+                        </div>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </div>
@@ -185,6 +191,24 @@
 
         function getTableObject() {
             return $("#{{ $id }}");
+        }
+
+        function searchTextKeyDown(event) {
+            if (event.keyCode == 13) {
+                tableSearch();
+            }
+        }
+
+        function goToPage() {
+            let callback = function () {
+                let page = $('#input-go-to-page').val();
+                let query = helper.html.buildQueryString({
+                    length : length,
+                    page : page,
+                });
+                location.href = "?" + query;
+            };
+            loading.run(callback);
         }
     </script>
 @endpush
