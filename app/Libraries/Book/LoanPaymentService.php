@@ -6,6 +6,7 @@ namespace LaravelSupports\Libraries\Book;
 
 use Carbon\Carbon;
 use FlyBookModels\Books\BookOrderedStoreModel;
+use FlyBookModels\Books\LoanBookCartModel;
 use FlyBookModels\Books\LoanBookPaymentGoodsModel;
 use FlyBookModels\Books\LoanBookPaymentModel;
 use FlyBookModels\Books\LoanPenaltyPaymentGoodsModel;
