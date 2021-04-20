@@ -4,9 +4,10 @@
 namespace LaravelSupports\Libraries\BookLibrary\Api\Response\Items;
 
 
+use App\View\Items\Contracts\BookItemizable;
 use LaravelSupports\Libraries\Supports\Objects\Traits\ReflectionTrait;
 
-class NaverSearchBookResponseItem
+class NaverSearchBookResponseItem implements BookItemizable
 {
     use ReflectionTrait;
 
@@ -39,7 +40,7 @@ class NaverSearchBookResponseItem
         }
     }
 
-    public function getBookModelData()
+    public function getBookModelData(): array
     {
         return [
             'isbn' => '',
@@ -50,5 +51,50 @@ class NaverSearchBookResponseItem
             'author' => $this->isbn13,
             'book_img' => $this->isbn13,
         ];
+    }
+
+    public function getID(): int
+    {
+        return -1;
+    }
+
+    public function getBookID(): int
+    {
+        return -1;
+    }
+
+    public function getStockCount(): int
+    {
+        return 0;
+    }
+
+    public function getImageUrl(): string
+    {
+        return $this->image;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    public function getPublisher(): string
+    {
+        return $this->publisher;
+    }
+
+    public function getISBN(): string
+    {
+        return $this->isbn;
+    }
+
+    public function getPubDate(): string
+    {
+        return $this->pubdate;
     }
 }

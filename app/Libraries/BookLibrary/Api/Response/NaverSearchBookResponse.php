@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\BookLibrary\Api\Response;
 
 
+use Illuminate\Support\Collection;
 use LaravelSupports\Libraries\BookLibrary\Api\Response\Items\NaverSearchBookResponseItem;
 use LaravelSupports\Libraries\Supports\Objects\Traits\ReflectionTrait;
 
@@ -17,11 +18,51 @@ class NaverSearchBookResponse
     public int $display = 0;
     public $items = [];
 
+    /**
+     * @return string
+     */
+    public function getLastBuildDate(): string
+    {
+        return $this->lastBuildDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal(): int
+    {
+        return $this->total;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStart(): int
+    {
+        return $this->start;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDisplay(): int
+    {
+        return $this->display;
+    }
+
+    /**
+     * @return array
+     */
+    public function getItems() : Collection
+    {
+        return $this->items;
+    }
+
     public function afterBind()
     {
         $this->items = collect($this->items)->map(function ($item) {
             $model = new NaverSearchBookResponseItem();
-            $model->bindArray($item);
+            $model->bindStd($item);
             return $model;
         });
     }

@@ -27,9 +27,8 @@ class NaverSearchBookAPI
             ]
         ]);
         $result = json_decode($response->getBody()->getContents());
-
         $model = new NaverSearchBookResponse();
-        $model->bindJson($result->items[0]);
+        $model->bindStd($result);
         return $model;
     }
 
