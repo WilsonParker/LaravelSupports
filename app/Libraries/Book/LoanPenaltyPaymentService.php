@@ -396,7 +396,7 @@ class LoanPenaltyPaymentService
      */
     protected function throwCardInformation()
     {
-        if ($this->readyData['type'] == 'nice_pay' && (isset($this->readyData['card']) == false || $this->readyData['card'] == null)) {
+        if ($this->readyData != null && $this->readyData['type'] == 'nice_pay' && (isset($this->readyData['card']) == false || $this->readyData['card'] == null)) {
             $cardNumber = isset($this->readyData['card_number']) ? $this->readyData['card_number'] : null;
             $cardPassword = isset($this->readyData['card_password']) ? $this->readyData['card_password'] : null;
             $cardBirth = isset($this->readyData['card_month']) ? $this->readyData['card_month'] : null;
