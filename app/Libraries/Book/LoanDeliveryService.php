@@ -15,6 +15,7 @@ use FlyBookModels\Books\LoanBookPaymentModel;
 use FlyBookModels\Books\LoanDeliveryHistoryModel;
 use FlyBookModels\Delivery\DeliveryModel;
 use FlyBookModels\Members\MemberModel;
+use FlyBookModels\Members\MemberPointModel;
 use FlyBookModels\Offline\OfflineLoanBookModel;
 use FlyBookModels\Push\AlimGroupModel;
 use FlyBookModels\Push\MemberAlimModel;
@@ -370,6 +371,23 @@ class LoanDeliveryService
 
                         $service = new FCMPushService();
                         $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+
+                        if (!is_null($payment->ref_bundle_payment_id)) {
+                            MemberPointModel::createPoint(1000, $member->id, '[도서대여] 맞교환 포인트 지급');
+                            $message = "[도서대여] 맞교환 1,OOO 포인트가 지급되었습니다 🎁";
+                            $data = [
+                                'category' => 'etc',
+                                'member_id' => '2234',
+                                'target_id' => $member->id,
+                                'message' => $message,
+                                'page' => 'MemberPointPage',
+                            ];
+
+                            MemberAlimModel::create($data);
+
+                            $service = new FCMPushService();
+                            $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+                        }
                         break;
                     case 'pickup_done':
                         $message = "대여하신 책 ({$bookName})을 수거 완료했습니다. 책 상태 확인 후 반납이 완료됩니다!";
