@@ -9,8 +9,9 @@ use FlyBookModels\Books\AuthorModel;
 use FlyBookModels\Books\BookAuthorModel;
 use FlyBookModels\Books\BookModel;
 use FlyBookModels\Books\BookPackingModel;
+use FlyBookModels\Configs\CategoriesModel;
 use GuzzleHttp\Client;
-use Intervention\Image\Image;
+use Intervention\Image\Facades\Image;
 use LaravelSupports\Libraries\BookLibrary\Api\NaverSearchBookAPI;
 
 class BookService
@@ -27,7 +28,7 @@ class BookService
      * @added   2021/04/09
      * @updated 2021/04/09
      */
-    public function findOrCreateBook(string $isbn, string $title, string $imageUrl):BookModel
+    public function findOrCreateBook(string $isbn, string $title, string $imageUrl)
     {
         $bookTitle = html_entity_decode(strip_tags($title));
 
@@ -77,9 +78,14 @@ class BookService
         $api = new NaverSearchBookAPI();
         $naverBookInfo = $api->searchForISBN($isbn);
 
-        if (!$naverBookInfo) {
+        if (isset($naverBookInfo->items[0])) {
+            $naverBookInfo = $naverBookInfo->items[0];
+        }
+
+        if (!isset($naverBookInfo->description)) {
             throw new \Exception('책정보데이터가 없습니다.');
         }
+
         $full_description2 = $naverBookInfo->description;
 
         /**
@@ -234,11 +240,11 @@ class BookService
     {
         if (!$categoryId) return 0;
 
-        $category = \App\ConfigBookCategory::find($categoryId);
+        $category = CategoriesModel::find($categoryId);
         if (!$category) {
             $category_arr = explode(">", $categoryName);
 
-            $category = new \App\ConfigBookCategory;
+            $category = new CategoriesModel;
             $category->id = $categoryId;
             $category->category_name = $category_arr[count($category_arr) - 1];
             if ($category_arr[0] == 'eBook') {
@@ -260,10 +266,10 @@ class BookService
 
         /**
          **/
-        $input_category = \App\ConfigBookCategory::where('mall', $category->mall)->where('depth1', $category->depth1)->where('depth2', $category->depth2)->where('depth3', '')->first();
+        $input_category = CategoriesModel::where('mall', $category->mall)->where('depth1', $category->depth1)->where('depth2', $category->depth2)->where('depth3', '')->first();
 
         if (!$input_category) {
-            $input_category = \App\ConfigBookCategory::where('mall', $category->mall)->where('depth1', $category->depth1)->where('depth2', '')->first();
+            $input_category = CategoriesModel::where('mall', $category->mall)->where('depth1', $category->depth1)->where('depth2', '')->first();
         }
 
         if (!$input_category) {

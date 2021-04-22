@@ -146,7 +146,7 @@ class LoanDeliveryService
             'query' => [
                 'sortKey' => 'receiptDate',
                 'sortType' => 'DESC',
-                'dateFrom' => date('Y-m-d'),
+                'dateFrom' => date('Y-m-d', strtotime('-3 days')),
                 'dateTo' => date('Y-m-d'),
                 'status' => 'all',
                 'query' => '',
