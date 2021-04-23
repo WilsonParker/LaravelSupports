@@ -33,12 +33,15 @@ trait ConvertStringTrait
     public function convertBookTitles($books, int $length = 10) : string
     {
         $bookCount = count($books) - 1;
-        $bookName = $this->shortenString($books->first()->title, $length);
+
         if ($bookCount) {
-            $bookName .= " 외 {$bookCount}권";
+            $bookTitle = $this->shortenString($books->first()->title, $length);
+            $bookTitle .= " 외 {$bookCount}권";
+        } else {
+            $bookTitle = $this->shortenString($books->title, $length);
         }
 
-        return $bookName;
+        return $bookTitle;
     }
 
     /**

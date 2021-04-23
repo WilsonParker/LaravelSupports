@@ -4,10 +4,14 @@
 namespace LaravelSupports\Libraries\Book;
 
 
+use App\Events\Notifications\LoanDeliveryDoneNotificationEvent;
+use App\Events\Notifications\LoanDeliveryPickUpNotificationEvent;
+use App\Events\Notifications\LoanDeliveryPickUpReadyNotificationEvent;
 use App\Events\Notifications\LoanDeliveryRestockNotificationEvent;
+use App\Events\Notifications\LoanDeliveryReturnNotificationEvent;
+use App\Events\Notifications\LoanDeliveryStartNotificationEvent;
+use App\Events\Point\LoanDeliveryExchangePointEvent;
 use App\Services\Notifications\AlimtalkService;
-use App\Services\Push\FCMPushService;
-use App\Services\Push\PushGroupService;
 use Carbon\Carbon;
 use FlyBookModels\Books\HopeBookModel;
 use FlyBookModels\Books\LoanBookPaymentGoodsModel;
@@ -15,15 +19,15 @@ use FlyBookModels\Books\LoanBookPaymentModel;
 use FlyBookModels\Books\LoanDeliveryHistoryModel;
 use FlyBookModels\Delivery\DeliveryModel;
 use FlyBookModels\Members\MemberModel;
-use FlyBookModels\Members\MemberPointModel;
 use FlyBookModels\Offline\OfflineLoanBookModel;
-use FlyBookModels\Push\AlimGroupModel;
-use FlyBookModels\Push\MemberAlimModel;
 use GuzzleHttp\Client;
 use LaravelSupports\Libraries\Payment\Exceptions\GoodStatusException;
+use LaravelSupports\Libraries\Supports\String\Traits\ConvertStringTrait;
 
 class LoanDeliveryService
 {
+    use ConvertStringTrait;
+
     public $lateFee = 1000;
     public $pickupCost = 3000;
 
@@ -56,26 +60,13 @@ class LoanDeliveryService
             $info = $item[0];
             $member = MemberModel::find($info['member_id']);
             if ($member) {
-                $bookCount = count($item) - 1;
-
-                $bookName = mb_strlen($info['book_title']) > 10 ? mb_substr($info['book_title'], 0, 10) . "..." : $info['book_title'];
-                if ($bookCount) {
-                    $bookName .= " 외 {$bookCount}권";
-                }
-
-                $message = $member->nickname."님, 대여한 책 ({$bookName}) 이 오늘 도착 예정입니다!";
                 $data = [
-                    'target' => 'basic',
-                    'use_push' => 'Y',
-                    'message' => $message,
-                    'page' => 'LoanDetailPage',
-                    'page_idx' => $paymentID
+                    'payment_id' => $paymentID,
+                    'member' => $member,
+                    'book_title' => $this->convertBookTitles($item),
                 ];
 
-                $alimGroup = AlimGroupModel::create($data);
-
-                $service = new PushGroupService($alimGroup, [$member->id]);
-                $service->sendNotifications();
+                event(new LoanDeliveryStartNotificationEvent([$member->id], $data));
             }
         });
     }
@@ -159,7 +150,10 @@ class LoanDeliveryService
         collect($contents)->each(function ($item) {
             $orderNo = $item['orderIdFromCorp'];
             $deliveryNum = $item['bookId'];
+
             $image = $item['notReceivedImageLocation'];
+            $image = is_null($image) ? $item['signImageLocation'] : $image;
+
             $loanDate = $item['deliveryCompletedDate'];
             $released = $item['releasedAt'];
             $pickupDate = $item['pickupDateCompleted'];
@@ -167,53 +161,7 @@ class LoanDeliveryService
             if (is_null($orderNo)) {
                 if ($pickupDate) {
                     $deliveryNum = mb_substr($deliveryNum, 1, 10);
-
-                    $delivery = DeliveryModel::where('delivery_num', $deliveryNum)->first();
-                    if ($delivery) {
-                        $goods = LoanBookPaymentGoodsModel::where('ref_delivery_id', $delivery->id)
-                            ->whereIn('status', ['shipping'])
-                            ->with('payment', 'book', 'history')
-                            ->get();
-
-                        $good = $goods->first();
-                        $payment = $good->payment;
-                        $member = $payment->member;
-                        $book = $good->book;
-
-                        $cnt = 0;
-                        foreach ($goods as $good) {
-                            $history = $good->history;
-                            if ($history->status == 'pickup' && is_null($history->pickup_date)) {
-                                $history->pickup_date = $pickupDate ? Carbon::create($pickupDate)->addHours(9) : null;
-                                $history->save();
-
-                                $cnt++;
-                            }
-                        }
-
-                        if ($cnt > 0) {
-                            $bookName = mb_strlen($book->title) > 10 ? mb_substr($book->title, 0, 10) . "..." : $book->title;
-                            $bookCount = $cnt - 1;
-                            if ($bookCount) {
-                                $bookName .= " 외 {$bookCount}권";
-                            }
-
-                            $message = "대여하신 책 ({$bookName})을 수거 완료했습니다. 책 상태 확인 후 반납이 완료됩니다!";
-                            $data = [
-                                'category' => 'etc',
-                                'member_id' => '2234',
-                                'target_id' => $member->id,
-                                'message' => $message,
-                                'page' => 'LoanedPage',
-                                'page_idx' => 0,
-                            ];
-
-                            MemberAlimModel::create($data);
-
-                            $service = new FCMPushService();
-                            $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
-                        }
-                    }
+                    $this->updatePickUpDate($deliveryNum, $pickupDate);
                 }
             } else {
                 $payment = LoanBookPaymentModel::where('order_no', $orderNo)->first();
@@ -259,20 +207,19 @@ class LoanDeliveryService
                     }
 
                     if ($isNewImage) {
-                        $message = "문앞에 책이 도착했어요! 얼른 책을 챙겨주세요.";
                         $data = [
-                            'category' => 'etc',
-                            'member_id' => '2234',
-                            'target_id' => $member->id,
-                            'message' => $message,
-                            'page' => 'LoanDetailPage',
-                            'page_idx' => $payment->id,
+                            'payment_id' => $payment->id,
                         ];
 
-                        MemberAlimModel::create($data);
+                        event(new LoanDeliveryDoneNotificationEvent([$member->id], $data));
 
-                        $service = new FCMPushService();
-                        $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx'], '', $image);
+                        // 수거완료
+                        $parentPayment = $payment->parentPayment;
+                        if (!is_null($parentPayment)) {
+                            $delivery = $parentPayment->deliveries()->first();
+
+                            $this->updatePickUpDate($delivery->delivery_num, $loanDate);
+                        }
                     }
                 }
             }
@@ -300,29 +247,55 @@ class LoanDeliveryService
         $members->each(function ($item, $key) {
             $member = MemberModel::find($key);
             if ($member) {
-                $info = $item[0];
-                $bookCount = count($item) - 1;
-
-                $bookName = mb_strlen($info['book_title']) > 10 ? mb_substr($info['book_title'], 0, 10) . "..." : $info['book_title'];
-                if ($bookCount) {
-                    $bookName .= " 외 {$bookCount}권";
-                }
-
-                $message = "대여하신 책 ({$bookName})을 오늘 오후에 플라이북에서 수거 예정입니다!";
                 $data = [
-                    'target' => 'basic',
-                    'use_push' => 'Y',
-                    'message' => $message,
-                    'page' => 'LoanedPage',
-                    'page_idx' => 0,
+                    'book_title' => $this->convertBookTitles($item),
                 ];
 
-                $alimGroup = AlimGroupModel::create($data);
-
-                $service = new PushGroupService($alimGroup, [$member->id]);
-                $service->sendNotifications();
+                event(new LoanDeliveryPickUpReadyNotificationEvent([$member->id], $data));
             }
         });
+    }
+
+    public function updatePickUpDate($deliveryNum, $pickupDate)
+    {
+        $delivery = DeliveryModel::where('delivery_num', $deliveryNum)->first();
+        if ($delivery) {
+            $goods = LoanBookPaymentGoodsModel::where('ref_delivery_id', $delivery->id)
+                ->whereIn('status', ['shipping'])
+                ->with('payment', 'book', 'history')
+                ->get();
+
+            $good = $goods->first();
+            $payment = $good->payment;
+            $member = $payment->member;
+            $book = $good->book;
+
+            $cnt = 0;
+            foreach ($goods as $good) {
+                $history = $good->history;
+                if ($history->status == 'pickup' && is_null($history->pickup_date)) {
+                    $history->pickup_date = $pickupDate ? Carbon::create($pickupDate)->addHours(9) : null;
+                    $history->save();
+
+                    $cnt++;
+                }
+            }
+
+            if ($cnt > 0) {
+                $bookTItle = $this->convertBookTitles($book);
+
+                $bookCount = $cnt - 1;
+                if ($bookCount) {
+                    $bookTItle .= " 외 {$bookCount}권";
+                }
+
+                $data = [
+                    'book_title' => $bookTItle,
+                ];
+
+                event(new LoanDeliveryPickUpNotificationEvent([$member->id], $data));
+            }
+        }
     }
 
     public function updateGoodsStatus($data)
@@ -349,62 +322,31 @@ class LoanDeliveryService
                 $member = $payment->member;
                 $book = $good->book;
 
-                $bookName = mb_strlen($book->title) > 10 ? mb_substr($book->title, 0, 10) . "..." : $book->title;
+                $bookTitle = $this->convertBookTitles($book);
                 $bookCount = count($goods) - 1;
                 if ($bookCount) {
-                    $bookName .= " 외 {$bookCount}권";
+                    $bookTitle .= " 외 {$bookCount}권";
                 }
 
                 switch ($status) {
                     case 'return':
-                        $message = "대여한 책 ({$bookName})이 반납 완료되었습니다. 책은 어떠셨나요? 리뷰를 남겨주세요!";
                         $data = [
-                            'category' => 'etc',
-                            'member_id' => '2234',
-                            'target_id' => $member->id,
-                            'message' => $message,
-                            'page' => 'BookDetailPage',
-                            'page_idx' => $book->id,
+                            'book_title' => $bookTitle,
+                            'book_id' => $book->id,
                         ];
 
-                        MemberAlimModel::create($data);
-
-                        $service = new FCMPushService();
-                        $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+                        event(new LoanDeliveryReturnNotificationEvent([$member->id], $data));
 
                         if (!is_null($payment->ref_bundle_payment_id)) {
-                            MemberPointModel::createPoint(1000, $member->id, '[도서대여] 맞교환 포인트 지급');
-                            $message = "[도서대여] 맞교환 1,OOO 포인트가 지급되었습니다 🎁";
-                            $data = [
-                                'category' => 'etc',
-                                'member_id' => '2234',
-                                'target_id' => $member->id,
-                                'message' => $message,
-                                'page' => 'MemberPointPage',
-                                'page_idx' => 0,
-                            ];
-
-                            MemberAlimModel::create($data);
-
-                            $service = new FCMPushService();
-                            $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+                            event(new LoanDeliveryExchangePointEvent($member));
                         }
                         break;
                     case 'pickup_done':
-                        $message = "대여하신 책 ({$bookName})을 수거 완료했습니다. 책 상태 확인 후 반납이 완료됩니다!";
                         $data = [
-                            'category' => 'etc',
-                            'member_id' => '2234',
-                            'target_id' => $member->id,
-                            'message' => $message,
-                            'page' => 'LoanedPage',
-                            'page_idx' => 0,
+                            'book_title' => $bookTitle,
                         ];
 
-                        MemberAlimModel::create($data);
-
-                        $service = new FCMPushService();
-                        $service->pushAll(collect([$member]), $data['message'], $data['page'], $data['page_idx']);
+                        event(new LoanDeliveryPickUpNotificationEvent([$member->id], $data));
                         break;
                 }
 
