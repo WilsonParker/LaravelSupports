@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\RecommendUser;
 
 use App\Services\Membership\MembershipService;
-use FlyBookModels\Members\Contracts\Member;
+use FlyBookModels\Members\MemberModel;
 use FlyBookModels\Members\PlusMemberModel;
 use FlyBookModels\Members\RecommendedMemberModel;
 use LaravelSupports\Libraries\RecommendUser\Exceptions\AlreadyRecommendedException;
@@ -24,7 +24,7 @@ class RecommendedMemberService
      *
      * @param $member
      */
-    public function __construct(Member $member)
+    public function __construct(MemberModel $member)
     {
         $this->member = $member;
     }
