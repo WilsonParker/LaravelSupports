@@ -92,7 +92,7 @@ class RecommendedMemberService
             throw_if($throwException && $isAlreadyUsed, new AlreadyRecommendedException());
             $recommendedMember = $recommendedPlusMember->member;
             // 본인을 추천할 수 없습니다
-            throw_if($throwException && $recommendedPlusMember->recom_code == $this->member->bplus->recom_code, new DoNotSelfRecommendedException());
+            throw_if($throwException && $recommendedPlusMember->recom_code == $this->member->plusMember->recom_code, new DoNotSelfRecommendedException());
             // 추천인이 존재하는지 확인
             throw_if($throwException && !isset($recommendedPlusMember) && !isset($recommendedMember), new NotFoundRecommendedException());
             // 추천인을 사용할 수 있는 상품 인지 확인
