@@ -381,6 +381,7 @@ class LoanDeliveryService
                                 'target_id' => $member->id,
                                 'message' => $message,
                                 'page' => 'MemberPointPage',
+                                'page_idx' => 0,
                             ];
 
                             MemberAlimModel::create($data);
