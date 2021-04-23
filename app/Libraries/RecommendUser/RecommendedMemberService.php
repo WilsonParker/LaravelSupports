@@ -123,7 +123,9 @@ class RecommendedMemberService
     {
         $service = new MembershipService($this->member);
         $service->addMembership('premium', 'months', 1);
-        throw_unless($recommendedMember->isMembership(), new NotMembershipRecommendedException());
+        // 멤버십이 아닐 경우 에러 발생
+        // throw_unless($recommendedMember->isMembership(), new NotMembershipRecommendedException());
+        throw_unless(isset($recommendedMember->plusMember), new NotMembershipRecommendedException());
         $service->setMember($recommendedMember);
         $service->addMembership('premium', 'months', 1);
     }
