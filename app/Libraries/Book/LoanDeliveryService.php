@@ -63,7 +63,7 @@ class LoanDeliveryService
                 $data = [
                     'payment_id' => $paymentID,
                     'member' => $member,
-                    'book_title' => $this->convertBookTitles($item),
+                    'book_title' => $this->shortenString($info['book_title']),
                 ];
 
                 event(new LoanDeliveryStartNotificationEvent([$member->id], $data));
