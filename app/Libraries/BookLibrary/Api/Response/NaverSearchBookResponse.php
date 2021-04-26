@@ -16,6 +16,7 @@ class NaverSearchBookResponse
     public int $total = 0;
     public int $start = 0;
     public int $display = 0;
+    public int $perPage = 10;
     public $items = [];
 
     /**
@@ -56,6 +57,14 @@ class NaverSearchBookResponse
     public function getItems() : Collection
     {
         return $this->items;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPerPage(): int
+    {
+        return $this->perPage;
     }
 
     public function afterBind()

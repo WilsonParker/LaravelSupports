@@ -4,6 +4,7 @@
 namespace LaravelSupports\Libraries\BookLibrary\Api;
 
 
+use App\Library\LaravelSupports\app\Libraries\BookLibrary\Api\Paginator\NaverBookApiPaginator;
 use FlyBookModels\Books\BookModel;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
@@ -12,27 +13,42 @@ use SoapBox\Formatter\Formatter;
 
 class NaverSearchBookAPI
 {
+    private const CLIENT_ID = 'Y8CezI0SlnABjwknC97o';
+    private const CLIENT_SECRET = 'tOPjuhnGA3';
     private string $url = 'https://openapi.naver.com/v1/search/book_adv.json';
+    private NaverBookApiPaginator $paginator;
 
-    public function searchForISBN($isbn): NaverSearchBookResponse
+    protected function search(string $type, string $val, int $page = 1): NaverSearchBookResponse
     {
         $client = new Client();
         $response = $client->request('GET', $this->url, [
             'headers' => [
-                'X-Naver-Client-Id' => 'Y8CezI0SlnABjwknC97o',
-                'X-Naver-Client-Secret' => 'tOPjuhnGA3',
+                'X-Naver-Client-Id' => self::CLIENT_ID,
+                'X-Naver-Client-Secret' => self::CLIENT_SECRET,
             ],
             'query' => [
-                'd_isbn' => $isbn,
+                $type => $val,
+                'start' => $page,
             ]
         ]);
         $result = json_decode($response->getBody()->getContents());
         $model = new NaverSearchBookResponse();
         $model->bindStd($result);
+        $this->paginator = new NaverBookApiPaginator($model);
         return $model;
     }
 
-    public function searchForKeyword($keyword):Collection
+    public function searchForISBN($isbn, int $page = 1): NaverSearchBookResponse
+    {
+        return $this->search('d_isbn', $isbn, $page);
+    }
+
+    public function searchForTitle($title, int $page = 1): NaverSearchBookResponse
+    {
+        return $this->search('d_titl', $title, $page);
+    }
+
+    public function searchForKeyword($keyword): Collection
     {
         $client = new Client();
         $this->url = 'https://openapi.naver.com/v1/search/book.xml';
@@ -42,7 +58,7 @@ class NaverSearchBookAPI
         })->toArray();
         $keyword = implode('+', $keyword);
 
-        $response = $client->request('GET', $this->url.'?query='.$keyword, [
+        $response = $client->request('GET', $this->url . '?query=' . $keyword, [
             'headers' => [
                 'X-Naver-Client-Id' => 'Y8CezI0SlnABjwknC97o',
                 'X-Naver-Client-Secret' => 'tOPjuhnGA3',
@@ -57,43 +73,43 @@ class NaverSearchBookAPI
 
     protected function bindReturnData($returnData)
     {
-        if(!$returnData['channel']) {
+        if (!$returnData['channel']) {
             return null;
         }
 
-        $returnData['channel']['total'] = (int) $returnData['channel']['total'];
-        $returnData['channel']['display'] = (int) $returnData['channel']['display'];
-        $returnData['channel']['start'] = (int) $returnData['channel']['start'];
+        $returnData['channel']['total'] = (int)$returnData['channel']['total'];
+        $returnData['channel']['display'] = (int)$returnData['channel']['display'];
+        $returnData['channel']['start'] = (int)$returnData['channel']['start'];
 
-        if($returnData['channel']['total'] > 0) {
+        if ($returnData['channel']['total'] > 0) {
             $returnData['channel']['last_page'] = ceil($returnData['channel']['total'] / $returnData['channel']['display']);
         }
 
-        if($returnData['channel']['total'] == 1) {
+        if ($returnData['channel']['total'] == 1) {
             $item = $returnData['channel']['item'];
 
-            if(gettype($item['isbn']) == 'array') $item['isbn'] = '';
-            if(gettype($item['description']) == 'array') $item['description'] = '';
-            if(gettype($item['image']) == 'array') $item['image'] = '';
-            if(gettype($item['author']) == 'array') $item['author'] = '';
-            if(gettype($item['publisher']) == 'array') $item['publisher'] = '';
-            if(gettype($item['pubdate']) == 'array') $item['pubdate'] = '';
+            if (gettype($item['isbn']) == 'array') $item['isbn'] = '';
+            if (gettype($item['description']) == 'array') $item['description'] = '';
+            if (gettype($item['image']) == 'array') $item['image'] = '';
+            if (gettype($item['author']) == 'array') $item['author'] = '';
+            if (gettype($item['publisher']) == 'array') $item['publisher'] = '';
+            if (gettype($item['pubdate']) == 'array') $item['pubdate'] = '';
 
             if ($item['isbn'] != '') {
                 $item['price'] = gettype($item['price']) == 'array' ? 0 : (int)$item['price'];
                 $item['discount'] = gettype($item['discount']) == 'array' ? $item['price'] : (int)$item['discount'];
 
-                if(strpos($item['author'], '|') !== false) {
+                if (strpos($item['author'], '|') !== false) {
                     $tmparr = explode('|', $item['author']);
-                    $item['author'] = $tmparr[0].' 외 '.(count($tmparr)-1).'명';
+                    $item['author'] = $tmparr[0] . ' 외 ' . (count($tmparr) - 1) . '명';
                 }
 
-                if(strpos($item['isbn'], " ") !== false) {
-                    $item['isbn'] = substr($item['isbn'], strpos($item['isbn'], " ")+1);
+                if (strpos($item['isbn'], " ") !== false) {
+                    $item['isbn'] = substr($item['isbn'], strpos($item['isbn'], " ") + 1);
                 }
-                if($item['isbn']) {
+                if ($item['isbn']) {
                     $book = BookModel::select('id')->where('isbn', $item['isbn'])->where('title', strip_tags($item['title']))->first();
-                    if($book) {
+                    if ($book) {
                         $item['count'] = $book->count->toArray();
                     }
                 }
@@ -101,33 +117,32 @@ class NaverSearchBookAPI
             } else {
                 $returnData['channel']['item'] = [];
             }
-        }
-        else if($returnData['channel']['total'] > 1) {
-            for($i=0,$cnt=count($returnData['channel']['item']); $i<$cnt; $i++) {
+        } else if ($returnData['channel']['total'] > 1) {
+            for ($i = 0, $cnt = count($returnData['channel']['item']); $i < $cnt; $i++) {
                 $item = $returnData['channel']['item'][$i];
 
-                if(gettype($item['isbn']) == 'array') $item['isbn'] = '';
-                if(gettype($item['description']) == 'array') $item['description'] = '';
-                if(gettype($item['image']) == 'array') $item['image'] = '';
-                if(gettype($item['author']) == 'array') $item['author'] = '';
-                if(gettype($item['publisher']) == 'array') $item['publisher'] = '';
-                if(gettype($item['pubdate']) == 'array') $item['pubdate'] = '';
+                if (gettype($item['isbn']) == 'array') $item['isbn'] = '';
+                if (gettype($item['description']) == 'array') $item['description'] = '';
+                if (gettype($item['image']) == 'array') $item['image'] = '';
+                if (gettype($item['author']) == 'array') $item['author'] = '';
+                if (gettype($item['publisher']) == 'array') $item['publisher'] = '';
+                if (gettype($item['pubdate']) == 'array') $item['pubdate'] = '';
 
                 $item['price'] = gettype($item['price']) == 'array' ? 0 : (int)$item['price'];
                 $item['discount'] = gettype($item['discount']) == 'array' ? $item['price'] : (int)$item['discount'];
 
-                if(strpos($item['author'], '|') !== false) {
+                if (strpos($item['author'], '|') !== false) {
                     $tmparr = explode('|', $item['author']);
-                    $item['author'] = $tmparr[0].' 외 '.(count($tmparr)-1).'명';
+                    $item['author'] = $tmparr[0] . ' 외 ' . (count($tmparr) - 1) . '명';
                 }
 
-                if(strpos($item['isbn'], " ") !== false) {
-                    $item['isbn'] = substr($item['isbn'], strpos($item['isbn'], " ")+1);
+                if (strpos($item['isbn'], " ") !== false) {
+                    $item['isbn'] = substr($item['isbn'], strpos($item['isbn'], " ") + 1);
                 }
-                if($item['isbn']) {
+                if ($item['isbn']) {
                     $book = BookModel::select('id')->where('isbn', $item['isbn'])->where('title', strip_tags($item['title']))->first();
-                    if($book) {
-                        if(isset($book->count)) {
+                    if ($book) {
+                        if (isset($book->count)) {
                             $item['count'] = $book->count->toArray();
                         } else {
                             $item['count'] = [];
@@ -145,5 +160,12 @@ class NaverSearchBookAPI
         return isset($returnData['channel']['item']) ? $returnData['channel']['item'] : null;
     }
 
+    /**
+     * @return NaverBookApiPaginator
+     */
+    public function getPaginator(): NaverBookApiPaginator
+    {
+        return $this->paginator;
+    }
 
 }

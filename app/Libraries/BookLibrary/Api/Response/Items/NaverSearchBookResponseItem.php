@@ -90,7 +90,7 @@ class NaverSearchBookResponseItem implements BookItemizable
 
     public function getISBN(): string
     {
-        return $this->isbn;
+        return $this->isbn13;
     }
 
     public function getPubDate(): string

@@ -13,6 +13,7 @@ use FlyBookModels\Configs\CategoriesModel;
 use GuzzleHttp\Client;
 use Intervention\Image\Facades\Image;
 use LaravelSupports\Libraries\BookLibrary\Api\NaverSearchBookAPI;
+use LaravelSupports\Libraries\BookLibrary\Api\Response\Items\NaverSearchBookResponseItem;
 
 class BookService
 {
@@ -22,13 +23,16 @@ class BookService
      * @param string $isbn
      * @param string $title
      * @param string $imageUrl
+     * @param NaverSearchBookResponseItem|null $model
      * @return BookModel
      * @throws \Exception
      * @author  seul
      * @added   2021/04/09
      * @updated 2021/04/09
+     * @updated 2021/04/26
+     * @author  dew9163
      */
-    public function findOrCreateBook(string $isbn, string $title, string $imageUrl)
+    public function findOrCreateBook(string $isbn, string $title, string $imageUrl, NaverSearchBookResponseItem $naverBookInfo = null)
     {
         $bookTitle = html_entity_decode(strip_tags($title));
 
@@ -75,15 +79,17 @@ class BookService
         $book_page = 0;
         $full_description2 = '';
 
-        $api = new NaverSearchBookAPI();
-        $naverBookInfo = $api->searchForISBN($isbn);
+        if (!isset($naverBookInfo)) {
+            $api = new NaverSearchBookAPI();
+            $naverBookInfo = $api->searchForISBN($isbn);
 
-        if (isset($naverBookInfo->items[0])) {
-            $naverBookInfo = $naverBookInfo->items[0];
-        }
+            if (isset($naverBookInfo->items[0])) {
+                $naverBookInfo = $naverBookInfo->items[0];
+            }
 
-        if (!isset($naverBookInfo->description)) {
-            throw new \Exception('책정보데이터가 없습니다.');
+            if (!isset($naverBookInfo->description)) {
+                throw new \Exception('책정보데이터가 없습니다.');
+            }
         }
 
         $full_description2 = $naverBookInfo->description;
@@ -217,7 +223,7 @@ class BookService
         $book->save();
     }
 
-    public function makeBookShareImg($book) : string
+    public function makeBookShareImg($book): string
     {
         try {
             $img = Image::make('//cdnimg.flybook.kr/file/20180209172400_55429.jpg');

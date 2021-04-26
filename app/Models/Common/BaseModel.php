@@ -433,7 +433,7 @@ abstract class BaseModel extends Model
         return $successCallback();
     }
 
-    public function pagination($page = 0, $query = null)
+    public function pagination($page = 0, Builder $query = null)
     {
         return isset($query) ? $query->paginate($page == 0 ? $this->limit : $page) : $this->paginate($page == 0 ? $this->limit : $page);
     }
