@@ -368,16 +368,15 @@ class LoanDeliveryService
     public function payPenalty($payment)
     {
         if ($payment->getPenaltyPayment()) {
-            $member = $payment->member;
-
-            $service = new LoanPenaltyPaymentService($member, [
-                'type' => $payment->ref_payment_module_code,
-                'use_point' => 0,
-            ]);
-            $service->setPayment($payment);
-            $service->bindPenaltyPayment();
-
             try {
+                $member = $payment->member;
+
+                $service = new LoanPenaltyPaymentService($member, [
+                    'type' => $payment->ref_payment_module_code,
+                    'use_point' => 0,
+                ]);
+                $service->setPayment($payment);
+                $service->bindPenaltyPayment();
                 $service->subscribe();
             } catch (\Exception $e) {
 

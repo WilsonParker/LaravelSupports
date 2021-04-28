@@ -26,8 +26,8 @@ use Throwable;
 class ImPortPay extends AbstractPayService
 {
 
-    protected $webHookURL = 'https://api2.flybook.kr/v3/membership/pay/callback';
-    protected $host = 'https://api.iamport.kr';
+    protected string $webHookURL = 'https://api2.flybook.kr/v3/membership/pay/callback';
+    protected string $host = 'https://api.iamport.kr';
     protected $tokenURL = '/users/getToken';
     private $token;
 
