@@ -38,6 +38,8 @@ class BaseViewModel extends ViewModel
     public string $description = '';
     public $startDate;
     public $endDate;
+    public bool $hasBasicModal = true;
+    public bool $hasModal = true;
 
     /**
      * Component name in $view
@@ -288,8 +290,8 @@ class BaseViewModel extends ViewModel
             $pregKeyword = implode('\s{0,}', mb_str_split($keyword));
             preg_match("/{$pregKeyword}/i", $content, $matches);
 
-            foreach($matches as $match) {
-                $content = str_replace($match, '<span class="bg-highlight">'.$match.'</span>', $content);
+            foreach ($matches as $match) {
+                $content = str_replace($match, '<span class="bg-highlight">' . $match . '</span>', $content);
             }
 
             return $content;
