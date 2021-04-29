@@ -15,8 +15,6 @@ abstract class AbstractCodeGenerator
 {
     use TransactionTrait;
 
-    public const DEFAULT_CODE_LENGTH = 8;
-
     /**
      * Maximum number of retries when duplicate code is generated
      *
@@ -58,9 +56,8 @@ abstract class AbstractCodeGenerator
      */
     protected int $charactersLength = 0;
 
-    public function __construct($codeLength = self::DEFAULT_CODE_LENGTH)
+    public function __construct()
     {
-        $this->codeLength = $codeLength;
         // generate $charactersLength
         $this->initLength();
     }
