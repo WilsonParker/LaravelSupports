@@ -7,12 +7,14 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
 
 abstract class BaseRequest extends FormRequest
 {
     protected array $rules = [];
     protected array $messages = [];
+    protected bool $isFailedRedirect = false;
     protected $validatorCallback;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
@@ -80,6 +82,13 @@ abstract class BaseRequest extends FormRequest
         }
     }
 
+    protected function failedValidationRedirectTo(Validator $validator)
+    {
+        throw (new ValidationException($validator))
+            ->errorBag($this->errorBag)
+            ->redirectTo($this->getRedirectUrl());
+    }
+
     /**
      * throw an error with ResponseTemplate
      * message contains validation message
@@ -90,9 +99,34 @@ abstract class BaseRequest extends FormRequest
      * @added   2020/04/27
      * @updated 2020/04/27
      */
-    protected function failedValidation(Validator $validator)
+    protected function failedValidationHttpResponse(Validator $validator)
     {
         throw new HttpResponseException(new ResponseTemplate(Response::HTTP_BAD_REQUEST, "", $validator->getMessageBag()->first()));
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        if ($this->isFailedRedirect) {
+            $this->failedValidationRedirectTo($validator);
+        } else {
+            $this->failedValidationHttpResponse($validator);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFailedRedirect(): bool
+    {
+        return $this->isFailedRedirect;
+    }
+
+    /**
+     * @param bool $isFailedRedirect
+     */
+    public function setIsFailedRedirect(bool $isFailedRedirect): void
+    {
+        $this->isFailedRedirect = $isFailedRedirect;
     }
 
 }

@@ -453,14 +453,17 @@ abstract class BaseController extends Controller
      * @param bool $redirect
      * @param bool $isSuccess
      * @param array $replace
+     * @param string $message
      * @return \Illuminate\Http\RedirectResponse
      * @author  dew9163
      * @added   2020/12/08
      * @updated 2020/12/08
      */
-    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
+    protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true, array $replace = [], string $message = null): \Illuminate\Http\RedirectResponse
     {
-        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        if (!isset($message)) {
+            $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        }
         $helper = new StringHelper();
         $message = $helper->replaceWithCollection($replace, $message);
         return $this->backWithMessage($message, $redirect);
