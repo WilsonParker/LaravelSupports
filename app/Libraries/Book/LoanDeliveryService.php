@@ -148,80 +148,84 @@ class LoanDeliveryService
         $contents = json_decode($response->getBody()->getContents(), true);
 
         collect($contents)->each(function ($item) {
-            $orderNo = $item['orderIdFromCorp'];
-            $deliveryNum = $item['bookId'];
+            try {
+                $orderNo = $item['orderIdFromCorp'];
+                $deliveryNum = $item['bookId'];
 
-            $image = $item['notReceivedImageLocation'];
-            $image = is_null($image) ? $item['signImageLocation'] : $image;
+                $image = $item['notReceivedImageLocation'];
+                $image = is_null($image) ? $item['signImageLocation'] : $image;
 
-            $loanDate = $item['deliveryCompletedDate'];
-            $released = $item['releasedAt'];
-            $pickupDate = $item['pickupDateCompleted'];
+                $loanDate = $item['deliveryCompletedDate'];
+                $released = $item['releasedAt'];
+                $pickupDate = $item['pickupDateCompleted'];
 
-            if (is_null($orderNo)) {
-                if ($pickupDate) {
-                    $deliveryNum = mb_substr($deliveryNum, 1, 10);
-                    $this->updatePickUpDate($deliveryNum, $pickupDate);
+                if (is_null($orderNo)) {
+                    if ($pickupDate) {
+                        $deliveryNum = mb_substr($deliveryNum, 1, 10);
+                        $this->updatePickUpDate($deliveryNum, $pickupDate);
+                    }
+                } else {
+                    $payment = LoanBookPaymentModel::where('order_no', $orderNo)->first();
+                    $member = $payment->member->load('device');
+
+                    if ($payment) {
+                        $isNewImage = false;
+                        $isNewReleased = false;
+                        foreach ($payment->goods()->with('history')->get() as $good) {
+                            $delivery = $good->delivery;
+                            $history = $good->history;
+
+                            if (is_null($delivery->delivery_num)) {
+                                $delivery->delivery_num = $deliveryNum;
+                                $delivery->save();
+                            }
+
+                            if ($history->status == 'ready' && $released) {
+                                $isNewReleased = true;
+                                $history->status = 'loaned';
+                            }
+
+                            if (is_null($history->delivery_img) && $image) {
+                                $isNewImage = true;
+                                $history->delivery_img = $image;
+                                $history->loan_date = $loanDate ? Carbon::create($loanDate)->addHours(9) : null;
+
+                                $history->status = 'loaned';
+                            }
+
+                            $history->save();
+                        }
+
+                        if ($isNewReleased) {
+                            $data = [
+                                'phone' => $delivery->phone,
+                                'name' => $delivery->name,
+                                'book_title' => $payment->description,
+                                'scheduled_received_time' => '4시간 이내'
+                            ];
+                            $service = new AlimtalkService('ldv1', $data);
+                            $service->send();
+                        }
+
+                        if ($isNewImage) {
+                            $data = [
+                                'payment_id' => $payment->id,
+                            ];
+
+                            event(new LoanDeliveryDoneNotificationEvent([$member->id], $data));
+
+                            // 수거완료
+                            $parentPayment = $payment->parentPayment;
+                            if (!is_null($parentPayment)) {
+                                $delivery = $parentPayment->deliveries()->first();
+
+                                $this->updatePickUpDate($delivery->delivery_num, $loanDate);
+                            }
+                        }
+                    }
                 }
-            } else {
-                $payment = LoanBookPaymentModel::where('order_no', $orderNo)->first();
-                $member = $payment->member->load('device');
+            } catch (\Exception $exception) {
 
-                if ($payment) {
-                    $isNewImage = false;
-                    $isNewReleased = false;
-                    foreach ($payment->goods()->with('history')->get() as $good) {
-                        $delivery = $good->delivery;
-                        $history = $good->history;
-
-                        if (is_null($delivery->delivery_num)) {
-                            $delivery->delivery_num = $deliveryNum;
-                            $delivery->save();
-                        }
-
-                        if ($history->status == 'ready' && $released) {
-                            $isNewReleased = true;
-                            $history->status = 'loaned';
-                        }
-
-                        if (is_null($history->delivery_img) && $image) {
-                            $isNewImage = true;
-                            $history->delivery_img = $image;
-                            $history->loan_date = $loanDate ? Carbon::create($loanDate)->addHours(9) : null;
-
-                            $history->status = 'loaned';
-                        }
-
-                        $history->save();
-                    }
-
-                    if ($isNewReleased) {
-                        $data = [
-                            'phone' => $delivery->phone,
-                            'name' => $delivery->name,
-                            'book_title' => $payment->description,
-                            'scheduled_received_time' => '4시간 이내'
-                        ];
-                        $service = new AlimtalkService('ldv1', $data);
-                        $service->send();
-                    }
-
-                    if ($isNewImage) {
-                        $data = [
-                            'payment_id' => $payment->id,
-                        ];
-
-                        event(new LoanDeliveryDoneNotificationEvent([$member->id], $data));
-
-                        // 수거완료
-                        $parentPayment = $payment->parentPayment;
-                        if (!is_null($parentPayment)) {
-                            $delivery = $parentPayment->deliveries()->first();
-
-                            $this->updatePickUpDate($delivery->delivery_num, $loanDate);
-                        }
-                    }
-                }
             }
         });
     }
