@@ -83,6 +83,7 @@ abstract class BaseModel extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
+        $this->initScope();
         $this->init();
     }
 
@@ -94,6 +95,11 @@ abstract class BaseModel extends Model
      * @updated 2020-05-20
      */
     protected function init()
+    {
+
+    }
+
+    protected function initScope()
     {
         $this->buildSelectScope();
         $this->addSelectScope();
