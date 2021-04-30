@@ -19,6 +19,7 @@ class TableComponent extends BaseComponent
     public string $title;
     public string $header;
     public string $tableRoot;
+    public string $id;
 
     /**
      * Create a new component instance.
@@ -34,8 +35,9 @@ class TableComponent extends BaseComponent
      * @param array $searchData
      * @param string $url
      */
-    public function __construct(string $title = '', string $header = '', string $tableRoot = '', $length = [10, 25, 50, 100], $search = ['name' => '이름'], $subSearch = [], $sort = [], $link = '', $searchData = [], $url = '')
+    public function __construct(string $id = 'table_component', string $title = '', string $header = '', string $tableRoot = '', $length = [10, 25, 50, 100], $search = ['name' => '이름'], $subSearch = [], $sort = [], $link = '', $searchData = [], $url = '')
     {
+        $this->id = $id;
         $this->title = $title;
         $this->header = $header;
         $this->tableRoot = $tableRoot;
