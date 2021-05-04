@@ -6,12 +6,32 @@ namespace LaravelSupports\Libraries\Book;
 
 class LoanScheduleService
 {
-    public function getScheduledDeliveryDate($date = null, $format = 'm/d', $useDay = true)
+    /**
+     * 배송예정일을 제공합니다
+     *
+     * @param null $date
+     * @param string $format
+     * @param bool $useDay
+     * @return string
+     * @author  seul
+     * @added   2021/05/04
+     * @updated 2021/05/04
+     */
+    public function getScheduledDeliveryDate($date = null, $format = 'm/d', $useDay = true) : string
     {
         return $this->convertScheduledDeliveryDate($this->calcScheduledDeliveryTime($date), $format, $useDay);
     }
 
-    public function calcScheduledDeliveryTime($date = null)
+    /**
+     * 배송예정일을 계산합니다.
+     *
+     * @param null $date
+     * @return string
+     * @author  seul
+     * @added   2021/05/04
+     * @updated 2021/05/04
+     */
+    public function calcScheduledDeliveryTime($date = null) : string
     {
         $date = is_null($date) ? now() : $date;
         $day = date('w', strtotime($date));
@@ -27,7 +47,18 @@ class LoanScheduleService
         return $date;
     }
 
-    public function convertScheduledDeliveryDate($date, $format = 'm/d', $useDay = true)
+    /**
+     * 배송예정일 날짜 문구를 변환합니다
+     *
+     * @param $date
+     * @param string $format
+     * @param bool $useDay
+     * @return string
+     * @author  seul
+     * @added   2021/05/04
+     * @updated 2021/05/04
+     */
+    public function convertScheduledDeliveryDate($date, $format = 'm/d', $useDay = true) : string
     {
         $dayKor = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -43,7 +74,18 @@ class LoanScheduleService
         }
     }
 
-    public function bindOverDueDate($scheduledReturnDate, $targetDate = null)
+    /**
+     * 연체일을 제공합니다.
+     *
+     * @param $scheduledReturnDate
+     * @param null $targetDate
+     * @return int|null
+     * @throws \Exception
+     * @author  seul
+     * @added   2021/05/04
+     * @updated 2021/05/04
+     */
+    public function bindOverDueDate($scheduledReturnDate, $targetDate = null) : ?int
     {
         $scheduledDate = $scheduledReturnDate->format('Y-m-d');
         $targetDate = is_null($targetDate) ? date('Y-m-d') : $targetDate;
