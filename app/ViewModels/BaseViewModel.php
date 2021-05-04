@@ -287,13 +287,16 @@ class BaseViewModel extends ViewModel
     {
         if (isset($this->searchData[self::KEY_KEYWORD])) {
             $keyword = str_replace(' ', '', $this->searchData[self::KEY_KEYWORD]);
-            $pregKeyword = implode('\s{0,}', mb_str_split($keyword));
-            preg_match("/{$pregKeyword}/i", $content, $matches);
+            $keywords = explode(',', $keyword);
 
-            foreach ($matches as $match) {
-                $content = str_replace($match, '<span class="bg-highlight">' . $match . '</span>', $content);
+            foreach ($keywords as $keyword) {
+                $pregKeyword = implode('\s{0,}', mb_str_split($keyword));
+                preg_match("/{$pregKeyword}/i", $content, $matches);
+
+                foreach ($matches as $match) {
+                    $content = str_replace($match, '<span class="bg-highlight">' . $match . '</span>', $content);
+                }
             }
-
             return $content;
         } else {
             return $content;
