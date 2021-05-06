@@ -104,7 +104,7 @@ class KakaoPay extends AbstractPayService
         ];
     }
 
-    public function ready(): KakaoResponseReadyObject
+    public function ready()
     {
         $result = $this->call("/v1/payment/ready", $this->getReadyData());
         $obj = new KakaoResponseReadyObject();
@@ -112,7 +112,7 @@ class KakaoPay extends AbstractPayService
         return $obj;
     }
 
-    public function approve(): KakaoResponseApproveObject
+    public function approve()
     {
         $result = $this->call("/v1/payment/approve", $this->getApproveData());
         $obj = new KakaoResponseApproveObject();
@@ -120,7 +120,7 @@ class KakaoPay extends AbstractPayService
         return $obj;
     }
 
-    public function subscription(): KakaoResponseApproveObject
+    public function subscription()
     {
         $result = $this->call("/v1/payment/subscription", $this->getSubscribeData());
         $obj = new KakaoResponseApproveObject();
