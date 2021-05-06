@@ -128,7 +128,7 @@ class KakaoPay extends AbstractPayService
         return $obj;
     }
 
-    public function cancel(): KakaoResponseCancelObject
+    public function cancel()
     {
         return $this->call("/v1/payment/cancel", $this->getCancelData());
         $obj = new KakaoResponseCancelObject();

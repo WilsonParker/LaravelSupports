@@ -28,8 +28,7 @@ class LoanPenaltyPaymentService
     protected $penaltyPayment;
     protected $goods;
     protected $paymentModule;
-//    protected $webHookURL = 'https://api2.flybook.kr/v3/book/penalty/payment/callback';
-    protected $webHookURL = 'http://test.api2.flybook.kr/v3/book/penalty/payment/callback';
+    protected $webHookURL = 'http://api.flybook.kr/v3/book/penalty/payment/callback';
     protected $services = [
         'kakao_pay' => KakaoPay::class,
         'nice_pay' => ImPortPay::class,
