@@ -77,8 +77,10 @@ abstract class BaseRequest extends FormRequest
     public function withValidator(\Illuminate\Validation\Validator $validator)
     {
         if (isset($this->validatorCallback)) {
-            $callback = $this->validatorCallback;
-            $callback($validator);
+            $validator->after(function ($validator) {
+                $callback = $this->validatorCallback;
+                $callback($validator);
+            });
         }
     }
 
