@@ -4,6 +4,9 @@
 namespace LaravelSupports\Libraries\Book;
 
 
+use Carbon\Carbon;
+use Carbon\Exceptions\Exception;
+
 class LoanScheduleService
 {
     /**
@@ -61,6 +64,10 @@ class LoanScheduleService
     public function convertScheduledDeliveryDate($date, $format = 'm/d', $useDay = true) : string
     {
         $dayKor = ['일', '월', '화', '수', '목', '금', '토'];
+
+        if (gettype($date) == 'string') {
+            $date = Carbon::parse($date);
+        }
 
         if ($useDay) {
             return $date->format($format) . ' (' . $dayKor[$date->format('w')] . ')';
