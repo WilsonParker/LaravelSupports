@@ -32,14 +32,14 @@ trait ConvertStringTrait
      */
     public function convertBookTitles($books, int $length = 10) : string
     {
-        if (is_array($books)) {
+        try {
             $bookCount = count($books) - 1;
 
             if ($bookCount) {
                 $bookTitle = $this->shortenString($books->first()->title, $length);
                 $bookTitle .= " 외 {$bookCount}권";
             }
-        } else {
+        } catch (\Exception $e) {
             $bookTitle = $this->shortenString($books->title, $length);
         }
 
