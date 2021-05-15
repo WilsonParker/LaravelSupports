@@ -546,4 +546,9 @@ abstract class BaseModel extends Model
         return self::whereIn($prop, $idList)->get();
     }
 
+    public static function whereBetweenDate($startDate, $endDate, $column = 'created_at')
+    {
+        return self::whereBetween($column, [$startDate, $endDate]);
+    }
+
 }
