@@ -67,4 +67,30 @@ trait ConvertStringTrait
 
         return $converted;
     }
+
+    /**
+     * 평점을 별점으로 변환
+     *
+     * @param float $grade
+     * @return string
+     * @author  seul
+     * @added   2021/04/01
+     * @updated 2021/04/01
+     */
+    public function convertStarGrade(float $grade): string
+    {
+        $starGrade = '';
+        for ($i = 0; $i < 5; $i++) {
+            if ($grade == 0.5) {
+                $starGrade .= '<i class="fas fa-star-half-alt"></i>';
+            } else if ($grade > 0) {
+                $starGrade .= '<i class="fas fa-star"></i>';
+            } else {
+                $starGrade .= '<i class="far fa-star"></i>';
+            }
+
+            $grade--;
+        }
+        return $starGrade;
+    }
 }

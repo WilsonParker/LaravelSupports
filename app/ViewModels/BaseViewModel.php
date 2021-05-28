@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Supports\Objects\HasDataWithDefaultTrait;
+use LaravelSupports\Libraries\Supports\String\Traits\ConvertStringTrait;
 use Spatie\ViewModels\ViewModel;
 
 class BaseViewModel extends ViewModel
 {
     use HasDataWithDefaultTrait;
+    use ConvertStringTrait;
 
     public const DATE_FORMAT = 'Y-m';
     public const KEY_SEARCH_LABEL = 'search_label';
@@ -301,5 +303,10 @@ class BaseViewModel extends ViewModel
         } else {
             return $content;
         }
+    }
+
+    public function getStarGrade(float $grade): string
+    {
+        return $this->convertStarGrade($grade);
     }
 }
