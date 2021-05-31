@@ -59,7 +59,6 @@ abstract class BaseController extends Controller
     protected string $strEndDate;
     protected string $startTime;
     protected string $endTime;
-    protected string $dateAll = 'N';
 
     /**
      * BaseController constructor.
@@ -362,7 +361,7 @@ abstract class BaseController extends Controller
         $data['start_date'] = isset($data['start_date']) && $data['start_date'] != '' ? $data['start_date'] : $this->getDefaultStartDate();
         $data['end_date'] = isset($data['end_date']) && $data['end_date'] != '' ? $data['end_date'] : $this->getDefaultEndDate();
 
-        $data['date_all'] = isset($data['date_all']) ? $data['date_all'] : $this->dateAll;
+        $data['date_all'] = isset($data['date_all']) ? $data['date_all'] : 'N';
 
         return $data;
     }
