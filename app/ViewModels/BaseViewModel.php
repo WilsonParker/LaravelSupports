@@ -309,4 +309,5 @@ class BaseViewModel extends ViewModel
     {
         return $this->convertStarGrade($grade);
     }
+    
 }
