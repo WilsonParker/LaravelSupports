@@ -159,7 +159,7 @@ abstract class BaseModel extends Model
                 if (empty($value)) {
                     return $query;
                 }
-                $operator = isset($where['operator']) ? $where['operator'] : '=';
+                $operator = $where['operator'] ?? '=';
                 return $query->where($where['key'], $operator, $where['value']);
             }
         };
@@ -212,7 +212,7 @@ abstract class BaseModel extends Model
             if (is_callable($order)) {
                 return $query->orderBy($order);
             } else {
-                $value = isset($order['value']) ? $order['value'] : 'desc';
+                $value = $order['value'] ?? 'desc';
                 return $query->orderBy($order['key'], $value);
             }
         };
@@ -273,12 +273,12 @@ abstract class BaseModel extends Model
      * build query
      *
      * @param array $attributes
-     * @return Builder
+     * @return Builder|BaseModel
      * @author  dew9163
      * @added   2020/04/29
      * @updated 2020/04/29
      */
-    public function buildQuery(array $attributes)
+    public function buildQuery(array $attributes): Builder|BaseModel
     {
         $query = $this;
 
@@ -423,7 +423,7 @@ abstract class BaseModel extends Model
      * @added   2019-08-12
      * @updated 2019-08-12
      */
-    public function applySort($list, $successCallback, $failCallback, $primaryKey = "ix", $newSortKey = "new_sort")
+    public function applySort($list, $successCallback, $failCallback, string $primaryKey = "ix", string $newSortKey = "new_sort")
     {
         foreach ($list as $item) {
             // 고유키로 Model 을 select 합니다
@@ -439,12 +439,12 @@ abstract class BaseModel extends Model
         return $successCallback();
     }
 
-    public function pagination($page = 0, Builder $query = null)
+    public function pagination($page = 0, Builder $query = null): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return isset($query) ? $query->paginate($page == 0 ? $this->limit : $page) : $this->paginate($page == 0 ? $this->limit : $page);
     }
 
-    public function paginationWithSearch(Request $request, $limit = 0, $attributes = [])
+    public function paginationWithSearch(Request $request, $limit = 0, $attributes = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $keyword = $request->input(self::KEY_KEYWORD, "");
         $searchType = $request->input(self::KEY_SEARCH_TYPE, "");
@@ -500,7 +500,7 @@ abstract class BaseModel extends Model
      *
      * @return Builder
      */
-    public function newQuery($excludeDeleted = true): Builder
+    public function newQuery(bool $excludeDeleted = true): Builder
     {
         if (!empty($this->geometry) && $this->geometryAsText === true) {
             $raw = '';
