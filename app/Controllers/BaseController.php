@@ -361,7 +361,7 @@ abstract class BaseController extends Controller
         $data['start_date'] = isset($data['start_date']) && $data['start_date'] != '' ? $data['start_date'] : $this->getDefaultStartDate();
         $data['end_date'] = isset($data['end_date']) && $data['end_date'] != '' ? $data['end_date'] : $this->getDefaultEndDate();
 
-        $data['date_all'] = isset($data['date_all']) ? $data['date_all'] : 'N';
+        $data['date_all'] = $data['date_all'] ?? 'N';
 
         return $data;
     }
@@ -398,13 +398,13 @@ abstract class BaseController extends Controller
         $this->strEndDate = $strEndDate;
     }
 
-    public function getDefaultStartDate()
+    public function getDefaultStartDate(): string
     {
         $strDate = $this->getStrStartDate();
         return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
     }
 
-    public function getDefaultEndDate()
+    public function getDefaultEndDate(): string
     {
         $strDate = $this->getStrEndDate();
         return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
@@ -412,7 +412,7 @@ abstract class BaseController extends Controller
 
     protected function mergeWhere($attributes, $array)
     {
-        $where = isset($attributes['where']) ? $attributes['where'] : [];
+        $where = $attributes['where'] ?? [];
         $where = array_merge($where, $array);
         $attributes['where'] = $where;
         return $attributes;
@@ -453,7 +453,7 @@ abstract class BaseController extends Controller
      * @param bool $redirect
      * @param bool $isSuccess
      * @param array $replace
-     * @param string $message
+     * @param string|null $message
      * @return \Illuminate\Http\RedirectResponse
      * @author  dew9163
      * @added   2020/12/08
