@@ -12,10 +12,14 @@ abstract class AlterMigration extends BaseMigration
 
     public function up()
     {
-        Schema::table($this->table, function (Blueprint $table) {
-            $this->defaultUpTemplate($table);
-            $this->defaultSet($table);
-        });
+        try {
+            Schema::table($this->table, function (Blueprint $table) {
+                $this->defaultUpTemplate($table);
+            });
+        } catch (\Throwable $t) {
+            $this->down();
+            throw $t;
+        }
     }
 
     /**

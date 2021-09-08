@@ -47,8 +47,7 @@ abstract class BaseMigration extends Migration
      * @param Blueprint $table
      * @return void
      */
-    protected function defaultDownTemplate(Blueprint $table)
-    {
+    protected function defaultDownTemplate(Blueprint $table) {
 
     }
 
