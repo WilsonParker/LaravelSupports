@@ -43,10 +43,11 @@ abstract class AbstractEventSubscriber implements ShouldQueue
      * @updated 2020/08/12
      * @updated 2021/01/14
      */
-    public function handleEvent(AbstractEvent $event)
+    /*public function handleEvent(AbstractEvent $event)
     {
         $event->handle();
-    }
+    }*/
+    abstract public function handleEvent($event);
 
     /**
      * Register the listeners for the subscriber.

@@ -22,7 +22,7 @@ class ExceptionLogger
      *
      * @see
      */
-    private $recordableClass = ExceptionLogDB::class;
+    private string $recordableClass = ExceptionLogDB::class;
     // private $recordableClass = ExceptionLogFile::class;
 
     /**

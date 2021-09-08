@@ -3,6 +3,8 @@
 namespace LaravelSupports\Listeners;
 
 use Illuminate\Database\Eloquent\Collection;
+use LaravelSupports\Events\Abstracts\AbstractEvent;
+use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Listeners\Abstracts\AbstractEventSubscriber;
 
 class ExampleEventSubscriber extends AbstractEventSubscriber
@@ -10,13 +12,13 @@ class ExampleEventSubscriber extends AbstractEventSubscriber
     /**
      * @var string[]
      */
-    protected $events = [
-        MeetingNotificationEvent::class,
+    protected array $events = [
+        AbstractEvent::class,
     ];
 
     public function handleEvent($event)
     {
-        $meetingModel = $event->getMeetingModel();
+        /*$meetingModel = $event->getMeetingModel();
         $memberModel = $event->getMemberModel();
         $data = $event->getData();
 
@@ -32,7 +34,7 @@ class ExampleEventSubscriber extends AbstractEventSubscriber
             if (!is_null($member)) {
                 $meetingModel->updateNotification($member->id, $data);
             }
-        }
+        }*/
     }
 
     public function failed($event, \Exception $exception)
