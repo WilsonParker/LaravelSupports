@@ -2,8 +2,10 @@
 
 namespace LaravelSupports\Models\Common;
 
+use App\Library\LaravelSupports\app\Models\Relationship\Traits\SaveRelationshipTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -12,6 +14,7 @@ use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
 {
+    use SaveRelationshipTrait;
     // use SoftDeletes;
 
     const CREATED_AT = 'created_at';
