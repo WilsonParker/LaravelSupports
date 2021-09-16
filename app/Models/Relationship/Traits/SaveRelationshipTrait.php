@@ -2,7 +2,6 @@
 
 namespace App\Library\LaravelSupports\app\Models\Relationship\Traits;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use LaravelSupports\Models\Common\BaseModel;
@@ -16,14 +15,26 @@ trait SaveRelationshipTrait
 
     /**
      *
-     * @param string $relationship
-     * @param $data
+     * @param array|string $relationship
+     * @param null $data
      * @return mixed
      * @author  WilsonParker
      * @added   2021/09/15
      * @updated 2021/09/15
      */
-    public function saveRelationship(string $relationship, $data): mixed
+    public function saveRelationships(array|string $relationship, $data = null): mixed
+    {
+        if (gettype($relationship) == 'array') {
+            collect($relationship)->each(function ($value, $key) {
+                $this->saveRelationship($key, $value);
+            });
+            return null;
+        } else {
+            return $this->saveRelationship($relationship, $data);
+        }
+    }
+
+    protected function saveRelationship(string $relationship, $data = null): mixed
     {
         $relation = $this->$relationship();
         return $this->{$this->relationships[$relation::class]}($relation, $data);
