@@ -24,7 +24,7 @@ class BaseViewModel extends ViewModel
     public const KEY_SORT = 'sort';
     public const KEY_SORT_LABEL = 'sort_label';
     public const KEY_SORT_VALUES = 'sort_values';
-    public const KEY_FILTER = 'filter';
+    public const KEY_FILTER = 'filters';
     public const KEY_FILTER_LABEL = 'filter_label';
     public const KEY_FILTER_VALUES = 'filter_values';
     public const KEY_START_DATE = 'start_date';
@@ -40,7 +40,7 @@ class BaseViewModel extends ViewModel
     public array $search = [];
     public array $subSearch = [];
     public array $sort = [];
-    public array $filter = [];
+    public array $filters = [];
     public string $title = '';
     public string $description = '';
     public $startDate;

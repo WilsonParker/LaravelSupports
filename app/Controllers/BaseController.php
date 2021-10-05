@@ -220,13 +220,13 @@ abstract class BaseController extends Controller
      * build filter query
      *
      * @param Builder $query
-     * @param string|array $filter
+     * @param array $filter
      * @return Builder
      * @author  dev9163
      * @added   2021/10/01
      * @updated 2021/10/01
      */
-    protected function buildFilterQuery(Builder $query, string|array $filter): Builder
+    protected function buildFilterQuery(Builder $query, array $filters): Builder
     {
         return $query;
     }
@@ -274,9 +274,9 @@ abstract class BaseController extends Controller
         }
 
         if ($request->has([BaseComponent::KEY_FILTER])) {
-            $filter = $this->searchData[BaseComponent::KEY_FILTER];
-            if (isset($filter)) {
-                $rQuery = $this->buildFilterQuery($rQuery, $filter);
+            $filters= $this->searchData[BaseComponent::KEY_FILTER];
+            if (isset($filters)) {
+                $rQuery = $this->buildFilterQuery($rQuery, $filters);
             }
         }
 

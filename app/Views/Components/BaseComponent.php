@@ -30,7 +30,7 @@ class BaseComponent extends Component
     public const KEY_SEARCH_OPERATOR_OR = self::KEY_SEARCH_OPERATOR . '_or';
 
     public const KEY_SORT = 'sort';
-    public const KEY_FILTER = 'filter';
+    public const KEY_FILTER = 'filters';
     public const KEY_SORT_LABEL = self::KEY_SORT . '_' . self::KEY_LABEL;
     public const KEY_SORT_VALUES = self::KEY_SORT . '_' . self::KEY_VALUES;
     public const KEY_SUB_KEYWORD = 'sub_' . self::KEY_KEYWORD;
