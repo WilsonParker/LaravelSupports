@@ -554,4 +554,20 @@ abstract class BaseModel extends Model
         return self::whereBetween($column, [$startDate, $endDate]);
     }
 
+    /**
+     * Add a relationship exists condition (BelongsTo).
+     *
+     * @param Builder $query
+     * @param string|$relation Relation string name or you can try pass directly model and method will try guess relationship
+     * @param mixed $models
+     * @return Builder|static
+     */
+    public static function scopeWhereInRelated(Builder $query, string $relation, \Illuminate\Database\Eloquent\Collection $models = null): Builder|static
+    {
+        $primaryKey = $models->first()->getKeyName();
+        $keys = $models->pluck($primaryKey);
+        return $query->whereHas($relation, static function (Builder $query) use ($models, $primaryKey, $keys) {
+            return $query->whereIn($primaryKey, $keys);
+        });
+    }
 }

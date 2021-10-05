@@ -216,9 +216,24 @@ abstract class BaseController extends Controller
         return $query;
     }
 
+    /**
+     * build filter query
+     *
+     * @param Builder $query
+     * @param string|array $filter
+     * @return Builder
+     * @author  dev9163
+     * @added   2021/10/01
+     * @updated 2021/10/01
+     */
+    protected function buildFilterQuery(Builder $query, string|array $filter): Builder
+    {
+        return $query;
+    }
+
     protected function getSearchKeys(): array
     {
-        $keys = [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
+        $keys = [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_FILTER, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
         return array_merge($keys, $this->appendSearchKeys());
     }
 
@@ -255,6 +270,13 @@ abstract class BaseController extends Controller
             $sort = $this->searchData[BaseComponent::KEY_SORT];
             if (isset($sort)) {
                 $rQuery = $this->buildSortQuery($rQuery, $sort);
+            }
+        }
+
+        if ($request->has([BaseComponent::KEY_FILTER])) {
+            $filter = $this->searchData[BaseComponent::KEY_FILTER];
+            if (isset($filter)) {
+                $rQuery = $this->buildFilterQuery($rQuery, $filter);
             }
         }
 

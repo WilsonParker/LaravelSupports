@@ -21,8 +21,12 @@ class BaseViewModel extends ViewModel
     public const KEY_SEARCH_TYPE_MULTIPLE = 'search_type_multiple';
     public const KEY_SEARCH_KEYWORD_TYPE = 'search_keyword_type';
     public const KEY_SEARCH_KEYWORD_TYPE_MULTIPLE = 'search_keyword_type_multiple';
+    public const KEY_SORT = 'sort';
     public const KEY_SORT_LABEL = 'sort_label';
     public const KEY_SORT_VALUES = 'sort_values';
+    public const KEY_FILTER = 'filter';
+    public const KEY_FILTER_LABEL = 'filter_label';
+    public const KEY_FILTER_VALUES = 'filter_values';
     public const KEY_START_DATE = 'start_date';
     public const KEY_END_DATE = 'end_date';
     public const KEY_KEYWORD = 'keyword';
@@ -36,6 +40,7 @@ class BaseViewModel extends ViewModel
     public array $search = [];
     public array $subSearch = [];
     public array $sort = [];
+    public array $filter = [];
     public string $title = '';
     public string $description = '';
     public $startDate;
@@ -175,11 +180,21 @@ class BaseViewModel extends ViewModel
 
     protected function buildSort(string $key, $value)
     {
-        if (Arr::has($this->sort, $key)) {
-            Arr::forget($this->sort, $key);
+        $this->buildArrData(self::KEY_SORT, self::KEY_SORT_VALUES, $key, $value);
+    }
+
+    protected function buildFilter(string $key, $value)
+    {
+        $this->buildArrData(self::KEY_FILTER, self::KEY_FILTER_VALUES, $key, $value);
+    }
+
+    protected function buildArrData(string $prop, string $code, string $key, $value)
+    {
+        if (Arr::has($this->{$prop}, $key)) {
+            Arr::forget($this->{$prop}, $key);
         }
-        $this->sort = Arr::add($this->sort, $key, [
-            self::KEY_SORT_VALUES => $value,
+        $this->{$prop} = Arr::add($this->{$prop}, $key, [
+            $code => $value,
         ]);
     }
 
@@ -309,5 +324,5 @@ class BaseViewModel extends ViewModel
     {
         return $this->convertStarGrade($grade);
     }
-    
+
 }
