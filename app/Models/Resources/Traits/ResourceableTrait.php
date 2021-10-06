@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelSupports\app\Models\Resources\Traits;
+namespace LaravelSupports\Models\Resources\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use LaravelSupports\app\Models\Resources\Contracts\ResourceContract;
+use LaravelSupports\Models\Resources\Contracts\ResourceContract;
 
 /**
  * resource 를 저장하는 functions

@@ -1,9 +1,8 @@
 <?php
 
-namespace LaravelSupports\app\Models\Resources\Contracts;
+namespace LaravelSupports\Models\Resources\Contracts;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 interface ResourceableContract
 {

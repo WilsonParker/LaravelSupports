@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\app\Models\Resources\Contracts;
+namespace LaravelSupports\Models\Resources\Contracts;
 
 interface ResourceContract
 {
