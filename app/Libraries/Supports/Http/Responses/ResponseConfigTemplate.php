@@ -4,11 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Http\Responses;
 
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Response;
-use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Result object of API
