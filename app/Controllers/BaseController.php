@@ -274,7 +274,7 @@ abstract class BaseController extends Controller
         }
 
         if ($request->has([BaseComponent::KEY_FILTER])) {
-            $filters= $this->searchData[BaseComponent::KEY_FILTER];
+            $filters = $this->searchData[BaseComponent::KEY_FILTER];
             if (isset($filters)) {
                 $rQuery = $this->buildFilterQuery($rQuery, $filters);
             }
@@ -477,9 +477,9 @@ abstract class BaseController extends Controller
      * @param array $replace
      * @param string|null $message
      * @return \Illuminate\Http\RedirectResponse
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/12/08
-     * @updated 2020/12/08
+     * @updated 2021/10/06
      */
     protected function backWithConfig(string $prefix, bool $redirect = true, bool $isSuccess = true, array $replace = [], string $message = null): \Illuminate\Http\RedirectResponse
     {
@@ -522,7 +522,7 @@ abstract class BaseController extends Controller
      * @added   2020/12/08
      * @updated 2020/12/08
      */
-    protected function redirectWithConfig(string $prefix, string $route, array $params, bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
+    protected function redirectWithConfig(string $prefix, string $route, array $params = [], bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
         $helper = new StringHelper();

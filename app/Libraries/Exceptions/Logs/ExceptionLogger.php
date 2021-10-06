@@ -2,7 +2,6 @@
 
 namespace LaravelSupports\Libraries\Exceptions\Logs;
 
-use Exception;
 use LaravelSupports\Libraries\Supports\Objects\ObjectHelper;
 use Throwable;
 

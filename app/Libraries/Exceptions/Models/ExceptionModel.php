@@ -20,7 +20,7 @@ class ExceptionModel extends Model
      *
      * @see
      */
-    protected $table = "fly_exception_logs";
+    protected $table = "exception_logs";
 
     public function bind(array $data) {
         $this->{self::KEY_CODE} = $data[self::KEY_CODE];
