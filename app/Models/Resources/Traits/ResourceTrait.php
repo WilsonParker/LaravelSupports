@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\app\Models\Resources\Traits;
+namespace LaravelSupports\Models\Resources\Traits;
 
 use Illuminate\Support\Facades\Storage;
 
