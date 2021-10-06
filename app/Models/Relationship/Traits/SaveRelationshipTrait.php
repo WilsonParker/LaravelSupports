@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\app\Models\Relationship\Traits;
+namespace LaravelSupports\Models\Relationship\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;

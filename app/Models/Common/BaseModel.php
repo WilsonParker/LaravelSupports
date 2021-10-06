@@ -2,15 +2,14 @@
 
 namespace LaravelSupports\Models\Common;
 
-use LaravelSupports\app\Models\Relationship\Traits\SaveRelationshipTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use LaravelSupports\Models\Relationship\Traits\SaveRelationshipTrait;
 
 abstract class BaseModel extends Model
 {
