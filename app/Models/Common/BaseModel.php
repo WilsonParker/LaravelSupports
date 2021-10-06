@@ -2,7 +2,7 @@
 
 namespace LaravelSupports\Models\Common;
 
-use App\Library\LaravelSupports\app\Models\Relationship\Traits\SaveRelationshipTrait;
+use LaravelSupports\app\Models\Relationship\Traits\SaveRelationshipTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
