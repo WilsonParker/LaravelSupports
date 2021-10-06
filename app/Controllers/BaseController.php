@@ -498,7 +498,7 @@ abstract class BaseController extends Controller
                 'message' => $message
             ]);
         } else {
-            return back()->with([
+            return back()->withInput()->with([
                 'message' => $message
             ]);
         }

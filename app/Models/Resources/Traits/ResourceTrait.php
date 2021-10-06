@@ -22,8 +22,23 @@ trait ResourceTrait
         return 'public';
     }
 
+    public function getStorage(): \Illuminate\Contracts\Filesystem\Filesystem
+    {
+        return Storage::disk($this->getStorageDisk());
+    }
+
     public function getUrl(): string
     {
-        return Storage::disk($this->getStorageDisk())->get("$this->path/$this->origin_name");
+        return $this->getStorage()->url($this->getPath());
+    }
+
+    public function getPath(): string
+    {
+        return "$this->path/$this->name";
+    }
+
+    public function downloads(): string
+    {
+        return $this->getStorage()->download($this->getPath());
     }
 }

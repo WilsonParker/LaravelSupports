@@ -4,6 +4,7 @@ namespace LaravelSupports\Models\Resources\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use LaravelSupports\Models\Resources\Contracts\ResourceContract;
 
 /**
@@ -17,7 +18,7 @@ trait ResourceableTrait
     public function saveResourceWithFile(UploadedFile $file, ?string $name = null): ResourceContract
     {
         $saved = Storage::disk($this->getResourceStorage())->put($this->getResourcePath(), $file);
-        $resourceModel = $this->saveResource($file->getClientOriginalName(), $saved);
+        $resourceModel = $this->saveResource($file->getClientOriginalName(), Str::of($saved)->afterLast('/'));
         $this->resource()->save($resourceModel);
         return $resourceModel;
     }
