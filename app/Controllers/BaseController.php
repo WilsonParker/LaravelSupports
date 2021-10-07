@@ -51,9 +51,23 @@ abstract class BaseController extends Controller
     protected BaseViewModel $viewModel;
     protected string $title = '';
     protected string $description = '';
+    /**
+     * data for search
+     * [ search, sort, filters ]
+     *
+     * @var array
+     * @author  dew9163
+     */
     protected array $searchData = [];
-    protected string $dateFormat = 'Y-m-d';
+    /**
+     * default value for sort
+     *
+     * @var string
+     * @author  WilsonParker
+     */
+    protected string $defaultSort = '';
 
+    protected string $dateFormat = 'Y-m-d';
     protected string $searchDateAt = 'created_at';
     protected string $strStartDate;
     protected string $strEndDate;
@@ -100,7 +114,7 @@ abstract class BaseController extends Controller
      * @added   2020/10/29
      * @updated 2020/10/29
      */
-    protected function buildView(string $view)
+    protected function buildView(string $view): Factory|View
     {
         $this->viewModel->setTitle($this->title);
         $this->viewModel->setDescription($this->description);
@@ -268,9 +282,12 @@ abstract class BaseController extends Controller
 
         if ($request->has([BaseComponent::KEY_SORT])) {
             $sort = $this->searchData[BaseComponent::KEY_SORT];
-            if (isset($sort)) {
-                $rQuery = $this->buildSortQuery($rQuery, $sort);
-            }
+        } else if ($this->defaultSort != '') {
+            $sort = $this->defaultSort;
+            $this->searchData[BaseComponent::KEY_SORT] = $sort;
+        }
+        if (isset($sort)) {
+            $rQuery = $this->buildSortQuery($rQuery, $sort);
         }
 
         if ($request->has([BaseComponent::KEY_FILTER])) {
