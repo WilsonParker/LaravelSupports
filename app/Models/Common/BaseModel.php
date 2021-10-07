@@ -3,7 +3,7 @@
 namespace LaravelSupports\Models\Common;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -14,6 +14,7 @@ use LaravelSupports\Models\Relationship\Traits\SaveRelationshipTrait;
 abstract class BaseModel extends Model
 {
     use SaveRelationshipTrait;
+
     // use SoftDeletes;
 
     const CREATED_AT = 'created_at';
@@ -561,10 +562,15 @@ abstract class BaseModel extends Model
      * @param mixed $models
      * @return Builder|static
      */
-    public static function scopeWhereInRelated(Builder $query, string $relation, \Illuminate\Database\Eloquent\Collection $models = null): Builder|static
+    public static function scopeWhereInRelated(Builder $query, string $relation, \Illuminate\Database\Eloquent\Collection|Model $models = null): Builder|static
     {
-        $primaryKey = $models->first()->getKeyName();
-        $keys = $models->pluck($primaryKey);
+        if ($models instanceof Model) {
+            $primaryKey = $models->getKeyName();
+            $keys = collect([$models->$primaryKey]);
+        } else {
+            $primaryKey = $models->first()->getKeyName();
+            $keys = $models->pluck($primaryKey);
+        }
         return $query->whereHas($relation, static function (Builder $query) use ($models, $primaryKey, $keys) {
             return $query->whereIn($primaryKey, $keys);
         });
