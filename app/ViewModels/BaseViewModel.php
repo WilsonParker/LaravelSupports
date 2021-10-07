@@ -280,6 +280,14 @@ class BaseViewModel extends ViewModel
         $this->data = $data;
     }
 
+    /**
+     * @param array $searchData
+     */
+    public function setSearchData(array $searchData): void
+    {
+        $this->searchData = $searchData;
+    }
+
     public function defaultData($data, $key, $default = ''): string
     {
         if (is_array($data)) {
