@@ -11,41 +11,51 @@ class CollectionServiceProvider extends ServiceProvider
     public function register()
     {
         /**
-         * $value 으로 이루어진 collection 에서 $needle 과 곂치는 부분이 있는지 확인 합니다
-         * array 일 경우 해당 값이 $prop 에 존재하는지 확인 합니다
-         * collection 또는 $prop 값을 가진 item 이 있는지 확인 합니다
+         * Model 으로 이루어진 collection 에서 $needle 과 곂치는 부분이 있는지 확인 합니다
+         *
+         * collection 일 경우 $prop 또는 primaryKey 에 적합한 값이 있는지 확인 합니다.
+         * array 일 경우 collection 으로 변환 후 재실행 합니다.
+         * callable 일 경우 $needle callback 에 적합한 값이 있는지 확인 합니다.
+         * Model 또는 string 일 경우 primaryKey 또는 $prop 에 적합한 값이 있는지 확인 합니다.
          *
          * @param Collection | array | Model $needle
          * @param string $pros
          * @return bool
          * @author  dew9163
          * @added   2020/11/11
-         * @updated 2020/11/11
-         * @updated 2020/12/03
-         *
+         * @updated 2021/10/12
          */
-        Collection::macro('exists', function ($needle, string $prop = 'id'): bool {
-            $objCallback = function ($item, $needle) use ($prop) {
-                return $item->{$prop} == $needle->{$prop};
+        Collection::macro('exists', function (Collection|array|callable|Model|string $needle, string $prop = null): bool {
+            $getPropValue = function (Model $item) use ($prop) {
+                return isset($prop) ? $item->{$prop} : $item->getPrimaryValue();
+            };
+            $modelCallback = function (Model $item, $needle) use ($getPropValue, $prop) {
+                if ($needle instanceof Model) {
+                    return $getPropValue($item) == $getPropValue($needle);
+                } else {
+                    return $getPropValue($item) == $needle;
+                }
             };
 
             if ($needle instanceof Collection) {
                 foreach ($this as $item) {
                     foreach ($needle as $needleItem) {
-                        if ($objCallback($item, $needleItem)) {
+                        if ($modelCallback($item, $needleItem)) {
                             return true;
                         }
                     }
                 }
             } else if (is_array($needle)) {
+                return $this->exists(collect($needle), $prop);
+            } else if (is_callable($needle)) {
                 foreach ($this as $item) {
-                    if (in_array($item->{$prop}, $needle)) {
+                    if ($needle($item)) {
                         return true;
                     }
                 }
             } else {
                 foreach ($this as $item) {
-                    if ($objCallback($item, $needle)) {
+                    if ($modelCallback($item, $needle)) {
                         return true;
                     }
                 }
@@ -53,11 +63,6 @@ class CollectionServiceProvider extends ServiceProvider
 
             return false;
         });
-
-        /*Collection::macro('exists2', function (Collection $needle, string $prop = 'id'): bool {
-            $this->contains();
-        });*/
-
 
         /**
          * collection 에 $keys 중 하나라도 일치하는 key 값이 있는지 확인 합니다
