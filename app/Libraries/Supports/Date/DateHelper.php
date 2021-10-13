@@ -27,9 +27,9 @@ class DateHelper
     const SIMPLE_DAY_OF_MONTHS = 30;
     const SIMPLE_DAY_OF_YEARS = 360;
 
-    public function __construct()
+    public function __construct(\Illuminate\Support\Carbon $date = null)
     {
-        $this->date = Carbon::now();
+        $this->date = $date ?? Carbon::now();
     }
 
     public function getCurrentTime($format = self::DEF_FORMAT)
@@ -58,29 +58,47 @@ class DateHelper
         return $date->format('t');
     }
 
-    public function getLastDayOfNextMonth()
+    public function getLastDayOfNextMonth(): string
     {
         return date("t", strtotime("+1 month"));
     }
 
-    public function getMonthAndLastDayOfNextMonth()
+    public function getMonthAndLastDayOfNextMonth(): string
     {
         return date("n월 t일", strtotime("+1 month"));
     }
 
-    public function getNowMonthAndDayOfMonth()
+    public function getNowMonthAndDayOfMonth(): string
     {
         return date("n월 d일");
     }
 
-    public function getDateTheMonthAdded($month = 0, $format = self::DEF_FORMAT)
+    public function getDateTheMonthAdded($month = 0, $format = self::DEF_FORMAT): string
     {
         return date($format, strtotime("+$month month"));
     }
 
-    public function formatDate($date, $format = self::DEF_FORMAT)
+    public function formatDate($date, $format = self::DEF_FORMAT): string
     {
         return Carbon::parse($date)->format($format);
+    }
+
+    /**
+     * $from 과 $to 를 비교 합니다
+     * $greaterThan 이 true 일 경우
+     * $from 이 더 클 경우 true 를 제공 합니다
+     *
+     * @param Carbon $to
+     * @param Carbon $from
+     * @param
+     * @return void
+     * @author  dew9163
+     * @added   2020/06/24
+     * @updated 2020/06/24
+     */
+    public function compareDate(Carbon $from, Carbon $to, $greaterThan)
+    {
+
     }
 
     /**
@@ -90,7 +108,7 @@ class DateHelper
      * @param $unit
      * @param $value
      * @param bool $overflow
-     * @return Carbon|null
+     * @return Carbon
      * @author  dew9163
      * @added   2020/06/18
      * @updated 2020/06/18
@@ -101,7 +119,7 @@ class DateHelper
      * when $overflow is true, adding the date moves to the next date
      * (apply in months, years)
      */
-    public function addDate(Carbon $date, $unit, $value, $overflow = false)
+    public static function addDate(Carbon $date, $unit, $value, bool $overflow = false): Carbon
     {
         switch ($unit) {
             case 'hours':
@@ -130,52 +148,7 @@ class DateHelper
         return $date;
     }
 
-    /**
-     * $fromUnit 의 $value 를
-     * $toUnit 의 값으로 변환하여 제공 합니다
-     *
-     * @param $fromUnit
-     * @param $value
-     * @param $toUnit
-     * @return null
-     * @author  dew9163
-     * @added   2020/06/24
-     * @updated 2020/06/24
-     */
-    public function convertDateInteger($fromUnit, $value, $toUnit)
-    {
-        switch ($fromUnit) {
-            case self::DAYS:
-                $days = $value * self::DAY_OF_DAYS;
-                break;
-            case self::MONTHS:
-                $days = $value * self::DAY_OF_MONTHS;
-                break;
-            case self::YEARS:
-                $days = $value * self::DAY_OF_YEARS;
-                break;
-            default :
-                return 0;
-        }
-
-        switch ($toUnit) {
-            case self::DAYS:
-                $result = $days / self::DAY_OF_DAYS;
-                break;
-            case self::MONTHS:
-                $result = $days / self::DAY_OF_MONTHS;
-                break;
-            case self::YEARS:
-                $result = $days / self::DAY_OF_YEARS;
-                break;
-            default :
-                return 0;
-        }
-
-        return $result;
-    }
-
-    public function convertSimpleDateInteger($fromUnit, $value, $toUnit)
+    public static function convertSimpleDateInteger($fromUnit, $value, $toUnit): float|int
     {
         switch ($fromUnit) {
             case self::DAYS:
@@ -209,20 +182,47 @@ class DateHelper
     }
 
     /**
-     * $from 과 $to 를 비교 합니다
-     * $greaterThan 이 true 일 경우
-     * $from 이 더 클 경우 true 를 제공 합니다
+     * $fromUnit 의 $value 를
+     * $toUnit 의 값으로 변환하여 제공 합니다
      *
-     * @param Carbon $to
-     * @param Carbon $from
-     * @param
-     * @return void
+     * @param $fromUnit
+     * @param $value
+     * @param $toUnit
+     * @return null
      * @author  dew9163
      * @added   2020/06/24
      * @updated 2020/06/24
      */
-    public function compareDate(Carbon $from, Carbon $to, $greaterThan)
+    public static function convertDateInteger($fromUnit, $value, $toUnit): float|int|null
     {
+        switch ($fromUnit) {
+            case self::DAYS:
+                $days = $value * self::DAY_OF_DAYS;
+                break;
+            case self::MONTHS:
+                $days = $value * self::DAY_OF_MONTHS;
+                break;
+            case self::YEARS:
+                $days = $value * self::DAY_OF_YEARS;
+                break;
+            default :
+                return 0;
+        }
 
+        switch ($toUnit) {
+            case self::DAYS:
+                $result = $days / self::DAY_OF_DAYS;
+                break;
+            case self::MONTHS:
+                $result = $days / self::DAY_OF_MONTHS;
+                break;
+            case self::YEARS:
+                $result = $days / self::DAY_OF_YEARS;
+                break;
+            default :
+                return 0;
+        }
+
+        return $result;
     }
 }
