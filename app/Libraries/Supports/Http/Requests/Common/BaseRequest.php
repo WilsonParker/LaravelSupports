@@ -18,7 +18,7 @@ abstract class BaseRequest extends FormRequest
     protected array $rules = [];
     protected array $messages = [];
     protected bool $isFailedRedirect = false;
-    private string $prefix = '';
+    protected string $prefix = '';
     protected $validatorCallback;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
@@ -178,7 +178,7 @@ abstract class BaseRequest extends FormRequest
         $pathFiltered = [];
         if (Arr::exists($methodFiltered, $this->path())) {
             $pathFiltered = $methodFiltered[$this->path()];
-        } else if (Arr::exists($this->build[$method], '/')) {
+        } else if (Arr::exists($methodFiltered, '/')) {
             $pathFiltered = $methodFiltered['/'];
         }
         return $pathFiltered;
