@@ -7,14 +7,18 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
 
 abstract class BaseRequest extends FormRequest
 {
+    protected array $build = [];
     protected array $rules = [];
     protected array $messages = [];
     protected bool $isFailedRedirect = false;
+    private string $prefix = '';
     protected $validatorCallback;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
@@ -25,11 +29,6 @@ abstract class BaseRequest extends FormRequest
 
     protected function init()
     {
-    }
-
-    public function rules(): array
-    {
-        return $this->rules;
     }
 
     public function messages(): array
@@ -129,6 +128,60 @@ abstract class BaseRequest extends FormRequest
     public function setIsFailedRedirect(bool $isFailedRedirect): void
     {
         $this->isFailedRedirect = $isFailedRedirect;
+    }
+
+    protected function appendGet(array $rules, string $route = '')
+    {
+        $this->append('GET', $rules, $route);
+    }
+
+    protected function appendPost(array $rules, string $route = '')
+    {
+        $this->append('POST', $rules, $route);
+    }
+
+    protected function appendPut(array $rules, string $route = '')
+    {
+        $this->append('PUT', $rules, $route);
+    }
+
+    protected function appendDelete(array $rules, string $route = '')
+    {
+        $this->append('DELETE', $rules, $route);
+    }
+
+    protected function appendRoute(array $rules, string $route = '')
+    {
+        $this->append('', $rules, $route);
+    }
+
+    protected function append(string $method, array $rules, string $route)
+    {
+        $method = Str::upper($method);
+        if (!Arr::exists($this->build, $method)) {
+            $this->build[$method] = [];
+        }
+        $this->build[$method] = Arr::add($this->build[$method], implode('/', [$this->prefix, $route]), $rules);
+    }
+
+    public function rules(): array
+    {
+        $method = Str::upper($this->method());
+
+        $methodFiltered = [];
+        if (Arr::exists($this->build, $method)) {
+            $methodFiltered = $this->build[$method];
+        } else if (Arr::exists($this->build, '')) {
+            $methodFiltered = $this->build[''];
+        }
+
+        $pathFiltered = [];
+        if (Arr::exists($methodFiltered, $this->path())) {
+            $pathFiltered = $methodFiltered[$this->path()];
+        } else if (Arr::exists($this->build[$method], '/')) {
+            $pathFiltered = $methodFiltered['/'];
+        }
+        return $pathFiltered;
     }
 
 }

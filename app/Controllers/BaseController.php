@@ -523,31 +523,30 @@ abstract class BaseController extends Controller
 
     protected function backWithErrors(Throwable $e): \Illuminate\Http\RedirectResponse
     {
-        return back()->withInput()->withErrors($e->getMessage());
+        return back()->withInput()->withErrors($e->getMessage())->with([
+            'message' => $e->getMessage()
+        ]);
     }
 
-    /**
-     * config 정보를 포함하여 $route 로 $params 를 전달하여 이동 합니다
-     *
-     * @param string $prefix
-     * @param string $route
-     * @param array $params
-     * @param bool $isSuccess
-     * @param array $replace
-     * @return \Illuminate\Http\RedirectResponse
-     * @author  dew9163
-     * @added   2020/12/08
-     * @updated 2020/12/08
-     */
-    protected function redirectWithConfig(string $prefix, string $route, array $params = [], bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
+    protected function redirectUrlWithConfig(string $prefix, string $url, array $params = [], bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
     {
-        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
-        $helper = new StringHelper();
-        $message = $helper->replaceWithCollection($replace, $message);
-        return $this->redirectWithMessage($message, $route, $params);
+        return $this->redirectUrlWithMessage($this->getConfigMessage($prefix, $isSuccess, $replace), $url, $params);
     }
 
-    protected function redirectWithMessage(string $message, string $route, array $params): \Illuminate\Http\RedirectResponse
+    protected function redirectRouteWithConfig(string $prefix, string $route, array $params = [], bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
+    {
+        return $this->redirectRouteWithMessage($this->getConfigMessage($prefix, $isSuccess, $replace), $route, $params);
+    }
+
+    protected function redirectUrlWithMessage(string $message, string $url = '', array $params = []): \Illuminate\Http\RedirectResponse
+    {
+        $url = $url != '' ? $url : url()->previous();
+        return redirect($url)->with([
+            'message' => $message
+        ]);
+    }
+
+    protected function redirectRouteWithMessage(string $message, string $route, array $params = []): \Illuminate\Http\RedirectResponse
     {
         return redirect()->route($route, $params)->with([
             'message' => $message
@@ -555,6 +554,13 @@ abstract class BaseController extends Controller
     }
 
     protected function bindConfigMessage(string $prefix, array $replace = [], bool $isSuccess = true): string
+    {
+        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        $helper = new StringHelper();
+        return $helper->replaceWithCollection($replace, $message);
+    }
+
+    protected function getConfigMessage(string $prefix, bool $isSuccess = true, array $replace = []): string
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
         $helper = new StringHelper();
