@@ -179,8 +179,8 @@ abstract class BaseRequest extends FormRequest
         $pathFiltered = [];
         if (Arr::exists($methodFiltered, $this->path())) {
             $pathFiltered = $methodFiltered[$this->path()];
-        } else if (Arr::exists($methodFiltered, '/')) {
-            $pathFiltered = $methodFiltered['/'];
+        } else if (Arr::exists($methodFiltered, $this->prefix)) {
+            $pathFiltered = $methodFiltered[$this->prefix];
         }
 
         return $pathFiltered;
