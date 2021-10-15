@@ -161,13 +161,14 @@ abstract class BaseRequest extends FormRequest
         if (!Arr::exists($this->build, $method)) {
             $this->build[$method] = [];
         }
-        $this->build[$method] = Arr::add($this->build[$method], implode('/', [$this->prefix, $route]), $rules);
+        $path = Str::of(implode('/', [$this->prefix, $route]));
+        $path = $path->endsWith('/') ? $path->substr(0, $path->length() - 1) : $path;
+        $this->build[$method] = Arr::add($this->build[$method], "$path", $rules);
     }
 
     public function rules(): array
     {
         $method = Str::upper($this->method());
-
         $methodFiltered = [];
         if (Arr::exists($this->build, $method)) {
             $methodFiltered = $this->build[$method];
@@ -181,6 +182,7 @@ abstract class BaseRequest extends FormRequest
         } else if (Arr::exists($methodFiltered, '/')) {
             $pathFiltered = $methodFiltered['/'];
         }
+
         return $pathFiltered;
     }
 
