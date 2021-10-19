@@ -113,11 +113,13 @@ abstract class BaseController extends Controller
      * @author  dew9163
      * @added   2020/10/29
      * @updated 2020/10/29
+     * @updated 2021/10/19
+     * remove set title & description
      */
     protected function buildView(string $view): Factory|View
     {
-        $this->viewModel->setTitle($this->title);
-        $this->viewModel->setDescription($this->description);
+//        $this->viewModel->setTitle($this->title);
+//        $this->viewModel->setDescription($this->description);
 
         $arr = Arr::prepend($this->prefix, $this->root);
         $arr = array_merge($arr, $this->suffix);
