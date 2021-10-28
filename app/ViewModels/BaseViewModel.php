@@ -14,7 +14,7 @@ class BaseViewModel extends ViewModel
     use HasDataWithDefaultTrait;
     use ConvertStringTrait;
 
-    public const DATE_FORMAT = 'Y-m';
+    public const DATE_FORMAT = 'Y-m-d';
     public const KEY_SEARCH_LABEL = 'search_label';
     public const KEY_SEARCH_VALUES = 'search_values';
     public const KEY_SEARCH_TYPE = 'search_type';

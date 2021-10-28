@@ -130,33 +130,36 @@ abstract class BaseRequest extends FormRequest
         $this->isFailedRedirect = $isFailedRedirect;
     }
 
-    protected function appendGet(array $rules, string $route = '')
+    protected function appendGet(array $rules, string $route = '', bool $isFailedRedirect = null)
     {
-        $this->append('GET', $rules, $route);
+        $this->append('GET', $rules, $route, $isFailedRedirect);
     }
 
-    protected function appendPost(array $rules, string $route = '')
+    protected function appendPost(array $rules, string $route = '', bool $isFailedRedirect = null)
     {
-        $this->append('POST', $rules, $route);
+        $this->append('POST', $rules, $route, $isFailedRedirect);
     }
 
-    protected function appendPut(array $rules, string $route = '')
+    protected function appendPut(array $rules, string $route = '', bool $isFailedRedirect = null)
     {
-        $this->append('PUT', $rules, $route);
+        $this->append('PUT', $rules, $route, $isFailedRedirect);
     }
 
-    protected function appendDelete(array $rules, string $route = '')
+    protected function appendDelete(array $rules, string $route = '', bool $isFailedRedirect = null)
     {
-        $this->append('DELETE', $rules, $route);
+        $this->append('DELETE', $rules, $route, $isFailedRedirect);
     }
 
-    protected function appendRoute(array $rules, string $route = '')
+    protected function appendRoute(array $rules, string $route = '', bool $isFailedRedirect = null)
     {
-        $this->append('', $rules, $route);
+        $this->append('', $rules, $route, $isFailedRedirect);
     }
 
-    protected function append(string $method, array $rules, string $route)
+    protected function append(string $method, array $rules, string $route, bool $isFailedRedirect = null)
     {
+        if($isFailedRedirect != null) {
+            $this->isFailedRedirect = $isFailedRedirect;
+        }
         $method = Str::upper($method);
         if (!Arr::exists($this->build, $method)) {
             $this->build[$method] = [];
