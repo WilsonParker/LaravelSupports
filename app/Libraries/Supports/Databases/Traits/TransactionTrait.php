@@ -4,11 +4,11 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Traits;
 
 
-use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use LaravelSupports\Libraries\Exceptions\Contracts\Abortable;
 use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Libraries\Supports\Http\Responses\ResponseTemplate;
 use Throwable;
@@ -66,19 +66,25 @@ trait TransactionTrait
      * @author  WilsonParker
      * @added   2019-08-27
      * @updated 2020-04-27
-     *
-     * $validationCallback is not working
      * @updated 2020-04-27
+     * $validationCallback is not working
+     * @updated 2021-11-18
+     * add abort
      */
     function runTransaction(callable $callback, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
     {
+        $result = null;
         try {
             $result = $this->runAction($callback);
             // transaction 중 에러 발생 시
         } catch (\Throwable $t) {
             $result = $this->rollbackAction($t, $errorCallback, $validationCallback, $loggable);
         } finally {
-            return $result;
+            if($result instanceof Abortable) {
+                abort($result->getCode());
+            } else {
+                return $result;
+            }
         }
     }
 

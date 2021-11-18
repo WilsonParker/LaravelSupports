@@ -209,5 +209,59 @@ class CollectionServiceProvider extends ServiceProvider
                 'false' => $false,
             ]);
         });
+
+        /**
+         * Model 으로 이루어진 collection 에서 $needle 에 해당하는 값을 제공합니다
+         *
+         * collection 일 경우 $prop 또는 primaryKey 에 적합한 값이 있는지 확인 합니다.
+         * array 일 경우 collection 으로 변환 후 재실행 합니다.
+         * callable 일 경우 $needle callback 에 적합한 값이 있는지 확인 합니다.
+         * Model 또는 string 일 경우 primaryKey 또는 $prop 에 적합한 값이 있는지 확인 합니다.
+         *
+         * @param Collection | array | Model $needle
+         * @param string $pros
+         * @return Model
+         * @author  WilsonParker
+         * @added   2021/11/18
+         * @updated 2021/11/18
+         */
+        Collection::macro('getFirst', function (Collection|array|callable|Model|string $needle, string $prop = null): ?Model {
+            $getPropValue = function (Model $item) use ($prop) {
+                return isset($prop) ? $item->{$prop} : $item->getPrimaryValue();
+            };
+            $modelCallback = function (Model $item, $needle) use ($getPropValue, $prop) {
+                if ($needle instanceof Model) {
+                    return $getPropValue($item) == $getPropValue($needle);
+                } else {
+                    return $getPropValue($item) == $needle;
+                }
+            };
+
+            if ($needle instanceof Collection) {
+                foreach ($this as $item) {
+                    foreach ($needle as $needleItem) {
+                        if ($modelCallback($item, $needleItem)) {
+                            return $item;
+                        }
+                    }
+                }
+            } else if (is_array($needle)) {
+                return $this->exists(collect($needle), $prop);
+            } else if (is_callable($needle)) {
+                foreach ($this as $item) {
+                    if ($needle($item)) {
+                        return $item;
+                    }
+                }
+            } else {
+                foreach ($this as $item) {
+                    if ($modelCallback($item, $needle)) {
+                        return $item;
+                    }
+                }
+            }
+
+            return null;
+        });
     }
 }

@@ -2,8 +2,7 @@
 
 namespace LaravelSupports\Libraries\Exceptions\Handlers;
 
-use App\Exceptions\Contracts\ExceptionHandleable;
-use \Exception;
+use LaravelSupports\Libraries\Exceptions\Contracts\ExceptionHandleable;
 
 class InvalidExceptionHandler implements ExceptionHandleable
 {
