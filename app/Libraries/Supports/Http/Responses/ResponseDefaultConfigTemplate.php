@@ -4,11 +4,7 @@
 namespace LaravelSupports\Libraries\Supports\Http\Responses;
 
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Response;
-use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 /**
  * Result object of API
@@ -29,9 +25,9 @@ use phpDocumentor\Reflection\Types\Boolean;
 class ResponseDefaultConfigTemplate extends ResponseTemplate
 {
 
-    public function __construct($httpCode = Response::HTTP_OK, $prefix = "", $data = null, $header = [], $option = 0)
+    public function __construct($httpCode = ResponseAlias::HTTP_OK, $prefix = "", $data = null, $header = [], $option = 0)
     {
-        if ($httpCode == Response::HTTP_OK) {
+        if ($httpCode == ResponseAlias::HTTP_OK) {
             $code = "success.code";
             $message = "success.message";
         } else {

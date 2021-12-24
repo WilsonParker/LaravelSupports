@@ -4,15 +4,17 @@ namespace LaravelSupports\ViewModels;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use LaravelSupports\Libraries\Supports\Objects\HasDataWithDefaultTrait;
-use LaravelSupports\Libraries\Supports\String\Traits\ConvertStringTrait;
+use ReflectionClass;
+use ReflectionMethod as ReflectionMethodAlias;
+use ReflectionProperty;
 use Spatie\ViewModels\ViewModel;
 
 class BaseViewModel extends ViewModel
 {
     use HasDataWithDefaultTrait;
-    use ConvertStringTrait;
 
     public const DATE_FORMAT = 'Y-m-d';
     public const KEY_SEARCH_LABEL = 'search_label';
@@ -35,6 +37,7 @@ class BaseViewModel extends ViewModel
     protected string $viewPrefix = '';
     protected string $viewSuffix = '';
 
+    protected $arr = [];
     public $data;
     public array $searchData = [];
     public array $search = [];
@@ -132,7 +135,7 @@ class BaseViewModel extends ViewModel
      * @added   2019-08-28
      * @updated 2019-08-28
      */
-    protected function convertListToJson($list, $setKeyCallback, $getItemCallback)
+    protected function convertListToJson($list, $setKeyCallback, $getItemCallback): bool|string
     {
         $json = [];
         foreach ($list as $item) {
@@ -150,7 +153,7 @@ class BaseViewModel extends ViewModel
      * @added   2019-08-28
      * @updated 2019-08-28
      */
-    protected function defaultJsonEncode($data)
+    protected function defaultJsonEncode($data): bool|string
     {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
@@ -299,38 +302,24 @@ class BaseViewModel extends ViewModel
         return $result;
     }
 
-    /**
-     * keyword 강조 처리
-     *
-     * @param string $content
-     * @return string
-     * @author  seul
-     * @added   2021/04/01
-     * @updated 2021/04/01
-     */
-    public function highlight(string $content): string
+    protected function items(): Collection
     {
-        if (isset($this->searchData[self::KEY_KEYWORD])) {
-            $keyword = str_replace(' ', '', $this->searchData[self::KEY_KEYWORD]);
-            $keywords = explode(',', $keyword);
+        $class = new ReflectionClass($this);
 
-            foreach ($keywords as $keyword) {
-                $pregKeyword = implode('\s{0,}', mb_str_split($keyword));
-                preg_match("/{$pregKeyword}/i", $content, $matches);
-
-                foreach ($matches as $match) {
-                    $content = str_replace($match, '<span class="bg-highlight">' . $match . '</span>', $content);
-                }
-            }
-            return $content;
-        } else {
-            return $content;
-        }
+        $publicProperties = collect($class->getProperties(ReflectionProperty::IS_PUBLIC))
+            ->reject(function (ReflectionProperty $property) {
+                return $this->shouldIgnore($property->getName());
+            })
+            ->mapWithKeys(function (ReflectionProperty $property) {
+                return [$property->getName() => $this->{$property->getName()}];
+            });
+        $publicMethods = collect($class->getMethods(ReflectionMethodAlias::IS_PUBLIC))
+            ->reject(function (ReflectionMethodAlias $method) {
+                return $this->shouldIgnore($method->getName());
+            })
+            ->mapWithKeys(function (ReflectionMethodAlias $method) {
+                return [$method->getName() => $this->createVariableFromMethod($method)];
+            });
+        return $publicProperties->merge($publicMethods)->merge($this->arr);
     }
-
-    public function getStarGrade(float $grade): string
-    {
-        return $this->convertStarGrade($grade);
-    }
-
 }

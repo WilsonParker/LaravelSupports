@@ -130,34 +130,34 @@ abstract class BaseRequest extends FormRequest
         $this->isFailedRedirect = $isFailedRedirect;
     }
 
-    protected function appendGet(array $rules, string $route = '', bool $isFailedRedirect = null)
+    protected function appendGet(array $rules, string $route = '', bool $isFailedRedirect = null, bool $reg = false)
     {
-        $this->append('GET', $rules, $route, $isFailedRedirect);
+        $this->append('GET', $rules, $route, $isFailedRedirect, $reg);
     }
 
-    protected function appendPost(array $rules, string $route = '', bool $isFailedRedirect = null)
+    protected function appendPost(array $rules, string $route = '', bool $isFailedRedirect = null, bool $reg = false)
     {
-        $this->append('POST', $rules, $route, $isFailedRedirect);
+        $this->append('POST', $rules, $route, $isFailedRedirect, $reg);
     }
 
-    protected function appendPut(array $rules, string $route = '', bool $isFailedRedirect = null)
+    protected function appendPut(array $rules, string $route = '', bool $isFailedRedirect = null, bool $reg = false)
     {
-        $this->append('PUT', $rules, $route, $isFailedRedirect);
+        $this->append('PUT', $rules, $route, $isFailedRedirect, $reg);
     }
 
-    protected function appendDelete(array $rules, string $route = '', bool $isFailedRedirect = null)
+    protected function appendDelete(array $rules, string $route = '', bool $isFailedRedirect = null, bool $reg = false)
     {
-        $this->append('DELETE', $rules, $route, $isFailedRedirect);
+        $this->append('DELETE', $rules, $route, $isFailedRedirect, $reg);
     }
 
-    protected function appendRoute(array $rules, string $route = '', bool $isFailedRedirect = null)
+    protected function appendRoute(array $rules, string $route = '', bool $isFailedRedirect = null, bool $reg = false)
     {
-        $this->append('', $rules, $route, $isFailedRedirect);
+        $this->append('', $rules, $route, $isFailedRedirect, $reg);
     }
 
-    protected function append(string $method, array $rules, string $route, bool $isFailedRedirect = null)
+    protected function append(string $method, array $rules, string $route, bool $isFailedRedirect = null, bool $reg = false)
     {
-        if($isFailedRedirect != null) {
+        if ($isFailedRedirect != null) {
             $this->isFailedRedirect = $isFailedRedirect;
         }
         $method = Str::upper($method);
@@ -166,7 +166,11 @@ abstract class BaseRequest extends FormRequest
         }
         $path = Str::of(implode('/', [$this->prefix, $route]));
         $path = $path->endsWith('/') ? $path->substr(0, $path->length() - 1) : $path;
-        $this->build[$method] = Arr::add($this->build[$method], "$path", $rules);
+
+        $this->build[$method] = Arr::add($this->build[$method], "$path", [
+            'reg' => $reg,
+            'rules' => $rules,
+        ]);
     }
 
     public function rules(): array
@@ -179,14 +183,35 @@ abstract class BaseRequest extends FormRequest
             $methodFiltered = $this->build[''];
         }
 
-        $pathFiltered = [];
+        $match = collect($methodFiltered)
+            ->filter(fn($item) => !$item['reg'])
+            ->first(function ($values, $key) {
+                return $key == $this->path() || $key == $this->prefix;
+            });
+
+        $roles = [];
+        if (isset($match)) {
+            $roles = $match['rules'];
+        } else {
+            $matchReg = collect($methodFiltered)
+                ->filter(fn($item) => $item['reg'])
+                ->first(function ($values, $key) {
+                    return preg_match("^($key)^", $this->path());
+                });
+            if(isset($matchReg)) {
+                $roles = $matchReg['rules'];
+            }
+        }
+        return $roles;
+
+        /*$pathFiltered = [];
         if (Arr::exists($methodFiltered, $this->path())) {
             $pathFiltered = $methodFiltered[$this->path()];
         } else if (Arr::exists($methodFiltered, $this->prefix)) {
             $pathFiltered = $methodFiltered[$this->prefix];
         }
 
-        return $pathFiltered;
+        return $pathFiltered['rules'];*/
     }
 
 }
