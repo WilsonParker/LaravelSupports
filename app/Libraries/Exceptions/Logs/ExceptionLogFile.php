@@ -14,9 +14,7 @@ use LaravelSupports\Libraries\Supports\Objects\ConstructOverrideObject;
  * @class   ExceptionLogFile.php
  * @added   2019.03.04
  * @updated 2019.03.04
- * @bug
- * @todo
- * @see
+
  */
 class ExceptionLogFile extends ConstructOverrideObject implements ExceptionRecordable
 {

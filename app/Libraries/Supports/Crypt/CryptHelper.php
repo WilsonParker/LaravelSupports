@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Crypt;
  * @brief   ValidationModel 과 사용해야 합니다
  * property 를 get 할 경우 복호화를
  * set 할 경우 암호화를 합니다
- * @see
- * @todo
- * @bug
+
  * @create  20190104
  * @update  20190104
  **/
@@ -47,9 +45,7 @@ trait CryptHelper
      * Property 를 가져갈 경우 암호화가 되어있는 컬럼인지(array $enc) 확인하여 복호화를 해줍니다
      * @param   String $property
      * @return  String
-     * @see
-     * @todo
-     * @bug
+
      * @create  20190104
      * @update  20190104
      **/
@@ -82,9 +78,7 @@ trait CryptHelper
      * @brief
      * @param   String $property
      * @param   Mixed $value
-     * @see
-     * @todo
-     * @bug
+
      * @create  20190104
      * @update  20190104
      **/
@@ -107,9 +101,7 @@ trait CryptHelper
      * $property 가 $enc 에 포함되어있는지 확인하여 Booelan 값을 return 합니다
      * @param   String $property
      * @return  Boolean
-     * @see
-     * @todo
-     * @bug
+
      * @create  20190104
      * @update  20190104
      **/
@@ -125,9 +117,7 @@ trait CryptHelper
      * @param   String $key
      * @param   Mixed $val
      * @return  String
-     * @see
-     * @todo
-     * @bug
+
      * @create  20190104
      * @update  20190104
      **/

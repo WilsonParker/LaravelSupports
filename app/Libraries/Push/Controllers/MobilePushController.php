@@ -20,9 +20,7 @@ class MobilePushController extends AdminController
      * @brief   검색조건 처리용 변수
      * @autho   yhlim
      * @date    20181025
-     * @bug
-     * @todo
-     * @see
+
      **/
     protected $conditions = array();
     //-- 입력항목 및 디폴트 값 세팅
@@ -284,9 +282,7 @@ class MobilePushController extends AdminController
      * @brief   검색조건 처리용 함수
      * @autho   yhlim
      * @date    20181025
-     * @bug
-     * @todo
-     * @see
+
      **/
     protected function setSearchForm(Request $request)
     {

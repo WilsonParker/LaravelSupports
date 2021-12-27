@@ -19,8 +19,6 @@ class FileHelper
      * @updated  20190618
      * @bug      파일이름을 파라미터로 넘겨주지 않으면 램덤으로 설정합니다 20190408 정태현
      * @bug      파일 이름에 확장자를 추가하여 $result 에 url을 설정합니다 20190409 정태현
-     * @todo
-     * @see
      **/
     public static function store($file, $dir = 'img', $filename = null)
     {
@@ -62,9 +60,7 @@ class FileHelper
      * @return   File
      * @author   WilsonParker
      * @date     20190408
-     * @bug
-     * @todo
-     * @see
+
      **/
     public static function url($filePath)
     {

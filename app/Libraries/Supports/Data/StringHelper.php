@@ -5,9 +5,7 @@
  * @author  WilsonParker
  * @brief
  * String 관련 함수를 제공합니다
- * @see
- * @todo
- * @bug
+
  * @create  20181227
  * @update  20200310
  **/
@@ -43,9 +41,7 @@ class StringHelper
      * @author  WilsonParker
      * @brief
      *
-     * @see
-     * @todo
-     * @bug
+
      * @create  20181227
      * @update  20181227
      */

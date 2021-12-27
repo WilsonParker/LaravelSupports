@@ -11,9 +11,6 @@ use Exception;
  * @class   ExceptionHandleable.php
  * @added   2019.03.05
  * @updated 2019.03.05
- * @bug
- * @todo
- * @see
  */
 interface ExceptionHandleable
 {

@@ -4,9 +4,7 @@
  * @class   CollectionHelper.php
  * @author  WilsonParker
  * @brief   Collection 관련 function 을 제공해줍니다
- * @see
- * @todo
- * @bug
+
  * @create  20200310
  * @update  20200310
  **/

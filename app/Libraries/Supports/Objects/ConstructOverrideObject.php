@@ -13,9 +13,7 @@ use LaravelSupports\Libraries\Supports\Objects\Contracts\Initializable;
  * @class   ConstructOverrideObject.php
  * @added   2019.03.05
  * @updated 2019.03.05
- * @bug
- * @todo
- * @see
+
  */
 class ConstructOverrideObject
 {

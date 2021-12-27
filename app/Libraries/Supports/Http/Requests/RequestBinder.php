@@ -75,9 +75,7 @@ trait RequestBinder
      *
      * ex)
      * ["ADM_ID:USER_ID", "ADM_PW", "ADM_LOGIN"=>"N", "!REG_DATE"=>now()]
-     * @see
-     * @todo
-     * @bug
+
      * @create  20181227
      * @update  20181227
      */

@@ -4,9 +4,7 @@
  * @class   ValidationModel.php
  * @author  WilsonParker
  * @brief
- * @see
- * @todo
- * @bug
+
  * @create  20181226
  * @update  20181227
  **/
@@ -96,9 +94,7 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
      * $information 의 값을 이용하여
      * message 들을 Property.in => some message 형식으로
      * $messages 에 저장 합니다
-     * @see
-     * @todo
-     * @bug
+
      * @create  20181227
      * @update  20181227
      **/
@@ -122,9 +118,7 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
      * $information 의 값을 이용하여
      * rule 들을 Property => required|sometimes 형식으로
      * $rules 에 저장 합니다
-     * @see
-     * @todo
-     * @bug
+
      * @create  20181227
      * @update  20181227
      **/
@@ -160,9 +154,7 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
      * @brief
      * $messages 를 생성할 때
      * Check.in:yn 같은 값을 Check.in 으로 바꾸어 줍니다
-     * @see
-     * @todo
-     * @bug
+
      * @create  20181227
      * @update  20181227
      **/
@@ -202,9 +194,7 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
      * @return
      * @author  WilsonParker
      * @brief   Validator::make 메소드를 실행하여 return 해줍니다
-     * @see
-     * @todo
-     * @bug
+
      * @create  20190104
      * @update  20190104
      */
