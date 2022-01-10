@@ -11,6 +11,8 @@ trait SaveRelationshipTrait
     protected array $relationships = [
         HasOne::class => 'saveHasOne',
         HasMany::class => 'saveHasMany',
+        \Awobaz\Compoships\Database\Eloquent\Relations\HasOne::class => 'saveHasOne',
+        \Awobaz\Compoships\Database\Eloquent\Relations\HasMany::class => 'saveHasMany',
     ];
 
     /**
@@ -48,7 +50,7 @@ trait SaveRelationshipTrait
 
     protected function saveHasMany(HasOne $relation, \Illuminate\Support\Collection|array $data): bool
     {
-
+        return false;
     }
 
 }
