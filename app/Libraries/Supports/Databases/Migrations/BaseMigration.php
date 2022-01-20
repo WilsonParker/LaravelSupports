@@ -12,6 +12,8 @@ abstract class BaseMigration extends Migration
 {
     protected string $table;
     protected bool $needDrop = true;
+    protected bool $timestamp = true;
+    protected bool $softDelete = true;
 
     public function down()
     {
@@ -19,7 +21,7 @@ abstract class BaseMigration extends Migration
             if (Schema::hasTable($this->table)) {
                 $this->defaultDownTemplate($table);
             }
-            if($this->needDrop) {
+            if ($this->needDrop) {
                 $table->dropIfExists();
             }
         });
@@ -36,9 +38,13 @@ abstract class BaseMigration extends Migration
 
     protected function defaultTimestampTemplate(Blueprint $table)
     {
-        $table->timestamp('created_at')->useCurrent();
-        $table->timestamp('updated_at')->useCurrent();
-        $table->softDeletes();
+        if ($this->timestamp) {
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+        }
+        if ($this->softDelete) {
+            $table->softDeletes();
+        }
     }
 
     /**
@@ -47,7 +53,8 @@ abstract class BaseMigration extends Migration
      * @param Blueprint $table
      * @return void
      */
-    protected function defaultDownTemplate(Blueprint $table) {
+    protected function defaultDownTemplate(Blueprint $table)
+    {
 
     }
 

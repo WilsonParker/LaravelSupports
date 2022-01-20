@@ -1,0 +1,19 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+
+class {{ class }} extends \LaravelSupports\Libraries\Supports\Databases\Migrations\CreateMigration
+{
+    protected string $table = '{{ table }}';
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+     protected function defaultUpTemplate(Blueprint $table)
+     {
+         $table->unsignedInteger('idx')->autoIncrement()->comment('고유키');
+     }
+
+}
