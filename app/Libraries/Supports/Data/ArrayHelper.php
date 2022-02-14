@@ -4,7 +4,6 @@
  * @class   ArrayHelper.php
  * @author  WilsonParker
  * @brief   Array 관련 function 을 제공해줍니다
-
  * @create  20181224
  * @update  20181224
  **/
@@ -172,5 +171,49 @@ class ArrayHelper
         return collect($from)->filter(function ($item) use ($to) {
             return !self::exists($to, $item);
         })->toArray();
+    }
+
+    public static function bubbleSort(array &$list)
+    {
+        for ($y = count($list) - 1; $y > 0; $y--) {
+            for ($i = 0; $i < $y; $i++) {
+                if ($list[$i] > $list[$i + 1]) {
+                    $tmp = $list[$i];
+                    $list[$i] = $list[$i + 1];
+                    $list[$i + 1] = $tmp;
+                }
+            }
+        }
+    }
+
+    public static function selectionSort(array &$list)
+    {
+        for ($i = 0; $i < count($list) - 1; $i++) {
+            $min = $i;
+            for ($y = $i; $y < count($list) - 1; $y++) {
+                if ($list[$min] > $list[$y]) {
+                    $min = $y;
+                }
+            }
+            if ($i != $min) {
+                $tmp = $list[$i];
+                $list[$i] = $list[$min];
+                $list[$min] = $tmp;
+            }
+        }
+    }
+
+    public static function insertionSort(array &$list)
+    {
+        for ($i = 1; $i < count($list); $i++) {
+            $tmp = $list[$i];
+            $j = $i - 1;
+            while ($j > 0 && $tmp > $list[$j]) {
+                $list[$j + 1] = $list[$j];
+                $j--;
+            }
+
+            $list[$j + 1] = $tmp;
+        }
     }
 }
