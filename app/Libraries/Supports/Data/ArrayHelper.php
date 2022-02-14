@@ -208,7 +208,7 @@ class ArrayHelper
         for ($i = 1; $i < count($list); $i++) {
             $tmp = $list[$i];
             $j = $i - 1;
-            while ($j > 0 && $tmp > $list[$j]) {
+            while ($j >= 0 && $tmp < $list[$j]) {
                 $list[$j + 1] = $list[$j];
                 $j--;
             }
