@@ -4,7 +4,7 @@ namespace App\Library\LaravelSupports\app\Database\Migrations;
 
 use Illuminate\Database\Migrations\MigrationCreator;
 
-class CreateMigrateCreator extends MigrationCreator
+class AlterMigrateCreator extends MigrationCreator
 {
 
     /**
@@ -20,10 +20,10 @@ class CreateMigrateCreator extends MigrationCreator
             $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.stub')
                 ? $customPath
                 : $this->stubPath() . '/migration.stub';
-        } else if ($create) {
-            $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.create.stub')
+        } else {
+            $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.update.stub')
                 ? $customPath
-                : $this->stubPath() . '/migration.create.stub';
+                : $this->stubPath() . '/migration.update.stub';
         }
 
         return $this->files->get($stub);
