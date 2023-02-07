@@ -1,22 +1,21 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-return new class {{ class }} extends \LaravelSupports\Libraries\Supports\Databases\Migrations\AlterMigration
+return new class extends \LaravelSupports\Libraries\Supports\Databases\Migrations\AlterMigration
 {
     protected string $table = '{{ table }}';
 
     /**
      * Run the migrations.
      *
+     * @param Blueprint $table
      * @return void
      */
-     protected function defaultUpTemplate(Blueprint $table)
+     protected function defaultUpTemplate(Blueprint $table): void
      {
          $table->id();
          $table->string('code', 32)->nullable(false)->comment('코드');
      }
 
-}
+};
