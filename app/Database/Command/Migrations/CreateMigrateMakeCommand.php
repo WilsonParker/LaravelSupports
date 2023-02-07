@@ -2,6 +2,7 @@
 
 namespace App\Library\LaravelSupports\app\Database\Command\Migrations;
 
+use App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator;
 use App\Library\LaravelSupports\app\Database\Migrations\CreateMigrateCreator;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Illuminate\Support\Composer;
@@ -31,16 +32,15 @@ class CreateMigrateMakeCommand extends MigrateMakeCommand
     /**
      * The migration creator instance.
      *
-     * @var \App\Library\LaravelSupports\app\Database\Migrations\CreateMigrateCreator
+     * @var \App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator
      */
     protected $creator;
 
     /**
      * Create a new migration install command instance.
      *
-     * @param \App\Library\LaravelSupports\app\Database\Migrations\CreateMigrateCreator $creator
-     * @param \Illuminate\Support\Composer $composer
-     * @return void
+     * @param CreateMigrateCreator $creator
+     * @param Composer $composer
      */
     public function __construct(CreateMigrateCreator $creator, Composer $composer)
     {
