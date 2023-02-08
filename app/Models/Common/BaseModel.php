@@ -28,29 +28,28 @@ abstract class BaseModel extends Model
     /**
      * 둘 다 사용하지 않을 경우 false
      *
-     * @var boolean
      * @author  dew9163
      * @added   2020/05/11
      * @updated 2020/05/11
+     * @var boolean
      */
     public $timestamps = true;
     public $incrementing = true;
-    // protected $primaryKey = "ix";
-    protected $primaryKey = "id";
-    protected $table = "";
 
-    // protected array $selectScope = ['*'];
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = "id";
+
     protected array $selectScope;
     // 이미지, 파일을 저장하는 suffix 경로 입니다
-//    protected string $path = '';
+    // protected string $path = '';
     // 이미지, 파일을 저장하는 prefix 경로 입니다
     protected string $uploadPath = '';
     // 이미지, 파일을 저장하는 table 의 type 입니다
     protected string $tableType = '';
-
-    protected $guarded = [];
-
-    protected array $geometry = [];
 
     /**
      * Select geometrical attributes as text from database.
@@ -63,10 +62,10 @@ abstract class BaseModel extends Model
     /**
      * value of pagination limit
      *
-     * @var    int
      * @author  dew9163
      * @added   2020/05/11
      * @updated 2020/05/11
+     * @var    int
      */
     protected int $limit = 10;
     protected array $likeQuery = [
@@ -111,12 +110,12 @@ abstract class BaseModel extends Model
     /**
      * add global select scope
      *
-     * @return void
+     * @return  void
      * @author  dew9163
      * @added   2020/05/14
      * @updated 2020/05/14
      */
-    protected function addSelectScope()
+    protected function addSelectScope(): void
     {
         static::addGlobalScope('selectScope', function (Builder $builder) {
             if (isset($this->selectScope)) {
@@ -239,7 +238,7 @@ abstract class BaseModel extends Model
      * @added   2020/05/20
      * @updated 2020/05/20
      */
-    protected function buildOrderScope(Builder $builder)
+    protected function buildOrderScope(Builder $builder): void
     {
 
     }
@@ -253,7 +252,7 @@ abstract class BaseModel extends Model
      * @added   2020/05/20
      * @updated 2020/05/21
      */
-    protected function buildWhereScope(Builder $builder)
+    protected function buildWhereScope(Builder $builder): void
     {
 
     }
@@ -267,7 +266,7 @@ abstract class BaseModel extends Model
      * @added   2020/05/26
      * @updated 2020/05/26
      */
-    protected function buildWithScope(Builder $builder)
+    protected function buildWithScope(Builder $builder): void
     {
 
     }
@@ -314,7 +313,7 @@ abstract class BaseModel extends Model
      * @updated 2020/05/14
      * @updated 2020/05/27
      */
-    protected function buildSelectScope()
+    protected function buildSelectScope(): void
     {
     }
 
@@ -345,7 +344,7 @@ abstract class BaseModel extends Model
      * @added   2019-08-28
      * @updated 2019-08-28
      */
-    public function bindData(array $data)
+    public function bindData(array $data): void
     {
         // $data 의 값 중 table columns 에 해당하는 값들을 filter 합니다
         $hasProperties = collect($this->getColumns())->filter(function ($item) use ($data) {
@@ -426,8 +425,13 @@ abstract class BaseModel extends Model
      * @added   2019-08-12
      * @updated 2019-08-12
      */
-    public function applySort($list, $successCallback, $failCallback, string $primaryKey = "ix", string $newSortKey = "new_sort")
-    {
+    public function applySort(
+        $list,
+        $successCallback,
+        $failCallback,
+        string $primaryKey = "ix",
+        string $newSortKey = "new_sort"
+    ) {
         foreach ($list as $item) {
             // 고유키로 Model 을 select 합니다
             $model = $this::find($item[$primaryKey]);
@@ -447,8 +451,11 @@ abstract class BaseModel extends Model
         return isset($query) ? $query->paginate($page == 0 ? $this->limit : $page) : $this->paginate($page == 0 ? $this->limit : $page);
     }
 
-    public function paginationWithSearch(Request $request, $limit = 0, $attributes = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
-    {
+    public function paginationWithSearch(
+        Request $request,
+                $limit = 0,
+                $attributes = []
+    ): \Illuminate\Contracts\Pagination\LengthAwarePaginator {
         $keyword = $request->input(self::KEY_KEYWORD, "");
         $searchType = $request->input(self::KEY_SEARCH_TYPE, "");
         $searchQuery = [];
@@ -558,12 +565,15 @@ abstract class BaseModel extends Model
      * Add a relationship exists condition (BelongsTo).
      *
      * @param Builder $query
-     * @param string|$relation Relation string name or you can try pass directly model and method will try guess relationship
+     * @param string| $relation Relation string name or you can try pass directly model and method will try guess relationship
      * @param mixed $models
      * @return Builder|static
      */
-    public static function scopeWhereInRelated(Builder $query, string $relation, \Illuminate\Database\Eloquent\Collection|Model $models = null): Builder|static
-    {
+    public static function scopeWhereInRelated(
+        Builder                                        $query,
+        string                                         $relation,
+        \Illuminate\Database\Eloquent\Collection|Model $models = null
+    ): Builder|static {
         if ($models instanceof Model) {
             $primaryKey = $models->getKeyName();
             $keys = collect([$models->$primaryKey]);
