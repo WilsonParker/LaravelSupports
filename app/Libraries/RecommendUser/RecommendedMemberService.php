@@ -38,7 +38,7 @@ class RecommendedMemberService
      * @param bool $throwException
      * @return void
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/24
      * @updated 2020/06/24
      */
@@ -60,7 +60,7 @@ class RecommendedMemberService
      * @param bool $throwException
      * @return bool
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/25
      * @updated 2020/06/25
      */
@@ -80,7 +80,7 @@ class RecommendedMemberService
      * @param bool $throwException
      * @return bool
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/23
      * @updated 2020/06/23
      */
@@ -115,7 +115,7 @@ class RecommendedMemberService
      * @param $recommendedMember
      * @return void
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/25
      * @updated 2020/06/25
      */
@@ -136,7 +136,7 @@ class RecommendedMemberService
      * @param
      * @return void
      * @throws AlreadyRecommendedException
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/25
      * @updated 2020/06/25
      */

@@ -13,7 +13,7 @@ use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
 /**
  * 추천인 코드 생성 및 변경 관련 Service 입니다
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/04/20
  * @updated 2020/04/20
  */
@@ -25,7 +25,7 @@ class RecommendCodeService extends AbstractCodeGenerator
      * 코드 길이 입니다
      *
      * @var int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -36,7 +36,7 @@ class RecommendCodeService extends AbstractCodeGenerator
      * 숫자
      *
      * @var string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -56,7 +56,7 @@ class RecommendCodeService extends AbstractCodeGenerator
      * @param Model $model
      * @param string $code
      * @return Model
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      * @inheritDoc

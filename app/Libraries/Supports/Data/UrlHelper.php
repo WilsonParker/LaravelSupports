@@ -16,7 +16,7 @@ class UrlHelper
      * @param bool $onlySpecialCharacters
      * true 일 경우 특수 문자만 encoding 합니다
      * @return  string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/24
      * @updated 2020/03/24
      */
@@ -32,7 +32,7 @@ class UrlHelper
      * @param bool $onlySpecialCharacters
      * true 일 경우 특수 문자만 decoding 합니다
      * @return string|string[]
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/24
      * @updated 2020/03/24
      */

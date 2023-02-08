@@ -68,7 +68,7 @@ class StringHelper
      * @param $replace
      * @param $subject
      * @return string|string[]
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/18
      * @updated 2020/05/18
      * @example

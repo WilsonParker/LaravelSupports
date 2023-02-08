@@ -26,7 +26,7 @@
                 <div class="modal-footer">
                     <!-- Copyright -->
                     <div class="footer-copyright text-center text-black-50 py-3">© developed by:
-                        <a class="dark-grey-text" href="https://mdbootstrap.com/"> dew9163@flybook.kr</a>
+                        <a class="dark-grey-text" href="https://mdbootstrap.com/"> WilsonParker@flybook.kr</a>
                     </div>
                     @hasSection('modal_bottom')
                         @yield('modal_bottom')

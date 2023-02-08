@@ -28,7 +28,7 @@ abstract class BaseController extends Controller
      * view root
      *
      * @var string
-     * @author  dew9163
+     * @author  WilsonParker
      */
     protected string $root = '';
 
@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
      * view prefix
      *
      * @var array
-     * @author  dew9163
+     * @author  WilsonParker
      */
     protected array $prefix = [];
 
@@ -44,7 +44,7 @@ abstract class BaseController extends Controller
      * view suffix
      *
      * @var array
-     * @author  dew9163
+     * @author  WilsonParker
      */
     protected array $suffix = [];
     protected int $paginate = 10;
@@ -56,7 +56,7 @@ abstract class BaseController extends Controller
      * [ search, sort, filters ]
      *
      * @var array
-     * @author  dew9163
+     * @author  WilsonParker
      */
     protected array $searchData = [];
     /**
@@ -92,7 +92,7 @@ abstract class BaseController extends Controller
      *
      * @param array | string $prefix
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/22
      * @updated 2020/09/22
      */
@@ -110,7 +110,7 @@ abstract class BaseController extends Controller
      *
      * @param string $view
      * @return View|Factory
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/10/29
      * @updated 2020/10/29
      * @updated 2021/10/19
@@ -135,7 +135,7 @@ abstract class BaseController extends Controller
      * @param string $search
      * @param string $keyword
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/20
      * @updated 2020/09/20
      */
@@ -152,7 +152,7 @@ abstract class BaseController extends Controller
      * @param string $keyword
      * @param string $operator
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/04
      * @updated 2020/11/04
      */
@@ -167,7 +167,7 @@ abstract class BaseController extends Controller
      * @param Request $request
      * @param Builder $query
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/10
      * @updated 2020/11/10
      * add date
@@ -183,7 +183,7 @@ abstract class BaseController extends Controller
      *
      * @param Builder $query
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2021/01/14
      * @updated 2021/01/14
      */
@@ -202,7 +202,7 @@ abstract class BaseController extends Controller
      *
      * @param Builder $query
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2021/01/14
      * @updated 2021/01/14
      * @example
@@ -223,7 +223,7 @@ abstract class BaseController extends Controller
      * @param Builder $query
      * @param string $sort
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/04
      * @updated 2020/11/04
      */
@@ -265,7 +265,7 @@ abstract class BaseController extends Controller
      * @param $query
      * @param bool $clone
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/20
      * @updated 2020/11/04
      * @updated 2021/03/03
@@ -346,7 +346,7 @@ abstract class BaseController extends Controller
      * @param Builder $query
      * @param bool $clone
      * @return Paginator
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/20
      * @updated 2021/01/14
      */
@@ -366,7 +366,7 @@ abstract class BaseController extends Controller
      *
      * @param Collection $items
      * @return LengthAwarePaginator
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2021/03/22
      * @updated 2021/03/22
      */
@@ -388,7 +388,7 @@ abstract class BaseController extends Controller
      *
      * @param Request $request
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2021/03/10
      * @updated 2021/03/10
      */
@@ -476,7 +476,7 @@ abstract class BaseController extends Controller
      *
      * @param Request $request
      * @return int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/20
      * @updated 2020/09/20
      */
@@ -526,7 +526,7 @@ abstract class BaseController extends Controller
      * @param bool $notUsedCache
      * cache 사용 여부
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/04
      * @updated 2020/11/04
      */
@@ -559,7 +559,7 @@ abstract class BaseController extends Controller
      * @param string $search
      * @param string $keyword
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2021/01/14
      * @updated 2021/01/14
      */
@@ -574,7 +574,7 @@ abstract class BaseController extends Controller
      * @param string $key
      * @param array $searchData
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2021/01/14
      * @updated 2021/01/14
      */

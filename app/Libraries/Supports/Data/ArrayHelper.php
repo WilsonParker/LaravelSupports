@@ -63,7 +63,7 @@ class ArrayHelper
      * @param array $arr
      * @param $values
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/20
      * @updated 2020/11/20
      */
@@ -87,7 +87,7 @@ class ArrayHelper
      * @param array $arr
      * @param $value
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/20
      * @updated 2020/11/20
      */
@@ -106,7 +106,7 @@ class ArrayHelper
      *
      * @param array $array
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/16
      * @updated 2020/04/16
      */
@@ -125,7 +125,7 @@ class ArrayHelper
      *
      * @param array $values
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/16
      * @updated 2020/04/16
      */
@@ -147,7 +147,7 @@ class ArrayHelper
      * @param $key
      * @param null $def
      * @return mixed|null
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/19
      * @updated 2020/06/19
      */
@@ -162,7 +162,7 @@ class ArrayHelper
      * @param array $from
      * @param array $to
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/12/08
      * @updated 2020/12/08
      */

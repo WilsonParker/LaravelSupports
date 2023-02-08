@@ -63,7 +63,7 @@ class CouponService
      * @param bool $throwException
      * @return bool|null
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/09
      * @updated 2020/06/09
      */
@@ -84,7 +84,7 @@ class CouponService
      * @param bool $throwException
      * @return bool
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/09
      * @updated 2020/06/09
      * @updated 2020/06/11
@@ -109,7 +109,7 @@ class CouponService
      *
      * @param $data
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/09
      * @updated 2020/06/09
      */
@@ -123,7 +123,7 @@ class CouponService
      * call when user coupon used
      *
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/09
      * @updated 2020/06/09
      */
@@ -139,7 +139,7 @@ class CouponService
      * @param bool $throwException
      * @return bool
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/11
      * @updated 2020/06/11
      */
@@ -156,7 +156,7 @@ class CouponService
      * @param bool $throwException
      * @return bool
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/26
      * @updated 2020/06/26
      */
@@ -171,7 +171,7 @@ class CouponService
      * Check if the coupon can be used immediately
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/22
      * @updated 2020/06/22
      */
@@ -186,7 +186,7 @@ class CouponService
      * @param
      * @return mixed|null
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/12
      * @updated 2020/06/12
      */
@@ -221,7 +221,7 @@ class CouponService
      * Membership type 을 제공 합니다
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/23
      * @updated 2020/06/23
      * @example
@@ -238,7 +238,7 @@ class CouponService
      * return Benefit Model
      *
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/23
      * @updated 2020/06/23
      */
@@ -251,7 +251,7 @@ class CouponService
      * Membership Model 을 제공 합니다
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/23
      * @updated 2020/06/23
      */
@@ -271,7 +271,7 @@ class CouponService
      * get required data information to collection
      *
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/22
      * @updated 2020/06/22
      * @example
@@ -294,7 +294,7 @@ class CouponService
      * 혜택이 제공하는 Months 정보를 제공합니다
      *
      * @return |null
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/24
      * @updated 2020/06/24
      */
@@ -315,7 +315,7 @@ class CouponService
      * 결제 완료 시 결과 데이터를 제공 합니다
      *
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/17
      * @updated 2020/06/17
      * @updated 2020/06/24

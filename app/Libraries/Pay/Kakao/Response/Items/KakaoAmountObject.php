@@ -13,7 +13,7 @@ class KakaoAmountObject extends AbstractResponseItem
      * 전체 결제 금액
      *
      * @var    int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -23,7 +23,7 @@ class KakaoAmountObject extends AbstractResponseItem
      * 비과세 금액
      *
      * @var    int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -33,7 +33,7 @@ class KakaoAmountObject extends AbstractResponseItem
      * 부가세 금액
      *
      * @var    int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -43,7 +43,7 @@ class KakaoAmountObject extends AbstractResponseItem
      * 사용한 포인트 금액
      *
      * @var    int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -53,7 +53,7 @@ class KakaoAmountObject extends AbstractResponseItem
      * 할인 금액
      *
      * @var    int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */

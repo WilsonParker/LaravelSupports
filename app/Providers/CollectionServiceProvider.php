@@ -21,7 +21,7 @@ class CollectionServiceProvider extends ServiceProvider
          * @param Collection | array | Model $needle
          * @param string $pros
          * @return bool
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/11/11
          * @updated 2021/10/12
          */
@@ -69,7 +69,7 @@ class CollectionServiceProvider extends ServiceProvider
          *
          * @param Collection | array $keys
          * @return bool
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/12/08
          * @updated 2020/12/08
          */
@@ -93,7 +93,7 @@ class CollectionServiceProvider extends ServiceProvider
          * @param $callback
          * function($item, $needle)
          * @return bool
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2021/03/04
          * @updated 2021/03/04
          */
@@ -124,7 +124,7 @@ class CollectionServiceProvider extends ServiceProvider
          * @param Collection | array | Model $collection
          * @param string $prop
          * @return Collection
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/11/12
          * @updated 2020/11/12
          */
@@ -147,7 +147,7 @@ class CollectionServiceProvider extends ServiceProvider
          *
          * @param array $arr
          * @return Collection
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/12/09
          * @updated 2020/12/09
          */
@@ -163,7 +163,7 @@ class CollectionServiceProvider extends ServiceProvider
          * @param Collection $collection
          * @param string $prop
          * @return Collection
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/11/11
          * @updated 2020/11/11
          */
@@ -178,7 +178,7 @@ class CollectionServiceProvider extends ServiceProvider
          *
          * @param array $arr
          * @return Collection
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/12/08
          * @updated 2020/12/08
          */
@@ -194,7 +194,7 @@ class CollectionServiceProvider extends ServiceProvider
          *
          * @param $callback
          * @return Collection
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/11/13
          * @updated 2020/11/13
          */

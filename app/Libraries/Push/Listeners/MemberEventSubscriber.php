@@ -76,7 +76,7 @@ class MemberEventSubscriber
      *
      * @param
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -98,7 +98,7 @@ class MemberEventSubscriber
      *
      * @param
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -120,7 +120,7 @@ class MemberEventSubscriber
      *
      * @param
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */

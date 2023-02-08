@@ -46,7 +46,7 @@ class CheckBoxListComponent extends BaseComponent
      *
      * @param array $values
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/12/02
      * @updated 2020/12/02
      */
@@ -78,7 +78,7 @@ class CheckBoxListComponent extends BaseComponent
      *
      * @param array $values
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/12/02
      * @updated 2020/12/02
      */
@@ -105,7 +105,7 @@ class CheckBoxListComponent extends BaseComponent
      * 최대 선택 갯수 만큼만 선택 할 수 있도록 설정하는 script
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/12/02
      * @updated 2020/12/02
      */
@@ -142,7 +142,7 @@ class CheckBoxListComponent extends BaseComponent
      * @param string $otherValue
      * @param string $otherHint
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/05
      * @updated 2020/11/18
      */

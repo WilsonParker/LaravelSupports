@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 /**
  * Result object of API
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/04/24
  * @updated 2020/05/19
  */
