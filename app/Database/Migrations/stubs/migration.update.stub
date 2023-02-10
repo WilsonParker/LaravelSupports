@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 
-return new class extends \LaravelSupports\Libraries\Supports\Databases\Migrations\CreateMigration
+return new class extends \LaravelSupports\Libraries\Supports\Databases\Migrations\AlterMigration
 {
     protected string $table = '{{ table }}';
 

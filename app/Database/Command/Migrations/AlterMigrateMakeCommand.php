@@ -3,11 +3,10 @@
 namespace App\Library\LaravelSupports\app\Database\Command\Migrations;
 
 use App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator;
-use App\Library\LaravelSupports\app\Database\Migrations\CreateMigrateCreator;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Illuminate\Support\Composer;
 
-class CreateMigrateMakeCommand extends MigrateMakeCommand
+class AlterMigrateMakeCommand extends MigrateMakeCommand
 {
 
     /**
@@ -15,7 +14,7 @@ class CreateMigrateMakeCommand extends MigrateMakeCommand
      *
      * @var string
      */
-    protected $signature = 'make:create_migration {name : The name of the migration}
+    protected $signature = 'make:alter_migration {name : The name of the migration}
         {--create= : The table to be created}
         {--table= : The table to migrate}
         {--path= : The location where the migration file should be created}
@@ -27,7 +26,7 @@ class CreateMigrateMakeCommand extends MigrateMakeCommand
      *
      * @var string
      */
-    protected $description = 'Create a new create migration file';
+    protected $description = 'Create a new alter migration file';
 
     /**
      * The migration creator instance.
@@ -39,10 +38,11 @@ class CreateMigrateMakeCommand extends MigrateMakeCommand
     /**
      * Create a new migration install command instance.
      *
-     * @param CreateMigrateCreator $creator
-     * @param Composer $composer
+     * @param \App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator $creator
+     * @param \Illuminate\Support\Composer $composer
+     * @return void
      */
-    public function __construct(CreateMigrateCreator $creator, Composer $composer)
+    public function __construct(AlterMigrateCreator $creator, Composer $composer)
     {
         parent::__construct($creator, $composer);
     }

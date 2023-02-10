@@ -54,7 +54,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 요청 고유 번호
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -64,7 +64,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 고유 번호, 20자
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -74,7 +74,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 가맹점 코드
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -84,7 +84,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 정기결제용 ID, 정기결제 CID로 단건결제 요청 시 발급
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -94,7 +94,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 가맹점 주문번호, 최대 100자
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -104,7 +104,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 가맹점 회원 id, 최대 100자
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -114,7 +114,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 수단, CARD 또는 MONEY 중 하나
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -124,7 +124,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 금액 정보
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -134,7 +134,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 상세 정보, 결제수단이 카드일 경우만 포함
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -144,7 +144,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 상품 이름, 최대 100자
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -154,7 +154,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 상품 코드, 최대 100자
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -164,7 +164,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 상품 수량
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -174,7 +174,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 준비 요청 시간
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -184,7 +184,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 승인 시각
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -194,7 +194,7 @@ class KakaoResponseApproveObject extends AbstractResponseApproveObject
      * 결제 승인 요청에 대해 저장한 값, 요청 시 전달된 내용
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */

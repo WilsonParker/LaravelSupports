@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 /**
  * Json 으로 변환하기 위한 추상 클래스
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/03/12
  * @updated 2020/03/12
  */

@@ -49,7 +49,7 @@ abstract class AbstractPayService
      * @param string $method
      * @return mixed
      * @throws GuzzleException
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/15
      * @updated 2020/06/15
      * @updated 2020/06/26
@@ -74,7 +74,7 @@ abstract class AbstractPayService
      * @param null $options
      * @return ResponseInterface
      * @throws GuzzleException
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/15
      * @updated 2020/06/15
      */
@@ -92,7 +92,7 @@ abstract class AbstractPayService
      * api 를 호출하기 위해 필요한 head 정보를 제공 합니다
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/15
      * @updated 2020/06/15
      */
@@ -102,7 +102,7 @@ abstract class AbstractPayService
      * ready 결제 준비에 필요한 데이터를 제공 합니다
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -114,7 +114,7 @@ abstract class AbstractPayService
      * 결제에 필요한 데이터를 제공 합니다
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -124,7 +124,7 @@ abstract class AbstractPayService
      * approve 결제 승인에 필요한 데이터를 제공 합니다
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -136,7 +136,7 @@ abstract class AbstractPayService
      * subscribe 결제 승인에 필요한 데이터를 제공 합니다
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/17
      * @updated 2020/06/17
      */
@@ -147,7 +147,7 @@ abstract class AbstractPayService
     /**
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/07/21
      * @updated 2020/07/21
      */
@@ -159,7 +159,7 @@ abstract class AbstractPayService
      * 결제 준비를 합니다
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -169,7 +169,7 @@ abstract class AbstractPayService
      * 결제 승인을 합니다
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -179,7 +179,7 @@ abstract class AbstractPayService
      * 자동 결제를 합니다
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/07/21
      * @updated 2020/07/21
      */
@@ -189,7 +189,7 @@ abstract class AbstractPayService
      * 자동 결제 정보를 등록 합니다
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/07/21
      * @updated 2020/07/21
      */
@@ -211,7 +211,7 @@ abstract class AbstractPayService
      *
      * @param $result
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -225,7 +225,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -237,7 +237,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -249,7 +249,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -264,7 +264,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -279,7 +279,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -294,7 +294,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -309,7 +309,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -324,7 +324,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return float|int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      * @updated 2020/06/22
@@ -344,7 +344,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -361,7 +361,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -376,7 +376,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/17
      */
@@ -392,7 +392,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/17
      */
@@ -408,7 +408,7 @@ abstract class AbstractPayService
      * Required O
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/17
      */
@@ -426,7 +426,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -442,7 +442,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -457,7 +457,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -475,7 +475,7 @@ abstract class AbstractPayService
      * Required X
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -488,7 +488,7 @@ abstract class AbstractPayService
      * 결제 요청에 필요한 payload 값을 제공 합니다
      *
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/11
      * @updated 2020/06/11
      */
@@ -507,7 +507,7 @@ abstract class AbstractPayService
      *
      * @return null
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/11
      * @updated 2020/06/11
      */

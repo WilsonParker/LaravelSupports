@@ -13,7 +13,7 @@ use Illuminate\Http\ResponseTrait;
 /**
  * Result object of API
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/03/26
  * @updated   2020/03/26
  * set properties public to protected

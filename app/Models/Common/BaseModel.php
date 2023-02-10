@@ -14,7 +14,6 @@ use LaravelSupports\Models\Relationship\Traits\SaveRelationshipTrait;
 abstract class BaseModel extends Model
 {
     use SaveRelationshipTrait;
-
     // use SoftDeletes;
 
     const CREATED_AT = 'created_at';
@@ -28,7 +27,8 @@ abstract class BaseModel extends Model
     /**
      * 둘 다 사용하지 않을 경우 false
      *
-     * @author  dew9163
+     * @var boolean
+     * @author  WilsonParker
      * @added   2020/05/11
      * @updated 2020/05/11
      * @var boolean
@@ -62,7 +62,8 @@ abstract class BaseModel extends Model
     /**
      * value of pagination limit
      *
-     * @author  dew9163
+     * @var    int
+     * @author  WilsonParker
      * @added   2020/05/11
      * @updated 2020/05/11
      * @var    int
@@ -110,8 +111,8 @@ abstract class BaseModel extends Model
     /**
      * add global select scope
      *
-     * @return  void
-     * @author  dew9163
+     * @return void
+     * @author  WilsonParker
      * @added   2020/05/14
      * @updated 2020/05/14
      */
@@ -130,7 +131,7 @@ abstract class BaseModel extends Model
          * relationship 과 함께 boot 합니다
          *
          * @return void
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/12/11
          * @updated 2020/12/11
          */
@@ -147,7 +148,7 @@ abstract class BaseModel extends Model
      * @param $query
      * @param $where
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/29
      * @updated 2020/04/29
      */
@@ -182,7 +183,7 @@ abstract class BaseModel extends Model
      * @param $query
      * @param $with
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/29
      * @updated 2020/04/29
      */
@@ -204,7 +205,7 @@ abstract class BaseModel extends Model
      * @param $query
      * @param $order
      * @return Builder
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/29
      * @updated 2020/04/29
      */
@@ -234,7 +235,7 @@ abstract class BaseModel extends Model
      *
      * @param Builder $builder
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/20
      * @updated 2020/05/20
      */
@@ -248,7 +249,7 @@ abstract class BaseModel extends Model
      *
      * @param Builder $builder
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/20
      * @updated 2020/05/21
      */
@@ -262,7 +263,7 @@ abstract class BaseModel extends Model
      *
      * @param Builder $builder
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/26
      * @updated 2020/05/26
      */
@@ -276,7 +277,7 @@ abstract class BaseModel extends Model
      *
      * @param array $attributes
      * @return Builder|BaseModel
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/29
      * @updated 2020/04/29
      */
@@ -308,7 +309,7 @@ abstract class BaseModel extends Model
      * build array $selectScope
      *
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/14
      * @updated 2020/05/14
      * @updated 2020/05/27
@@ -321,7 +322,7 @@ abstract class BaseModel extends Model
      * return a collection of $selectScope data
      *
      * @return Collection
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/14
      * @updated 2020/05/14
      */
@@ -486,7 +487,7 @@ abstract class BaseModel extends Model
      *
      * @param string $cls
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/27
      * @updated 2020/05/27
      */
@@ -530,7 +531,7 @@ abstract class BaseModel extends Model
      *
      * @param string $connection
      * @return Model
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/27
      * @updated 2020/05/27
      */

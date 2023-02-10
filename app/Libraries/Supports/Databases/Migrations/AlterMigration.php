@@ -28,6 +28,6 @@ abstract class AlterMigration extends BaseMigration
      * @param Blueprint $table
      * @return void
      */
-    abstract function defaultUpTemplate(Blueprint $table);
+    abstract protected function defaultUpTemplate(Blueprint $table): void;
 
 }

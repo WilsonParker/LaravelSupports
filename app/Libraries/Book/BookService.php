@@ -30,7 +30,7 @@ class BookService
      * @added   2021/04/09
      * @updated 2021/04/09
      * @updated 2021/04/26
-     * @author  dew9163
+     * @author  WilsonParker
      */
     public function findOrCreateBook(string $isbn, string $title, string $imageUrl, NaverSearchBookResponseItem $naverBookInfo = null)
     {
@@ -43,7 +43,7 @@ class BookService
          * isbn : isbn10 isbn13
          * 형식으로 제공하기 때문에 isbn13 을 추출하기 위한 작업
          *
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/09/08
          * @updated 2020/09/08
          */
@@ -61,7 +61,7 @@ class BookService
          * isbn 으로만 검색하도록 설정
          * created_at 이 최신인 책을 가져옵니다
          *
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/03/24
          * @updated 2020/03/24
          * @updated 2020/09/08
@@ -96,7 +96,7 @@ class BookService
 
         /**
          *
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/03/24
          * @updated 2020/03/24
          */

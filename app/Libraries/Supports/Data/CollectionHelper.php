@@ -23,7 +23,7 @@ class CollectionHelper
      * @param   Collection $from
      * @param   Collection $to
      * @return  bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/10
      * @updated 2020/03/10
      */

@@ -10,7 +10,7 @@ use LaravelSupports\Libraries\Codes\Abstracts\AbstractCodeGenerator;
 /**
  * 멤버쉽 코드 생성 및 변경 관련 Service 입니다
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/04/20
  * @updated 2020/04/20
  */
@@ -20,7 +20,7 @@ class MemberShipCodeService extends AbstractCodeGenerator
      * 코드 길이 입니다
      *
      * @var int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -31,7 +31,7 @@ class MemberShipCodeService extends AbstractCodeGenerator
      * 숫자
      *
      * @var string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -45,7 +45,7 @@ class MemberShipCodeService extends AbstractCodeGenerator
      * @example
      * 5377022836235024
      * 5377-0228-3623-5024
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/21
      */
@@ -67,7 +67,7 @@ class MemberShipCodeService extends AbstractCodeGenerator
      *
      * @param string $code
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/21
      * @updated 2020/04/21
      */

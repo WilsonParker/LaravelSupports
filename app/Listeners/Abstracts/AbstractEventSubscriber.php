@@ -38,7 +38,7 @@ abstract class AbstractEventSubscriber implements ShouldQueue
      *
      * @param AbstractEvent $event
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/08/12
      * @updated 2020/08/12
      * @updated 2021/01/14
@@ -67,7 +67,7 @@ abstract class AbstractEventSubscriber implements ShouldQueue
      *
      * @param $events
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/08/12
      * @updated 2020/08/12
      */
@@ -83,7 +83,7 @@ abstract class AbstractEventSubscriber implements ShouldQueue
      * @param $exception
      * @param $logger
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/03
      * @updated 2020/09/03
      */

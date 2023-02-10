@@ -26,7 +26,7 @@ abstract class AbstractPushService
      * Class that implements HasPushToken interface
      *
      * @var string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -37,7 +37,7 @@ abstract class AbstractPushService
      *
      * @param
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -48,7 +48,7 @@ abstract class AbstractPushService
      *
      * @param
      * @return
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -60,7 +60,7 @@ abstract class AbstractPushService
      * @param array $tokens
      * @param $data
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -75,7 +75,7 @@ abstract class AbstractPushService
      * @param array $tokens
      * @param $data
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -91,7 +91,7 @@ abstract class AbstractPushService
      * @param array $tokens
      * @param
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -153,7 +153,7 @@ abstract class AbstractPushService
      * @param string $result
      * @return MobileResultObject
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -182,7 +182,7 @@ abstract class AbstractPushService
      * @param   $tokens
      * junk token 으로 이루어진 array 입니다
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -236,7 +236,7 @@ abstract class AbstractPushService
      *
      * @param
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */
@@ -247,7 +247,7 @@ abstract class AbstractPushService
      *
      * @param
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/29
      * @updated 2020/05/29
      */

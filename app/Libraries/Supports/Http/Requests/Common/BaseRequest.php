@@ -51,7 +51,7 @@ abstract class BaseRequest extends FormRequest
      * @param $to
      * @param $message
      * @return Closure
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/22
      * @updated 2020/06/22
      */
@@ -96,7 +96,7 @@ abstract class BaseRequest extends FormRequest
      *
      * @param Validator $validator
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/27
      * @updated 2020/04/27
      */

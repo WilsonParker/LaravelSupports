@@ -55,7 +55,7 @@ class BaseViewModel extends ViewModel
      * Component name in $view
      *
      * @var array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/09/16
      * @updated 2020/09/16
      */
