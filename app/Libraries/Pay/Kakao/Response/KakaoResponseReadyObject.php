@@ -13,7 +13,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 결제 고유 번호, 20자
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -24,7 +24,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 카카오톡 결제 페이지 Redirect URL
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -35,7 +35,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 카카오톡 결제 페이지 Redirect URL
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -46,7 +46,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 카카오톡으로 결제 요청 메시지(TMS)를 보내기 위한 사용자 정보 입력 화면 Redirect URL
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -56,7 +56,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 카카오페이 결제 화면으로 이동하는 Android 앱 스킴(Scheme)
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -66,7 +66,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 카카오페이 결제 화면으로 이동하는 iOS 앱 스킴
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */
@@ -76,7 +76,7 @@ class KakaoResponseReadyObject extends AbstractResponseReadyObject
      * 결제 준비 요청 시간
      *
      * @type    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/10
      * @updated 2020/06/10
      */

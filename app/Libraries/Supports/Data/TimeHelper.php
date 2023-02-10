@@ -46,7 +46,7 @@ class TimeHelper
 
     /**
      *
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/02/27
      * @updated 2020/02/27
      * @updated 2020/09/01

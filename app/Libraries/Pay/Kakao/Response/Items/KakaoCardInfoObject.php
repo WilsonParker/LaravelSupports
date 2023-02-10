@@ -13,7 +13,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 할인 금액
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -23,7 +23,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 매입 카드사 코드
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -33,7 +33,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드 발급사 한글명
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -43,7 +43,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드 발급사 코드
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -53,7 +53,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카카오페이 매입사명
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -63,7 +63,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카카오페이 매입사 코드
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -73,7 +73,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카카오페이 발급사명
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -83,7 +83,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카카오페이 발급사 코드
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -93,7 +93,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드 BIN
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -103,7 +103,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드 타입
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -113,7 +113,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 할부 개월 수
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -123,7 +123,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드사 승인번호
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -133,7 +133,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드사 가맹점 번호
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -143,7 +143,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 무이자할부 여부(Y/N)
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */
@@ -153,7 +153,7 @@ class KakaoCardInfoObject extends AbstractResponseItem
      * 카드 상품 코드
      *
      * @var    string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/16
      * @updated 2020/06/16
      */

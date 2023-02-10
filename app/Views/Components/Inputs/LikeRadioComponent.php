@@ -56,7 +56,7 @@ class LikeRadioComponent extends BaseComponent
      * @param string $nonCheckedLabel
      * @param bool $isChecked
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/05
      * @updated 2020/11/05
      */

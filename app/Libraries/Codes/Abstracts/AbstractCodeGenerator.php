@@ -19,7 +19,7 @@ abstract class AbstractCodeGenerator
      * Maximum number of retries when duplicate code is generated
      *
      * @var int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -29,7 +29,7 @@ abstract class AbstractCodeGenerator
      * Size of code
      *
      * @var int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -39,7 +39,7 @@ abstract class AbstractCodeGenerator
      * Characters to bo applied to the code
      *
      * @var string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -50,7 +50,7 @@ abstract class AbstractCodeGenerator
      * It it automatically assigned
      *
      * @var int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -66,7 +66,7 @@ abstract class AbstractCodeGenerator
      * If the $charactersLength doesn't exist, initialize it
      *
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/11
      * @updated 2020/06/11
      */
@@ -85,7 +85,7 @@ abstract class AbstractCodeGenerator
      * @param GenerateCode $model
      * @param string $code
      * @return Model
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      * @updated 2020/06/11
@@ -108,7 +108,7 @@ abstract class AbstractCodeGenerator
      * @param GenerateCode $model
      * @param string $code
      * @return bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/11
      * @updated 2020/06/11
      */
@@ -125,7 +125,7 @@ abstract class AbstractCodeGenerator
      * @param bool $isNeedException
      * @return Model
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -139,7 +139,7 @@ abstract class AbstractCodeGenerator
      * create code
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -159,7 +159,7 @@ abstract class AbstractCodeGenerator
      * @param bool $isNeedException
      * @return string
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */
@@ -186,7 +186,7 @@ abstract class AbstractCodeGenerator
      * regular expression
      * ex) "/(0|1|2|3|4|5)/"
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/20
      * @updated 2020/04/20
      */

@@ -23,7 +23,7 @@ class DeliveryService
      *
      * @param
      * @return int
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/22
      * @updated 2020/06/22
      */
@@ -43,7 +43,7 @@ class DeliveryService
      *
      * @param
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/22
      * @updated 2020/06/22
      * use pref_match_all

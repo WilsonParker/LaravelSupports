@@ -9,7 +9,7 @@ use DateTime;
 /**
  * 날짜 관련 Helper 클래스 입니다
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/03/16
  * @updated 2020/11/25
  */
@@ -92,7 +92,7 @@ class DateHelper
      * @param Carbon $from
      * @param
      * @return void
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/24
      * @updated 2020/06/24
      */
@@ -109,7 +109,7 @@ class DateHelper
      * @param $value
      * @param bool $overflow
      * @return Carbon
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/18
      * @updated 2020/06/18
      * @updated 2020/07/06
@@ -189,7 +189,7 @@ class DateHelper
      * @param $value
      * @param $toUnit
      * @return null
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/24
      * @updated 2020/06/24
      */

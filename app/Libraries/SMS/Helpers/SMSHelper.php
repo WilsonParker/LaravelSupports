@@ -76,7 +76,7 @@ class SMSHelper
      * @param array $template
      * @param null $data
      * @return int[]
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/16
      *
      * 카카오페이 결제 결과에 따른 SMS 발송 기능 추가
@@ -190,7 +190,7 @@ class SMSHelper
                     break;
                 case self::TEMPLATE_PLUS_COUPON :
                     /**
-                     * @author  dew9163
+                     * @author  WilsonParker
                      * @added   2020/04/16
                      * @updated 2020/04/16
                      * @example
@@ -281,7 +281,7 @@ class SMSHelper
      * @param string $btnText
      * @param string $btnUrls
      * @return SMSModel
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/04/16
      * @updated 2020/04/16
      * @updated 2020/11/25
@@ -340,7 +340,7 @@ class SMSHelper
      * @param string $code
      * @param string $message
      * @return array
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/25
      * @updated 2020/11/25
      */
@@ -358,7 +358,7 @@ class SMSHelper
      *
      * @param string $contacts
      * @return string|string[]|null
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/25
      * @updated 2020/11/25
      */

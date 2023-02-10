@@ -19,7 +19,7 @@ use Throwable;
  * 플러스 결제
  * constructor 에서 $data 로 card 정보를 받아야 합니다
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/06/17
  * @updated 2020/06/17
  */
@@ -113,7 +113,7 @@ class ImPortPay extends AbstractPayService
      * {PG사}.{PG상점아이디}
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/17
      * @updated 2020/06/17
      * @updated 2020/07/22
@@ -129,7 +129,7 @@ class ImPortPay extends AbstractPayService
      * sid
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/17
      * @updated 2020/06/17
      * @updated 2020/06/26
@@ -157,7 +157,7 @@ class ImPortPay extends AbstractPayService
      * uid
      *
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/17
      * @updated 2020/06/17
      * @updated 2020/06/25
@@ -216,7 +216,7 @@ class ImPortPay extends AbstractPayService
      * @return ImPortResponseSubscribeUserObject
      * @throws GuzzleException
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/26
      * @updated 2020/06/26
      */
@@ -233,7 +233,7 @@ class ImPortPay extends AbstractPayService
      * @return ImPortResponseStoreSubscribeUserObject
      * @throws GuzzleException
      * @throws Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/07/21
      * @updated 2020/07/21
      */

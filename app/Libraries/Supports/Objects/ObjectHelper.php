@@ -76,7 +76,7 @@ class ObjectHelper
      * @param $val
      * @param $def
      * @return mixed
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/05/14
      * @updated 2020/05/14
      */

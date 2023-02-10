@@ -47,7 +47,7 @@ class CardSearchComponent extends BaseComponent
      *
      * @param
      * @return string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/11/04
      * @updated 2020/11/04
      */

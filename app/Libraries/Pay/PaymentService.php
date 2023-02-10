@@ -20,7 +20,7 @@ use LaravelSupports\Libraries\RecommendUser\RecommendedMemberService;
 
 /**
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2021/03/08
  * @updated 2021/03/08
  */
@@ -42,7 +42,7 @@ class PaymentService
      * payment type
      *
      * @var string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/15
      * @updated 2020/06/15
      * @example
@@ -82,7 +82,7 @@ class PaymentService
      *
      * @return mixed
      * @throws \Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/17
      * @updated 2020/06/17
      * @updated 2020/07/01
@@ -122,7 +122,7 @@ class PaymentService
      *
      * @return mixed
      * @throws \Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/25
      * @updated 2020/06/25
      * @updated 2020/07/21
@@ -173,7 +173,7 @@ class PaymentService
          * 쿠폰 사용 여부를 위에서 확인 후
          * 결제 후에 쿠폰 사용 처리
          *
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/08/26
          * @updated 2020/08/26
          */
@@ -195,7 +195,7 @@ class PaymentService
      *
      * @return mixed
      * @throws \Throwable
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/07/01
      * @updated 2020/07/01
      * @updated 2020/07/22
@@ -224,7 +224,7 @@ class PaymentService
          * 해당 쿠폰이 아직 사용 가능한지 확인 후 할인을 적용시킬지 미정
          * 우선 한번 할인 받은 금액 만큼 할인 하도록 함
          *
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/07/22
          * @updated 2020/07/22
          */
@@ -244,7 +244,7 @@ class PaymentService
         /**
          * 자동 결제 시 카카오 알림톡 보내지 않음
          *
-         * @author  dew9163
+         * @author  WilsonParker
          * @added   2020/08/14
          * @updated 2020/08/14
          */
@@ -364,7 +364,7 @@ class PaymentService
      *
      * @param
      * @return mixed|null
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/06/15
      * @updated 2020/06/15
      */

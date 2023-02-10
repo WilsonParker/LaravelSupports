@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 /**
  * 전화번호 관련 Helper 클래스 입니다
  *
- * @author  dew9163
+ * @author  WilsonParker
  * @added   2020/03/16
  * @updated 2020/03/16
  */
@@ -20,7 +20,7 @@ class TelNumberHelper
      * RegularExpression for phone number
      *
      * @type    RegularExpression
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/16
      * @updated 2020/03/16
      */
@@ -30,7 +30,7 @@ class TelNumberHelper
      * RegularExpression for phone number with hyphen
      *
      * @type    RegularExpression
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/16
      * @updated 2020/03/16
      */
@@ -41,7 +41,7 @@ class TelNumberHelper
      *
      * @param   string $phone
      * @return  bool
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/16
      * @updated 2020/03/16
      */
@@ -55,7 +55,7 @@ class TelNumberHelper
      * @param   string $phone
      * @param   bool $isNeedHyphen
      * @return  string
-     * @author  dew9163
+     * @author  WilsonParker
      * @added   2020/03/16
      * @updated 2020/03/16
      */
