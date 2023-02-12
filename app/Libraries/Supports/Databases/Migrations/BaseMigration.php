@@ -4,8 +4,10 @@
 namespace LaravelSupports\Libraries\Supports\Databases\Migrations;
 
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ForeignIdColumnDefinition;
 use Illuminate\Database\Schema\ForeignKeyDefinition;
 use Illuminate\Support\Facades\Schema;
 
@@ -62,7 +64,7 @@ abstract class BaseMigration extends Migration
     /**
      * Foreign for table where pk is code
      *
-     * @param \Illuminate\Database\Schema\Blueprint $bluePrint
+     * @param \Illuminate\Database\Schema\Blueprint $blueprint
      * @param array|string                          $columns
      * @param string                                $table
      * @param array|string                          $references
@@ -72,7 +74,7 @@ abstract class BaseMigration extends Migration
      * @updated 2023/02/10
      */
     protected function foreignCode(
-        Blueprint    $bluePrint,
+        Blueprint    $blueprint,
         array|string $columns,
         string       $table,
         array|string $references = 'code'
@@ -81,6 +83,46 @@ abstract class BaseMigration extends Migration
          * @var \Illuminate\Database\Eloquent\Model $referTable
          */
         $referTable = new $table;
-        return $bluePrint->foreign($columns)->references($references)->on($referTable->getTable());
+        return $blueprint->foreign($columns)->references($references)->on($referTable->getTable());
+    }
+
+    /**
+     * @param \Illuminate\Database\Schema\Blueprint $blueprint
+     * @param string                                $table
+     * @param string                                $name
+     * @return \Illuminate\Database\Schema\ForeignKeyDefinition
+     * @author  WilsonParker
+     * @added   2023/02/12
+     * @updated 2023/02/12
+     */
+    protected function foreignIdForWithName(
+        Blueprint $blueprint,
+        string    $table,
+        string    $name = ''
+    ): ForeignKeyDefinition {
+        /**
+         * @var \Illuminate\Database\Eloquent\Model $model
+         */
+        $model = new $table;
+        return $this->foreignId($blueprint, $model, $model->getForeignKey(), $blueprint->getTable() . '_' . $name . '_fk');
+    }
+
+    /**
+     * Create a new unsigned big integer (8-byte) column on the table.
+     *
+     * @param \Illuminate\Database\Schema\Blueprint $blueprint
+     * @param \Illuminate\Database\Eloquent\Model   $model
+     * @param string                                $column
+     * @param string                                $index
+     * @return \Illuminate\Database\Schema\ForeignKeyDefinition
+     */
+    protected function foreignId(
+        Blueprint $blueprint,
+        Model     $model,
+        string    $column,
+        string    $index
+    ): ForeignKeyDefinition {
+        $blueprint->bigInteger($column)->nullable(false);
+        return $blueprint->foreign($column, $index)->references($model->getKeyName())->on($model->getTable());
     }
 }
