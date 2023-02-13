@@ -2,8 +2,8 @@
 
 namespace App\Library\LaravelSupports\app\Database\Migrations;
 
-use App\Library\LaravelSupports\app\Database\Command\Migrations\AlterMigrateMakeCommand;
-use App\Library\LaravelSupports\app\Database\Command\Migrations\CreateMigrateMakeCommand;
+use App\Library\LaravelSupports\app\Database\Commands\Migrations\AlterMigrateMakeCommand;
+use App\Library\LaravelSupports\app\Database\Commands\Migrations\CreateMigrateMakeCommand;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Console\Migrations\FreshCommand;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Library\LaravelSupports\app\Database\Command\Migrations;
+namespace App\Library\LaravelSupports\app\Database\Commands\Migrations;
 
 use App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator;
 use App\Library\LaravelSupports\app\Database\Migrations\CreateMigrateCreator;

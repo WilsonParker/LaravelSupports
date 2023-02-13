@@ -3,11 +3,11 @@
 
 namespace LaravelSupports\Libraries\Push\Controllers;
 
-use App\Http\Controllers\Controller;
-use LaravelSupports\Libraries\Push\Helpers\MobileHelper;
-use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
+use App\Http\Controllers\Base\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use LaravelSupports\Libraries\Push\Helpers\MobileHelper;
+use LaravelSupports\Libraries\Push\Models\MobilePushTokenModel;
 
 class MobileTokenController extends Controller
 {
