@@ -2,7 +2,7 @@
 
 namespace App\Library\LaravelSupports\app\Database\Repositories\Contracts;
 
-interface PaginateRepositoryContract extends RepositoryContract
+interface PaginateRepositoryContract
 {
     public function paginate(int $size);
 
