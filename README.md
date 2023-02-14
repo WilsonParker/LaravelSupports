@@ -2,7 +2,8 @@ LaravelSupports
 
 ## Settings
 
-> Dependency
+### Dependency
+[spatie/laravel-view-models](https://github.com/spatie/laravel-view-models)
 
 ```shell
 composer require spatie/laravel-view-models
