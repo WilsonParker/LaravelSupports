@@ -116,7 +116,7 @@ abstract class BaseController extends Controller
      * @updated 2021/10/19
      * remove set title & description
      */
-    protected function buildView(string $view): Factory|View
+    protected function buildView(string $view, BaseViewModel $viewModel = null): Factory|View
     {
 //        $this->viewModel->setTitle($this->title);
 //        $this->viewModel->setDescription($this->description);
@@ -125,7 +125,7 @@ abstract class BaseController extends Controller
         $arr = array_merge($arr, $this->suffix);
         $arr = Arr::add($arr, count($arr), $view);
         $strView = implode('.', $arr);
-        return view($strView, $this->viewModel);
+        return view($strView, $viewModel ?? $this->viewModel);
     }
 
     /**

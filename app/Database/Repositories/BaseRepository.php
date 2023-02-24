@@ -20,24 +20,38 @@ class BaseRepository implements RepositoryContract
         return $this->model->with($relations)->get($columns);
     }
 
-    public function create(array $attribute): Model
+    public function store(array $attribute): Model
     {
         return $this->model->create($attribute);
     }
 
-    public function show($id): Model
+    public function show(Model $model): Model
+    {
+        return $this->model->findOrFail($model->getKey());
+    }
+
+    public function update(Model $model, array $attribute): bool
+    {
+        return $this->show($model)->update($attribute);
+    }
+
+    public function delete(Model $model): bool
+    {
+        return $this->show($model->getKey())->delete();
+    }
+
+    public function showById($id): Model
     {
         return $this->model->findOrFail($id);
     }
 
-    public function update($id, array $attribute): bool
+    public function updateById($id, array $attribute): bool
     {
-        return $this->model->update($attribute);
+        return $this->showById($id)->update($attribute);
     }
 
-    public function delete($id): bool
+    public function deleteById($id): bool
     {
-        return $this->show($id)->delete();
+        return $this->showById($id)->delete();
     }
-
 }
