@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements RepositoryContract
 {
-    protected Model $model;
-
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
      */
-    public function __construct(Model $model) { $this->model = $model; }
+    public function __construct(protected Model $model) {}
 
     public function index(array $columns = ['*'], array $relations = []): Collection
     {
@@ -25,24 +23,24 @@ class BaseRepository implements RepositoryContract
         return $this->model->create($attribute);
     }
 
-    public function show(Model $model): Model
+    public function show(Model $model, array|string $with = '', array|string $select = '*'): Model
     {
-        return $this->model->findOrFail($model->getKey());
+        return $this->showById($model->getKey(), $with, $select);
     }
 
     public function update(Model $model, array $attribute): bool
     {
-        return $this->show($model)->update($attribute);
+        return $this->updateById($model->getKey(), $attribute);
     }
 
     public function delete(Model $model): bool
     {
-        return $this->show($model->getKey())->delete();
+        return $this->deleteById($model->getKey());
     }
 
-    public function showById($id): Model
+    public function showById($id, array|string $with = '', array|string $select = '*'): Model
     {
-        return $this->model->findOrFail($id);
+        return $this->model->with($with)->select($select)->findOrFail($id);
     }
 
     public function updateById($id, array $attribute): bool
