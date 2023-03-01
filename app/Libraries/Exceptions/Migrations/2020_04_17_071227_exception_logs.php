@@ -1,31 +1,21 @@
 <?php
 
 use Illuminate\Database\Schema\Blueprint;
-use LaravelSupports\Libraries\Supports\Databases\Migrations\BaseMigration;
+use LaravelSupports\Libraries\Supports\Databases\Migrations\CreateMigration;
 
-class ExceptionLogs extends BaseMigration
+return new class extends CreateMigration
 {
 
-    protected $table = "exception_logs";
+    protected string $table = "exception_logs";
 
-    /**
-     * Run the migrations.
-     * @param Blueprint $table
-     * @return void
-     */
-    function defaultCreateTemplate(Blueprint $table)
+    protected function defaultUpTemplate(Blueprint $table)
     {
-        $table->integerIncrements('ix')->comment('고유키');
-        $table->string('code')->nullable(false)->comment('에러 코드');
+        $table->id('idx')->comment('고유키');
+        $table->string('code', 256)->nullable(false)->comment('에러 코드');
         $table->text('message')->nullable(false)->comment('에러 메시지');
-        $table->string('url')->nullable(false)->comment('에러가 발생한 주소');
-        $table->string('file')->nullable(false)->comment('에러가 발생한 파일 이름');
-        $table->string('class')->nullable(false)->comment('에러가 발생한 클래스');
+        $table->string('url', 512)->nullable(false)->comment('에러가 발생한 주소');
+        $table->string('file', 512)->nullable(false)->comment('에러가 발생한 파일 이름');
+        $table->string('class', 512)->nullable(false)->comment('에러가 발생한 클래스');
         $table->text('trace')->nullable(false)->comment('에러 내용');
-
-        $table->timestamp('created_at')->useCurrent();
-        $table->timestamp('updated_at')->useCurrent();
     }
-
-
-}
+};
