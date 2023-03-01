@@ -170,10 +170,10 @@ class CollectionServiceProvider extends ServiceProvider
          * @updated 2020/11/11
          * @updated 2023/03/02
          */
-        Collection::macro('exclude', function (Collection|array $collection, string $prop = 'id'): Collection {
-            $collection = collect($collection);
-            return $this->filter(function ($item) use ($collection, $prop) {
-                return !$collection->exists($item, is_object($item) ? $prop : null);
+        Collection::macro('exclude', function (Collection|array $needle, string $prop = 'id'): Collection {
+            $needle = collect($needle);
+            return $this->filter(function ($item) use ($needle, $prop) {
+                return !$needle->contains($item);
             });
         });
 
