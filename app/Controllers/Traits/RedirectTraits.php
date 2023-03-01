@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Library\LaravelSupports\app\Controllers\Traits;
+namespace LaravelSupports\Controllers\Traits;
 
 use LaravelSupports\Libraries\Supports\Data\StringHelper;
 use Throwable;

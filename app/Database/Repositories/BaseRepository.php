@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Library\LaravelSupports\app\Database\Repositories;
+namespace LaravelSupports\Database\Repositories;
 
-use App\Library\LaravelSupports\app\Database\Repositories\Contracts\RepositoryContract;
+use LaravelSupports\Database\Repositories\Contracts\RepositoryContract;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 

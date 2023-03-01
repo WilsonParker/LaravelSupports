@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Library\LaravelSupports\app\Database\Repositories;
+namespace LaravelSupports\Database\Repositories;
 
-use App\Library\LaravelSupports\app\Database\Repositories\Contracts\PaginateRepositoryContract;
+use LaravelSupports\Database\Repositories\Contracts\PaginateRepositoryContract;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class PaginateRepository extends BaseRepository implements PaginateRepositoryContract

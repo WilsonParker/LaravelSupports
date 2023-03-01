@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Files\Models;
+namespace LaravelSupports\Libraries\Files\Models;
 
 
 class FileResult

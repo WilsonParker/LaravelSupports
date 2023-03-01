@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Library\LaravelSupports\app\Database\Migrations;
+namespace LaravelSupports\Database\Migrations;
 
 use Illuminate\Database\Migrations\MigrationCreator;
 

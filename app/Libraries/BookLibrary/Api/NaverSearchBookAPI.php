@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\BookLibrary\Api;
 
 
-use App\Library\LaravelSupports\app\Libraries\BookLibrary\Api\Paginator\NaverBookApiPaginator;
+use LaravelSupports\Libraries\BookLibrary\Api\Paginator\NaverBookApiPaginator;
 use FlyBookModels\Books\BookModel;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;

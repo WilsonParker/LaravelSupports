@@ -3,7 +3,7 @@
 
 namespace LaravelSupports\Controllers;
 
-use App\Library\LaravelSupports\app\Controllers\Traits\RedirectTraits;
+use LaravelSupports\Controllers\Traits\RedirectTraits;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\Factory;
