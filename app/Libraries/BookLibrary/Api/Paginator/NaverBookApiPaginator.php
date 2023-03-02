@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\BookLibrary\Api\Paginator;
+namespace LaravelSupports\Libraries\BookLibrary\Api\Paginator;
 
 
 use Illuminate\Pagination\LengthAwarePaginator;

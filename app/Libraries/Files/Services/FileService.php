@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Files\Services;
+namespace LaravelSupports\Libraries\Files\Services;
 
 
-use App\Library\LaravelSupports\app\Libraries\Files\Models\FileResult;
-use App\Library\LaravelSupports\app\Libraries\Files\Traits\EncodeFileNameTraits;
+use LaravelSupports\Libraries\Files\Models\FileResult;
+use LaravelSupports\Libraries\Files\Traits\EncodeFileNameTraits;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;

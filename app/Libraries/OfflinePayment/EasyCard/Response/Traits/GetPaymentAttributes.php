@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\OfflinePayment\EasyCard\Response\Traits;
+namespace LaravelSupports\Libraries\OfflinePayment\EasyCard\Response\Traits;
 
 
 use Carbon\Carbon;

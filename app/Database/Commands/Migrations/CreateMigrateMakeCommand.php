@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Library\LaravelSupports\app\Database\Command\Migrations;
+namespace LaravelSupports\Database\Commands\Migrations;
 
-use App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator;
-use App\Library\LaravelSupports\app\Database\Migrations\CreateMigrateCreator;
+use LaravelSupports\Database\Migrations\AlterMigrateCreator;
+use LaravelSupports\Database\Migrations\CreateMigrateCreator;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Illuminate\Support\Composer;
 
@@ -32,7 +32,7 @@ class CreateMigrateMakeCommand extends MigrateMakeCommand
     /**
      * The migration creator instance.
      *
-     * @var \App\Library\LaravelSupports\app\Database\Migrations\AlterMigrateCreator
+     * @var \LaravelSupports\Database\Migrations\AlterMigrateCreator
      */
     protected $creator;
 

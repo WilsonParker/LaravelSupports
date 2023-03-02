@@ -2,8 +2,16 @@ LaravelSupports
 
 ## Settings
 
-> Use all
+### Dependency
+[spatie/laravel-view-models](https://github.com/spatie/laravel-view-models)
+
+```shell
+composer require spatie/laravel-view-models
 ```
+
+> Use all
+
+```shell
 git init app/Library/LaravelSupports
 cd app/Library/LaravelSupports
 git remote add -f origin https://github.com/WilsonParker/LaravelSupports.git
@@ -11,8 +19,10 @@ git pull origin master
 ``` 
 
 > Use Sparse
+
 - **[Git Sparse](https://www.lesstif.com/gitbook/git-clone-20776761.html)**
-```
+
+```shell
 git init app/Library/LaravelSupports
 cd app/Library/LaravelSupports
 git config core.sparseCheckout true
@@ -25,15 +35,18 @@ echo "app/ViewModels" >> .git/info/sparse-checkout
 git pull origin master
 
 ```
+
 - **in comopser.json**
-```
+
+```json
 "autoload": {
-        "psr-4": {
-                    "App\\": "app/",
-                    "LaravelSupports\\": "app/Library/LaravelSupports/app"
-                },
-    ...
+"psr-4": {
+"App\\": "app/",
+"LaravelSupports\\": "app/Library/LaravelSupports/app"
+},
+...
 ```
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

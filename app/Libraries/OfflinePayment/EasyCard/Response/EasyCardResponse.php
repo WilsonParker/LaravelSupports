@@ -4,7 +4,7 @@
 namespace LaravelSupports\Libraries\OfflinePayment\EasyCard\Response;
 
 
-use App\Library\LaravelSupports\app\Libraries\OfflinePayment\EasyCard\Response\Traits\GetPaymentAttributes;
+use LaravelSupports\Libraries\OfflinePayment\EasyCard\Response\Traits\GetPaymentAttributes;
 use LaravelSupports\Libraries\Supports\Objects\ReflectionObject;
 
 class EasyCardResponse extends ReflectionObject

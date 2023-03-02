@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Library\LaravelSupports\app\Libraries\Files\Traits;
+namespace LaravelSupports\Libraries\Files\Traits;
 
 
 use Illuminate\Support\Str;
