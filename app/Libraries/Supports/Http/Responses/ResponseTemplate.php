@@ -6,9 +6,11 @@ namespace LaravelSupports\Libraries\Supports\Http\Responses;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\ResponseTrait;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 /**
  * Result object of API
@@ -36,14 +38,14 @@ class ResponseTemplate extends Response implements Responsable, Arrayable
       *
       */
     // Http code 입니다
-    protected $httpCode;
-    protected $code;
-    protected $message;
+    protected int $httpCode;
+    protected string $code;
+    protected string $message;
     protected $data;
-    protected $header;
-    protected $option;
+    protected array $header;
+    protected int $option;
 
-    public function __construct($httpCode = Response::HTTP_OK, $code = "", $message = "", $data = null, $header = [], $option = 0)
+    public function __construct(int $httpCode = ResponseAlias::HTTP_OK, string $code = "", string $message = "", $data = null, array $header = [], int $option = 0)
     {
         $this->httpCode = $httpCode;
         $this->code = $code;
@@ -62,9 +64,9 @@ class ResponseTemplate extends Response implements Responsable, Arrayable
      * Create an HTTP response that represents the object.
      *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function toResponse($request)
+    public function toResponse($request): JsonResponse
     {
         return response()->json($this->toArray(), $this->httpCode, $this->header, $this->option);
     }
@@ -72,7 +74,7 @@ class ResponseTemplate extends Response implements Responsable, Arrayable
     /**
      * @inheritDoc
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             "code" => $this->code,

@@ -4,20 +4,6 @@ namespace LaravelSupports\Database\Migrations;
 
 use LaravelSupports\Database\Commands\Migrations\AlterMigrateMakeCommand;
 use LaravelSupports\Database\Commands\Migrations\CreateMigrateMakeCommand;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Database\Console\Migrations\FreshCommand;
-use Illuminate\Database\Console\Migrations\InstallCommand;
-use Illuminate\Database\Console\Migrations\MigrateCommand;
-use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
-use Illuminate\Database\Console\Migrations\RefreshCommand;
-use Illuminate\Database\Console\Migrations\ResetCommand;
-use Illuminate\Database\Console\Migrations\RollbackCommand;
-use Illuminate\Database\Console\Migrations\StatusCommand;
-use Illuminate\Database\Migrations\DatabaseMigrationRepository;
-use Illuminate\Database\Migrations\MigrationCreator;
-use Illuminate\Database\Migrations\Migrator;
-use Illuminate\Support\ServiceProvider;
 
 class MigrationServiceProvider extends \Illuminate\Database\MigrationServiceProvider
 {
@@ -62,7 +48,7 @@ class MigrationServiceProvider extends \Illuminate\Database\MigrationServiceProv
      *
      * @return void
      */
-    protected function registerCreateMigrateMakeCommand()
+    protected function registerCreateMigrateMakeCommand(): void
     {
         $this->app->singleton('command.create_migrate.make', function ($app) {
             // Once we have the migration creator registered, we will create the command
@@ -81,7 +67,7 @@ class MigrationServiceProvider extends \Illuminate\Database\MigrationServiceProv
      *
      * @return void
      */
-    protected function registerAlterMigrateMakeCommand()
+    protected function registerAlterMigrateMakeCommand(): void
     {
         $this->app->singleton('command.alter_migrate.make', function ($app) {
             // Once we have the migration creator registered, we will create the command
