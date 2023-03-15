@@ -23,6 +23,16 @@ class BaseRepository implements RepositoryContract
         return $this->model->create($attribute);
     }
 
+    public function storeIfNotExists($id, array $attribute): Model
+    {
+        $model = $this->model->find($id);
+        if (isset($model)) {
+            return $model;
+        } else {
+            return $this->model->create($attribute);
+        }
+    }
+
     public function show(Model $model, array|string $with = '', array|string $select = '*'): Model
     {
         return $this->showById($model->getKey(), $with, $select);
