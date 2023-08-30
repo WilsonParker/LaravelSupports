@@ -12,10 +12,7 @@ composer require spatie/laravel-view-models
 > Use all
 
 ```shell
-git init app/Library/LaravelSupports
-cd app/Library/LaravelSupports
-git remote add -f origin https://github.com/WilsonParker/LaravelSupports.git
-git pull origin master
+git submodule add https://github.com/WilsonParker/LaravelSupports app/Modules/Supports
 ``` 
 
 > Use Sparse
