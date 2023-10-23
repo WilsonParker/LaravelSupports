@@ -8,7 +8,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 class PaginateRepository extends BaseRepository implements PaginateRepositoryContract
 {
 
-    public function paginate(int $size = 10) : Paginator
+    public function paginate(int $page = 1, int $size = 10): Paginator
     {
         return $this->model->paginate($size);
     }
