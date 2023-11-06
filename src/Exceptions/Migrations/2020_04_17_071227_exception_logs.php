@@ -3,7 +3,7 @@
 namespace LaravelSupports\Exceptions\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
-use LaravelSupports\Supports\Databases\Migrations\CreateMigration;
+use LaravelSupports\Database\Migrations\CreateMigration;
 
 return new class extends CreateMigration {
 

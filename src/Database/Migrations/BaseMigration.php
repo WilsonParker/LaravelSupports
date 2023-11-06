@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Supports\Databases\Migrations;
+namespace LaravelSupports\Database\Migrations;
 
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Model;

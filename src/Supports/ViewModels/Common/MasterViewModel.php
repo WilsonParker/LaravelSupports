@@ -3,9 +3,9 @@
 namespace LaravelSupports\Supports\ViewModels\Common;
 
 use LaravelSupports\Auth\AuthHelper;
+use LaravelSupports\Database\Traits\TransactionTrait;
 use LaravelSupports\Html\Traits\TagBuildTrait;
 use LaravelSupports\Objects\ObjectHelper;
-use LaravelSupports\Supports\Databases\Traits\TransactionTrait;
 
 /**
  *

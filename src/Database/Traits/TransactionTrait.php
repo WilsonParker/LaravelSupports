@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Supports\Databases\Traits;
+namespace LaravelSupports\Database\Traits;
 
 
 use Illuminate\Http\Response;
@@ -11,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 use LaravelSupports\Exceptions\Contracts\Abortable;
 use LaravelSupports\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Http\Responses\ResponseTemplate;
+use LaravelSupports\Supports\Databases\Traits\Exception;
 use Throwable;
 
 trait TransactionTrait

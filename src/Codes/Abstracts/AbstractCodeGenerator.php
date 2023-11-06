@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use LaravelSupports\Codes\Contracts\GenerateCode;
 use LaravelSupports\Codes\Exceptions\CodeGenerateException;
-use LaravelSupports\Supports\Databases\Traits\TransactionTrait;
+use LaravelSupports\Database\Traits\TransactionTrait;
 use Throwable;
 
 abstract class AbstractCodeGenerator

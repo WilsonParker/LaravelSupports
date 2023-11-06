@@ -7,7 +7,7 @@ namespace LaravelSupports\Codes;
 use Illuminate\Database\Eloquent\Model;
 use LaravelSupports\Codes\Abstracts\AbstractCodeGenerator;
 use LaravelSupports\Codes\Contracts\GenerateCode;
-use LaravelSupports\Supports\Databases\Traits\TransactionTrait;
+use LaravelSupports\Database\Traits\TransactionTrait;
 
 
 /**

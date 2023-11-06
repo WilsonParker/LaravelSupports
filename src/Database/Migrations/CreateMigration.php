@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Supports\Databases\Migrations;
+namespace LaravelSupports\Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
