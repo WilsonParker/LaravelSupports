@@ -3,7 +3,6 @@
 
 namespace LaravelSupports\Controllers;
 
-use LaravelSupports\Controllers\Traits\RedirectTraits;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\Factory;
@@ -14,8 +13,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
-use LaravelSupports\Libraries\Supports\Data\StringHelper;
-use LaravelSupports\Libraries\Supports\Databases\Traits\TransactionTrait;
+use LaravelSupports\Controllers\Traits\RedirectTraits;
+use LaravelSupports\Supports\Data\StringHelper;
+use LaravelSupports\Supports\Databases\Traits\TransactionTrait;
 use LaravelSupports\ViewModels\BaseViewModel;
 use LaravelSupports\Views\Components\BaseComponent;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -129,133 +129,41 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * build search query
+     * build search query using paginate
      *
+     * @param Request $request
      * @param Builder $query
-     * @param string $search
-     * @param string $keyword
-     * @return Builder
+     * @param bool $clone
+     * @return Paginator
+     * @author  WilsonParker
+     * @added   2020/09/20
+     * @updated 2021/01/14
+     */
+    protected function buildSearchQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
+    {
+        return $this->buildQueryPagination($request, $this->buildQuery($request, $query, $clone), $clone);
+    }
+
+    protected function buildQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
+    {
+        $cloneQuery = $clone ? clone $query : $query;
+        return $cloneQuery->paginate($this->getLength($request));
+    }
+
+    /**
+     * get page length (limit)
+     *
+     * @param Request $request
+     * @return int
      * @author  WilsonParker
      * @added   2020/09/20
      * @updated 2020/09/20
      */
-    protected function buildSearchQuery(Builder $query, string $search, string $keyword): Builder
+    protected function getLength(Request $request): int
     {
-        return $query;
-    }
-
-    /**
-     * build sub search query
-     *
-     * @param Builder $query
-     * @param string $search
-     * @param string $keyword
-     * @param string $operator
-     * @return Builder
-     * @author  WilsonParker
-     * @added   2020/11/04
-     * @updated 2020/11/04
-     */
-    protected function buildSubSearchQuery(Builder $query, string $search, string $keyword, string $operator): Builder
-    {
-        return $query;
-    }
-
-    /**
-     * build additional search query
-     *
-     * @param Request $request
-     * @param Builder $query
-     * @return Builder
-     * @author  WilsonParker
-     * @added   2020/11/10
-     * @updated 2020/11/10
-     * add date
-     * @updated 2021/03/31
-     */
-    protected function buildAdditionalSearchQuery(Request $request, Builder $query): Builder
-    {
-        return $query;
-    }
-
-    /**
-     * buildSearchDataQueryList 로 인해 생성된 query list 를 검색에 적용
-     *
-     * @param Builder $query
-     * @return Builder
-     * @author  WilsonParker
-     * @added   2021/01/14
-     * @updated 2021/01/14
-     */
-    protected function buildSearchDataQuery(Builder $query): Builder
-    {
-        foreach ($this->buildSearchDataQueryList($query) as $key => $callback) {
-            if ($this->isValidSearchData($key, $this->searchData)) {
-                $callback($query, $this->searchData[$key]);
-            }
-        }
-        return $query;
-    }
-
-    /**
-     * $searchData 를 검색하기 위해 필요한 query list
-     *
-     * @param Builder $query
-     * @return array
-     * @author  WilsonParker
-     * @added   2021/01/14
-     * @updated 2021/01/14
-     * @example
-     * [
-     *  'key' => function ($query, $value) {
-     *      $query->where('column', $value);
-     *  }
-     * ]
-     */
-    protected function buildSearchDataQueryList(Builder $query): array
-    {
-        return [];
-    }
-
-    /**
-     * build sort query
-     *
-     * @param Builder $query
-     * @param string $sort
-     * @return Builder
-     * @author  WilsonParker
-     * @added   2020/11/04
-     * @updated 2020/11/04
-     */
-    protected function buildSortQuery(Builder $query, string $sort): Builder
-    {
-        return $query;
-    }
-
-    /**
-     * build filter query
-     *
-     * @param Builder $query
-     * @param array $filter
-     * @return Builder
-     * @author  dev9163
-     * @added   2021/10/01
-     * @updated 2021/10/01
-     */
-    protected function buildFilterQuery(Builder $query, array $filters): Builder
-    {
-        return $query;
-    }
-
-    protected function getSearchKeys(): array
-    {
-        $keys = [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_FILTER, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
-        return array_merge($keys, $this->appendSearchKeys());
-    }
-
-    protected function appendSearchKeys(): array
-    {
-        return [];
+        $length = $request->input(BaseComponent::KEY_PAGINATE_LENGTH, $this->paginate);
+        $this->searchData[BaseComponent::KEY_PAGINATE_LENGTH] = $length;
+        return $length;
     }
 
     /**
@@ -315,6 +223,180 @@ abstract class BaseController extends Controller
         return $rQuery;
     }
 
+    /**
+     * build search data
+     *
+     * @param Request $request
+     * @return void
+     * @author  WilsonParker
+     * @added   2021/03/10
+     * @updated 2021/03/10
+     */
+    protected function buildSearchData(Request $request)
+    {
+        $this->searchData = $request->only($this->getSearchKeys());
+    }
+
+    protected function getSearchKeys(): array
+    {
+        $keys = [BaseComponent::KEY_SEARCH, BaseComponent::KEY_SORT, BaseComponent::KEY_FILTER, BaseComponent::KEY_PAGINATE_LENGTH, BaseComponent::KEY_KEYWORD, BaseComponent::KEY_SUB_KEYWORD, BaseComponent::KEY_SUB_SEARCH, BaseComponent::KEY_SEARCH_OPERATOR];
+        return array_merge($keys, $this->appendSearchKeys());
+    }
+
+    protected function appendSearchKeys(): array
+    {
+        return [];
+    }
+
+    /**
+     * 검색어 $keyword 가 유효한 지 확인 합니다
+     *
+     * @param string $search
+     * @param string $keyword
+     * @return bool
+     * @author  WilsonParker
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     */
+    protected function isValidKeyword(string $search, string $keyword): bool
+    {
+        return true;
+    }
+
+    /**
+     * build search query
+     *
+     * @param Builder $query
+     * @param string $search
+     * @param string $keyword
+     * @return Builder
+     * @author  WilsonParker
+     * @added   2020/09/20
+     * @updated 2020/09/20
+     */
+    protected function buildSearchQuery(Builder $query, string $search, string $keyword): Builder
+    {
+        return $query;
+    }
+
+    /**
+     * build sort query
+     *
+     * @param Builder $query
+     * @param string $sort
+     * @return Builder
+     * @author  WilsonParker
+     * @added   2020/11/04
+     * @updated 2020/11/04
+     */
+    protected function buildSortQuery(Builder $query, string $sort): Builder
+    {
+        return $query;
+    }
+
+    /**
+     * build filter query
+     *
+     * @param Builder $query
+     * @param array $filter
+     * @return Builder
+     * @author  dev9163
+     * @added   2021/10/01
+     * @updated 2021/10/01
+     */
+    protected function buildFilterQuery(Builder $query, array $filters): Builder
+    {
+        return $query;
+    }
+
+    /**
+     * build sub search query
+     *
+     * @param Builder $query
+     * @param string $search
+     * @param string $keyword
+     * @param string $operator
+     * @return Builder
+     * @author  WilsonParker
+     * @added   2020/11/04
+     * @updated 2020/11/04
+     */
+    protected function buildSubSearchQuery(Builder $query, string $search, string $keyword, string $operator): Builder
+    {
+        return $query;
+    }
+
+    /**
+     * buildSearchDataQueryList 로 인해 생성된 query list 를 검색에 적용
+     *
+     * @param Builder $query
+     * @return Builder
+     * @author  WilsonParker
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     */
+    protected function buildSearchDataQuery(Builder $query): Builder
+    {
+        foreach ($this->buildSearchDataQueryList($query) as $key => $callback) {
+            if ($this->isValidSearchData($key, $this->searchData)) {
+                $callback($query, $this->searchData[$key]);
+            }
+        }
+        return $query;
+    }
+
+    /**
+     * $searchData 를 검색하기 위해 필요한 query list
+     *
+     * @param Builder $query
+     * @return array
+     * @author  WilsonParker
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     * @example
+     * [
+     *  'key' => function ($query, $value) {
+     *      $query->where('column', $value);
+     *  }
+     * ]
+     */
+    protected function buildSearchDataQueryList(Builder $query): array
+    {
+        return [];
+    }
+
+    /**
+     * $key 에 해당하는 $searchData 가 유효한 지 확인 합니다
+     *
+     * @param string $key
+     * @param array $searchData
+     * @return bool
+     * @author  WilsonParker
+     * @added   2021/01/14
+     * @updated 2021/01/14
+     */
+    protected function isValidSearchData(string $key, array $searchData): bool
+    {
+        return isset($searchData[$key]);
+    }
+
+    /**
+     * build additional search query
+     *
+     * @param Request $request
+     * @param Builder $query
+     * @return Builder
+     * @author  WilsonParker
+     * @added   2020/11/10
+     * @updated 2020/11/10
+     * add date
+     * @updated 2021/03/31
+     */
+    protected function buildAdditionalSearchQuery(Request $request, Builder $query): Builder
+    {
+        return $query;
+    }
+
     protected function buildDateQuery($request, $query)
     {
         if (isset($this->strStartDate)) {
@@ -339,26 +421,58 @@ abstract class BaseController extends Controller
         return $query;
     }
 
-    /**
-     * build search query using paginate
-     *
-     * @param Request $request
-     * @param Builder $query
-     * @param bool $clone
-     * @return Paginator
-     * @author  WilsonParker
-     * @added   2020/09/20
-     * @updated 2021/01/14
-     */
-    protected function buildSearchQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
+    protected function bindDateData($data)
     {
-        return $this->buildQueryPagination($request, $this->buildQuery($request, $query, $clone), $clone);
+        $data['start_date'] = isset($data['start_date']) && $data['start_date'] != '' ? $data['start_date'] : $this->getDefaultStartDate();
+        $data['end_date'] = isset($data['end_date']) && $data['end_date'] != '' ? $data['end_date'] : $this->getDefaultEndDate();
+
+        $data['date_all'] = $data['date_all'] ?? 'N';
+
+        return $data;
     }
 
-    protected function buildQueryPagination(Request $request, Builder $query, bool $clone = true): Paginator
+    public function getDefaultStartDate(): string
     {
-        $cloneQuery = $clone ? clone $query : $query;
-        return $cloneQuery->paginate($this->getLength($request));
+        $strDate = $this->getStrStartDate();
+        return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
+    }
+
+    /**
+     * @return string
+     */
+    public function getStrStartDate(): string
+    {
+        return $this->strStartDate;
+    }
+
+    /**
+     * @param string $strStartDate
+     */
+    public function setStrStartDate(string $strStartDate): void
+    {
+        $this->strStartDate = $strStartDate;
+    }
+
+    public function getDefaultEndDate(): string
+    {
+        $strDate = $this->getStrEndDate();
+        return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
+    }
+
+    /**
+     * @return string
+     */
+    public function getStrEndDate(): string
+    {
+        return $this->strEndDate;
+    }
+
+    /**
+     * @param string $strEndDate
+     */
+    public function setStrEndDate(string $strEndDate): void
+    {
+        $this->strEndDate = $strEndDate;
     }
 
     /**
@@ -383,74 +497,6 @@ abstract class BaseController extends Controller
         );
     }
 
-    /**
-     * build search data
-     *
-     * @param Request $request
-     * @return void
-     * @author  WilsonParker
-     * @added   2021/03/10
-     * @updated 2021/03/10
-     */
-    protected function buildSearchData(Request $request)
-    {
-        $this->searchData = $request->only($this->getSearchKeys());
-    }
-
-    protected function bindDateData($data)
-    {
-        $data['start_date'] = isset($data['start_date']) && $data['start_date'] != '' ? $data['start_date'] : $this->getDefaultStartDate();
-        $data['end_date'] = isset($data['end_date']) && $data['end_date'] != '' ? $data['end_date'] : $this->getDefaultEndDate();
-
-        $data['date_all'] = $data['date_all'] ?? 'N';
-
-        return $data;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStrStartDate(): string
-    {
-        return $this->strStartDate;
-    }
-
-    /**
-     * @param string $strStartDate
-     */
-    public function setStrStartDate(string $strStartDate): void
-    {
-        $this->strStartDate = $strStartDate;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStrEndDate(): string
-    {
-        return $this->strEndDate;
-    }
-
-    /**
-     * @param string $strEndDate
-     */
-    public function setStrEndDate(string $strEndDate): void
-    {
-        $this->strEndDate = $strEndDate;
-    }
-
-    public function getDefaultStartDate(): string
-    {
-        $strDate = $this->getStrStartDate();
-        return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
-    }
-
-    public function getDefaultEndDate(): string
-    {
-        $strDate = $this->getStrEndDate();
-        return $strDate != '' ? date('Y-m-d', strtotime($strDate)) : date('Y-m-d');
-    }
-
     protected function mergeWhere($attributes, $array)
     {
         $where = $attributes['where'] ?? [];
@@ -471,25 +517,16 @@ abstract class BaseController extends Controller
         return isset($value) && !empty($value) ? $value : $default;
     }
 
-    /**
-     * get page length (limit)
-     *
-     * @param Request $request
-     * @return int
-     * @author  WilsonParker
-     * @added   2020/09/20
-     * @updated 2020/09/20
-     */
-    protected function getLength(Request $request): int
-    {
-        $length = $request->input(BaseComponent::KEY_PAGINATE_LENGTH, $this->paginate);
-        $this->searchData[BaseComponent::KEY_PAGINATE_LENGTH] = $length;
-        return $length;
-    }
-
     protected function redirectUrlWithConfig(string $prefix, string $url, array $params = [], bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
     {
         return $this->redirectUrlWithMessage($this->getConfigMessage($prefix, $isSuccess, $replace), $url, $params);
+    }
+
+    protected function getConfigMessage(string $prefix, bool $isSuccess = true, array $replace = []): string
+    {
+        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
+        $helper = new StringHelper();
+        return $helper->replaceWithCollection($replace, $message);
     }
 
     protected function redirectRouteWithConfig(string $prefix, string $route, array $params = [], bool $isSuccess = true, array $replace = []): \Illuminate\Http\RedirectResponse
@@ -498,13 +535,6 @@ abstract class BaseController extends Controller
     }
 
     protected function bindConfigMessage(string $prefix, array $replace = [], bool $isSuccess = true): string
-    {
-        $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
-        $helper = new StringHelper();
-        return $helper->replaceWithCollection($replace, $message);
-    }
-
-    protected function getConfigMessage(string $prefix, bool $isSuccess = true, array $replace = []): string
     {
         $message = $isSuccess ? config($prefix . '.success.message') : config($prefix . '.fail.message');
         $helper = new StringHelper();
@@ -551,35 +581,5 @@ abstract class BaseController extends Controller
             BaseViewModel::KEY_START_DATE => $start,
             BaseViewModel::KEY_END_DATE => $end,
         ];
-    }
-
-    /**
-     * 검색어 $keyword 가 유효한 지 확인 합니다
-     *
-     * @param string $search
-     * @param string $keyword
-     * @return bool
-     * @author  WilsonParker
-     * @added   2021/01/14
-     * @updated 2021/01/14
-     */
-    protected function isValidKeyword(string $search, string $keyword): bool
-    {
-        return true;
-    }
-
-    /**
-     * $key 에 해당하는 $searchData 가 유효한 지 확인 합니다
-     *
-     * @param string $key
-     * @param array $searchData
-     * @return bool
-     * @author  WilsonParker
-     * @added   2021/01/14
-     * @updated 2021/01/14
-     */
-    protected function isValidSearchData(string $key, array $searchData): bool
-    {
-        return isset($searchData[$key]);
     }
 }

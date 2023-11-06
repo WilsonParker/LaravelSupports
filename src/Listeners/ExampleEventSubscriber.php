@@ -2,9 +2,8 @@
 
 namespace LaravelSupports\Listeners;
 
-use Illuminate\Database\Eloquent\Collection;
 use LaravelSupports\Events\Abstracts\AbstractEvent;
-use LaravelSupports\Libraries\Exceptions\Logs\ExceptionLogger;
+use LaravelSupports\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Listeners\Abstracts\AbstractEventSubscriber;
 
 class ExampleEventSubscriber extends AbstractEventSubscriber

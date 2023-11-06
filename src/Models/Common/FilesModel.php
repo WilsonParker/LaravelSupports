@@ -4,16 +4,13 @@
 namespace LaravelSupports\Models\Common;
 
 
-use LaravelSupports\Libraries\FileUpload;
-use LaravelSupports\Models\Common\BaseModel;
+use LaravelSupports\FileUpload;
 
 class FilesModel extends BaseModel
 {
+    public $timestamps = true;
     protected $table = "files";
     protected $primaryKey = "ix";
-
-    public $timestamps = true;
-
     protected array $guarded = ["ix"];
 
     /**

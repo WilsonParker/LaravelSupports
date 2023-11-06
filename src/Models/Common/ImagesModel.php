@@ -5,23 +5,15 @@ namespace LaravelSupports\Models\Common;
 
 
 use Exception;
-use LaravelSupports\Libraries\FileUpload;
+use LaravelSupports\FileUpload;
 
 class ImagesModel extends BaseModel
 {
+    public $timestamps = true;
     protected $table = "images";
     protected $primaryKey = "ix";
-
-    public $timestamps = true;
-
-    private string $viewPath;
-
     protected array $guarded = ["ix"];
-
-    protected function init()
-    {
-        $this->viewPath = config("constants.images.image.viewPath");
-    }
+    private string $viewPath;
 
     /**
      * @param string $tableType
@@ -89,6 +81,11 @@ class ImagesModel extends BaseModel
         $fileManger = new FileUpload();
         $r = $fileManger->remove($path . "/" . $this->save_name);
         return $this->delete();
+    }
+
+    protected function init()
+    {
+        $this->viewPath = config("constants.images.image.viewPath");
     }
 
 }

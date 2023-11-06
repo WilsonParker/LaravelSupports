@@ -4,22 +4,19 @@
  * @class   ValidationModel.php
  * @author  WilsonParker
  * @brief
-
  * @create  20181226
  * @update  20181227
  **/
 
 namespace LaravelSupports\Models\Common;
 
-use LaravelSupports\Libraries\Supports\Crypt\CryptHelper;
-use LaravelSupports\Libraries\Supports\Data\StringHelper;
-use LaravelSupports\Libraries\Supports\Requests\RequestBinder;
-use LaravelSupports\Libraries\Supports\Requests\Contracts\RequestValueCastContract;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model as Model;
-use Illuminate\Validation\Validator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use LaravelSupports\Crypt\CryptHelper;
+use LaravelSupports\Supports\Data\StringHelper;
+use LaravelSupports\Supports\Requests\Contracts\RequestValueCastContract;
+use LaravelSupports\Supports\Requests\RequestBinder;
 
 abstract class ValidationModel extends Model implements RequestValueCastContract
 {
@@ -87,28 +84,34 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
         return $instance;
     }
 
-    /**
-     * @return  array
-     * @author  WilsonParker
-     * @brief
-     * $information 의 값을 이용하여
-     * message 들을 Property.in => some message 형식으로
-     * $messages 에 저장 합니다
-
-     * @create  20181227
-     * @update  20181227
-     **/
-    protected function createMessages(): array
+    public function getCols(): array
     {
-        $messages = [];
-        foreach ($this->information as $key => $info) {
-            foreach ($info as $iKey => $iVal) {
-                $message = is_array($iVal) && array_key_exists(self::MESSAGE, $iVal) ? $iVal[self::MESSAGE] : self::DEFAULT_MESSAGE;
-                $rKey = is_numeric($iKey) ? $iVal : $iKey;
-                $messages[$key . "." . $this->matchesKey($rKey)] = $message;
-            }
+        if (empty($this->cols)) {
+            $this->cols = DB::select("desc " . $this->table);
         }
-        return $messages;
+        return $this->cols;
+    }
+
+    /**
+     * @param Request $request
+     * @param string
+     * @return
+     * @author  WilsonParker
+     * @brief   Validator::make 메소드를 실행하여 return 해줍니다
+     * @create  20190104
+     * @update  20190104
+     */
+    public function make(Request $request, string $case)
+    {
+        return \Validator::make($request->all(), $this->getRules($case), $this->getMessages())->validate();
+    }
+
+    public function getRules(string $case): string
+    {
+        if (empty($this->rules)) {
+            $this->rules = $this->createRules();
+        }
+        return $this->rules[strtoupper($case)];
     }
 
     /**
@@ -118,7 +121,6 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
      * $information 의 값을 이용하여
      * rule 들을 Property => required|sometimes 형식으로
      * $rules 에 저장 합니다
-
      * @create  20181227
      * @update  20181227
      **/
@@ -147,31 +149,6 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
         return $rules;
     }
 
-    /**
-     * @param   string
-     * @return  string
-     * @author  WilsonParker
-     * @brief
-     * $messages 를 생성할 때
-     * Check.in:yn 같은 값을 Check.in 으로 바꾸어 줍니다
-
-     * @create  20181227
-     * @update  20181227
-     **/
-    protected function matchesKey(string $key): string
-    {
-        preg_match_all(self::REG, $key, $matches);
-        return $matches[0][0];
-    }
-
-    public function getRules(string $case): string
-    {
-        if (empty($this->rules)) {
-            $this->rules = $this->createRules();
-        }
-        return $this->rules[strtoupper($case)];
-    }
-
     public function getMessages(): string
     {
         if (empty($this->messages)) {
@@ -180,27 +157,43 @@ abstract class ValidationModel extends Model implements RequestValueCastContract
         return $this->messages;
     }
 
-    public function getCols(): array
+    /**
+     * @return  array
+     * @author  WilsonParker
+     * @brief
+     * $information 의 값을 이용하여
+     * message 들을 Property.in => some message 형식으로
+     * $messages 에 저장 합니다
+     * @create  20181227
+     * @update  20181227
+     **/
+    protected function createMessages(): array
     {
-        if (empty($this->cols)) {
-            $this->cols = DB::select("desc " . $this->table);
+        $messages = [];
+        foreach ($this->information as $key => $info) {
+            foreach ($info as $iKey => $iVal) {
+                $message = is_array($iVal) && array_key_exists(self::MESSAGE, $iVal) ? $iVal[self::MESSAGE] : self::DEFAULT_MESSAGE;
+                $rKey = is_numeric($iKey) ? $iVal : $iKey;
+                $messages[$key . "." . $this->matchesKey($rKey)] = $message;
+            }
         }
-        return $this->cols;
+        return $messages;
     }
 
     /**
-     * @param Request $request
      * @param string
-     * @return
+     * @return  string
      * @author  WilsonParker
-     * @brief   Validator::make 메소드를 실행하여 return 해줍니다
-
-     * @create  20190104
-     * @update  20190104
-     */
-    public function make(Request $request, string $case)
+     * @brief
+     * $messages 를 생성할 때
+     * Check.in:yn 같은 값을 Check.in 으로 바꾸어 줍니다
+     * @create  20181227
+     * @update  20181227
+     **/
+    protected function matchesKey(string $key): string
     {
-        return \Validator::make($request->all(), $this->getRules($case), $this->getMessages())->validate();
+        preg_match_all(self::REG, $key, $matches);
+        return $matches[0][0];
     }
 
 }
