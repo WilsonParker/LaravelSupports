@@ -11,8 +11,6 @@ class ImagesModel extends BaseModel
 {
     public $timestamps = true;
     protected $table = "images";
-    protected $primaryKey = "ix";
-    protected array $guarded = ["ix"];
     private string $viewPath;
 
     /**

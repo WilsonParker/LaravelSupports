@@ -2,7 +2,6 @@
 
 namespace LaravelSupports\Objects;
 
-use LaravelSupports\Supports\Objects\Class;
 use ReflectionClass;
 use ReflectionException;
 
