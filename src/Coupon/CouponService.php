@@ -7,8 +7,8 @@ namespace LaravelSupports\Coupon;
 use LaravelSupports\Coupon\Exceptions\AlreadyUsedException;
 use LaravelSupports\Coupon\Exceptions\DuplicatedException;
 use LaravelSupports\Coupon\Exceptions\NotMetConditionException;
+use LaravelSupports\Data\ConvertMarkMessageTrait;
 use LaravelSupports\Date\DateHelper;
-use LaravelSupports\Supports\Data\ConvertMarkMessageTrait;
 use Throwable;
 
 class CouponService

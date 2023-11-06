@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Supports\ViewModels\Common;
+namespace LaravelSupports\ViewModels\Common;
 
 use LaravelSupports\Auth\AuthHelper;
 use LaravelSupports\Database\Traits\TransactionTrait;

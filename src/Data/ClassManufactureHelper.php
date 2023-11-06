@@ -1,10 +1,11 @@
 <?php
 
 
-namespace LaravelSupports\Supports\Data;
+namespace LaravelSupports\Data;
 
 
 use Illuminate\Support\Arr;
+use LaravelSupports\Supports\Data\class;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;

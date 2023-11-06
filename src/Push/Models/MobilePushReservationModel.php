@@ -5,7 +5,7 @@ namespace LaravelSupports\Push\Models;
 use DateTime;
 use FlyBookModels\ImagesModel;
 use Illuminate\Http\Request;
-use LaravelSupports\Supports\Data\Traits\FileSaveTrait;
+use LaravelSupports\Data\Traits\FileSaveTrait;
 
 class MobilePushReservationModel extends AbstractMobilePushModel
 {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Supports\ViewModels\Common;
+namespace LaravelSupports\ViewModels\Common;
 
 
 class EmptyViewModel extends MasterViewModel

@@ -3,8 +3,8 @@
 namespace LaravelSupports\Http\Requests;
 
 use Illuminate\Http\Request;
+use LaravelSupports\Data\StringHelper;
 use LaravelSupports\Http\Requests\Contracts\RequestValueCastingPossible;
-use LaravelSupports\Supports\Data\StringHelper;
 
 /**
  * @class   RequestBinder.php

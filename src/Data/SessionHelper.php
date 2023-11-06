@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Supports\Data;
+namespace LaravelSupports\Data;
 
 
 use Illuminate\Support\Facades\Session;

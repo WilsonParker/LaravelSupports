@@ -8,7 +8,7 @@
  * @update  20181224
  **/
 
-namespace LaravelSupports\Supports\Data;
+namespace LaravelSupports\Data;
 
 class ArrayHelper
 {

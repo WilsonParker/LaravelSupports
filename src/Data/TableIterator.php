@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Supports\Data;
+namespace LaravelSupports\Data;
 
 class TableIterator
 {

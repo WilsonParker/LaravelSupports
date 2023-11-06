@@ -9,7 +9,7 @@
  * @update  20200310
  **/
 
-namespace LaravelSupports\Supports\Data;
+namespace LaravelSupports\Data;
 
 class StringHelper
 {

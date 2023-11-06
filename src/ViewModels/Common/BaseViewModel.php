@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Supports\ViewModels\Common;
+namespace LaravelSupports\ViewModels\Common;
 
 use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;

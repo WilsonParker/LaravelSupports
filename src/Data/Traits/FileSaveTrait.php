@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelSupports\Supports\Data\Traits;
+namespace LaravelSupports\Data\Traits;
 
 
 use Exception;

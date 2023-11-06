@@ -6,13 +6,13 @@ namespace LaravelSupports\Pay\ImPort;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
+use LaravelSupports\Data\ArrayHelper;
 use LaravelSupports\Pay\Common\Abstracts\AbstractPayService;
 use LaravelSupports\Pay\ImPort\Response\ImPortResponseAgainObject;
 use LaravelSupports\Pay\ImPort\Response\ImPortResponseCancelObject;
 use LaravelSupports\Pay\ImPort\Response\ImPortResponseOnTimeObject;
 use LaravelSupports\Pay\ImPort\Response\ImPortResponseStoreSubscribeUserObject;
 use LaravelSupports\Pay\ImPort\Response\ImPortResponseSubscribeUserObject;
-use LaravelSupports\Supports\Data\ArrayHelper;
 use Throwable;
 
 /**
@@ -81,6 +81,34 @@ class ImPortPay extends AbstractPayService
         $obj = new ImPortResponseSubscribeUserObject();
         $obj->bindStd($result);
         return $obj;
+    }
+
+    /**
+     * 고객 고유 번호
+     * sid
+     *
+     * @return string
+     * @author  WilsonParker
+     * @added   2020/06/17
+     * @updated 2020/06/17
+     * @updated 2020/06/26
+     * add Origin Card payment uid
+     */
+    protected function getCustomUID()
+    {
+        $model = ArrayHelper::getValueOfKeyIfExist($this->data, 'model');
+        if (is_null($model)) {
+            if (isset($this->payment) && !is_null($this->payment->getSID())) {
+                return $this->payment->getSID();
+            }
+        } else {
+            if ($model->isCustomIDSaved()) {
+                return $model->getCustomID();
+            } else if ($model->isOriginCard()) {
+                return $this->member->id;
+            }
+        }
+        return Str::random(32) . ':member_' . $this->member->id;
     }
 
     /**
@@ -155,34 +183,6 @@ class ImPortPay extends AbstractPayService
             'buyer_postcode' => $this->member->postcode,
             'buyer_addr' => $this->member->address . ' ' . $this->member->address_detail,
         ];
-    }
-
-    /**
-     * 고객 고유 번호
-     * sid
-     *
-     * @return string
-     * @author  WilsonParker
-     * @added   2020/06/17
-     * @updated 2020/06/17
-     * @updated 2020/06/26
-     * add Origin Card payment uid
-     */
-    protected function getCustomUID()
-    {
-        $model = ArrayHelper::getValueOfKeyIfExist($this->data, 'model');
-        if (is_null($model)) {
-            if (isset($this->payment) && !is_null($this->payment->getSID())) {
-                return $this->payment->getSID();
-            }
-        } else {
-            if ($model->isCustomIDSaved()) {
-                return $model->getCustomID();
-            } else if ($model->isOriginCard()) {
-                return $this->member->id;
-            }
-        }
-        return Str::random(32) . ':member_' . $this->member->id;
     }
 
     /**

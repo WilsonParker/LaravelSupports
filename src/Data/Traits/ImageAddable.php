@@ -7,7 +7,7 @@
  * @date    20190903
  **/
 
-namespace LaravelSupports\Supports\Data\Traits;
+namespace LaravelSupports\Data\Traits;
 
 use LaravelSupports\FileUpload;
 use LaravelSupports\Models\ImagesModel;

@@ -8,7 +8,7 @@
  * @update  20200310
  **/
 
-namespace LaravelSupports\Supports\Data;
+namespace LaravelSupports\Data;
 
 use Illuminate\Support\Collection;
 

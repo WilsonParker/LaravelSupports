@@ -2,7 +2,7 @@
 
 namespace LaravelSupports\Controllers\Traits;
 
-use LaravelSupports\Supports\Data\StringHelper;
+use LaravelSupports\Data\StringHelper;
 use Throwable;
 
 trait RedirectTraits
