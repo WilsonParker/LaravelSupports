@@ -3,17 +3,20 @@
 namespace LaravelSupports\Locale\Models;
 
 use LaravelSupports\Locale\Contracts\LocaleModel;
+use V2News\Models\BaseCodeModel;
 
-class Locale implements LocaleModel {
-    protected string $localeCode;
-    protected string $localeLanguage;
+class Locale extends BaseCodeModel implements LocaleModel
+{
+    protected $table = 'locales';
+    protected $guarded = [];
+
     public function getLocaleCode(): string
     {
-        return $this->localeCode;
+        return $this->code;
     }
 
     public function getLocaleLanguage(): string
     {
-        return $this->localeLanguage;
+        return $this->launguage;
     }
 }

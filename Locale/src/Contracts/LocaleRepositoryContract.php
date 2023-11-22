@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 
 interface LocaleRepositoryContract
 {
-    public function getLocaleByCode(string $code): LocaleModel;
+    public function getLocaleByCode(string $code): ?LocaleModel;
 
     /**
      * @return Collection<LocaleModel>

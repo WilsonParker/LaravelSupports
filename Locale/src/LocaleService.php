@@ -8,7 +8,7 @@ use LaravelSupports\Locale\Contracts\LocaleServiceContract;
 
 class LocaleService implements LocaleServiceContract
 {
-    private string $default = 'en';
+    private string $default = 'EN';
 
     /**
      * @param \LaravelSupports\Locale\Contracts\LocaleRepositoryContract $repository
@@ -17,6 +17,7 @@ class LocaleService implements LocaleServiceContract
 
     public function getLocale(): LocaleModel
     {
+        dd($this->repository->getLocaleByCode($this->default));
         return session('locale', $this->repository->getLocaleByCode($this->default));
     }
 

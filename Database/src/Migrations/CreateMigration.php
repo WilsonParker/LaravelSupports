@@ -3,7 +3,6 @@
 
 namespace LaravelSupports\Database\Migrations;
 
-use App\Modules\Supports\Database\src\Migrations\BaseMigration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -30,6 +29,7 @@ abstract class CreateMigration extends BaseMigration
 
     /**
      * Run the migrations.
+     *
      * @param Blueprint $table
      * @return void
      */
