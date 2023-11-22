@@ -153,4 +153,11 @@ trait TransactionTrait
         }
         return $result;
     }
+
+    protected function transactionWithErrors(callable $callback)
+    {
+        return $this->runTransaction($callback, function (Throwable $throwable) {
+            return back()->withInput()->withErrors(__('Error Occurred'));
+        });
+    }
 }
