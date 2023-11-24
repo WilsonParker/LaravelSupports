@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Http\Requests\Common;
+namespace LaravelSupports\Http\Requests;
 
 abstract class BaseFormRequest extends BaseRequest
 {

@@ -4,14 +4,13 @@
 namespace LaravelSupports\Database\Traits;
 
 
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use LaravelSupports\Exceptions\Contracts\Abortable;
 use LaravelSupports\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Http\Responses\ResponseTemplate;
-use LaravelSupports\Supports\Databases\Traits\Exception;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 trait TransactionTrait
@@ -76,7 +75,7 @@ trait TransactionTrait
     function runTransactionWithDefaultValidation(callable $callback, callable $errorCallback): ResponseTemplate
     {
         $validationCallback = function (ValidationException $e) {
-            return new ResponseTemplate(Response::HTTP_BAD_REQUEST, $e->getCode(), $e->getMessage());
+            return new ResponseTemplate(ResponseAlias::HTTP_BAD_REQUEST, $e->getCode(), $e->getMessage());
         };
         return $this->runTransaction($callback, $errorCallback, $validationCallback);
     }
@@ -137,7 +136,7 @@ trait TransactionTrait
             }
             DB::commit();
             // transaction 중 에러 발생 시
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // DB rollback 을 실행합니다
             DB::rollback();
             // $errorCallback 이 함수인지 확인합니다
@@ -152,5 +151,12 @@ trait TransactionTrait
             }
         }
         return $result;
+    }
+
+    protected function transactionWithErrors(callable $callback)
+    {
+        return $this->runTransaction($callback, function (Throwable $throwable) {
+            return back()->withInput()->withErrors(__('Error Occurred'));
+        });
     }
 }

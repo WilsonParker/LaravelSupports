@@ -29,6 +29,7 @@ abstract class CreateMigration extends BaseMigration
 
     /**
      * Run the migrations.
+     *
      * @param Blueprint $table
      * @return void
      */
