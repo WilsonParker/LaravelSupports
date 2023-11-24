@@ -4,6 +4,7 @@ namespace LaravelSupports\Locale\Contracts;
 
 interface LocaleServiceContract
 {
+    public function hasLocale(): bool;
 
     public function getLocale(): LocaleModel;
 

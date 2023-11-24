@@ -10,12 +10,17 @@ use LaravelSupports\Locale\Contracts\LocaleServiceContract;
 class LocaleService implements LocaleServiceContract
 {
     private string $session = 'locale';
-    private string $default = 'en';
+    private string $default = 'US';
 
     /**
      * @param \LaravelSupports\Locale\Contracts\LocaleRepositoryContract $repository
      */
     public function __construct(private readonly LocaleRepositoryContract $repository) {}
+
+    public function hasLocale(): bool
+    {
+        return Session::has($this->session);
+    }
 
     public function getLocale(): LocaleModel
     {
@@ -24,11 +29,15 @@ class LocaleService implements LocaleServiceContract
 
     public function setLocale(LocaleModel $model): void
     {
-        Session::put($this->session, $model);
+        Session::forget($this->session);
+        Session::remember($this->session, fn() => $model);
+        // Session::put($this->session, $model);
     }
 
     public function setLocaleCode(string $code): void
     {
-        Session::put($this->session, $this->repository->getLocaleByCode($code));
+        Session::forget($this->session);
+        Session::remember($this->session, fn() => $this->repository->getLocaleByCode($code));
+        // Session::put($this->session, $this->repository->getLocaleByCode($code));
     }
 }
