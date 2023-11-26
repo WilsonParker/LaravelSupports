@@ -3,8 +3,10 @@
 namespace LaravelSupports\Exceptions;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelSupports\Exceptions\Contracts\ExceptionRepositoryContract;
 use LaravelSupports\Exceptions\Loggers\Contracts\Loggable;
 use LaravelSupports\Exceptions\Loggers\DatabaseLogger;
+use LaravelSupports\Exceptions\Repositories\ExceptionRepository;
 
 class ExceptionServiceProvider extends ServiceProvider
 {
@@ -35,13 +37,18 @@ class ExceptionServiceProvider extends ServiceProvider
         $configPath = __DIR__ . '/../config/exception.php';
         $this->mergeConfigFrom($configPath, 'exception');
 
-        $this->app->singleton(ExceptionCodeService::class, function ($app) {
-            return new ExceptionCodeService();
-        });
+        $this->app->singleton(
+            ExceptionSlackService::class,
+            fn($app) => new ExceptionSlackService($app->make(Loggable::class),),
+        );
+        
+        $this->app->singleton(ExceptionRepository::class, fn($app) => new ExceptionRepository(),);
+        $this->app->bind(ExceptionRepositoryContract::class, ExceptionRepository::class);
 
+        $this->app->singleton(ExceptionCodeService::class, fn($app) => new ExceptionCodeService());
         $this->app->singleton(
             DatabaseLogger::class,
-            fn($app) => new DatabaseLogger(config('exception.model')),
+            fn($app,) => new DatabaseLogger($app->make(ExceptionRepositoryContract::class)),
         );
 
         $this->app->bind(
@@ -52,13 +59,6 @@ class ExceptionServiceProvider extends ServiceProvider
         $this->app->singleton(
             ExceptionService::class,
             fn($app) => new ExceptionService(
-                $app->make(Loggable::class),
-            ),
-        );
-
-        $this->app->singleton(
-            ExceptionSlackService::class,
-            fn($app) => new ExceptionSlackService(
                 $app->make(Loggable::class),
             ),
         );

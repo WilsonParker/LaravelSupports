@@ -52,24 +52,22 @@ trait TransactionTrait
         return $result;
     }
 
+    /**
+     * @throws \Throwable
+     */
     private function rollbackAction(
-        Throwable $t,
+        Throwable $throwable,
         callable  $errorCallback = null,
         callable  $validationCallback = null,
     ) {
         // DB rollback 을 실행합니다
         DB::rollback();
-        if (is_callable($validationCallback) && $t instanceof ValidationException) {
-            $result = $validationCallback($t);
-            // $errorCallback 이 함수인지 확인합니다
+        if (is_callable($validationCallback) && $throwable instanceof ValidationException) {
+            $result = $validationCallback($throwable);
         } else if (is_callable($errorCallback)) {
-            $result = $errorCallback($t);
+            $result = $errorCallback($throwable);
         } else {
-            // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
-            $result = new ResponseTemplate($t->getCode(), $t->getCode(), $t->getMessage(), [
-                "line" => $t->getLine(),
-                "string" => $t->getTraceAsString(),
-            ]);
+            throw $throwable;
         }
         return $result;
     }
@@ -113,56 +111,18 @@ trait TransactionTrait
         } finally {
             if ($result instanceof Abortable) {
                 abort($result->getCode());
-            } else {
-                return $result;
-            }
-        }
-    }
-
-    /**
-     * $callback 을 실행시키면서 Exception 이 발생 시 Rollback 을 시키고 $errorCallback 을 실행합니다
-     * ajax 통신 용으로 return 을 JsonObject 를 return 합니다
-     *
-     * @param   $callback
-     * @param   $errorCallback
-     * @return  mixed
-     * @author  WilsonParker
-     * @added   2019-08-27
-     * @updated 2019-08-27
-     */
-    function runTransactionWithAjax($callback, $errorCallback)
-    {
-        $result = "";
-        try {
-            // transaction 을 시작합니다
-            DB::beginTransaction();
-            // $callback 이 함수인지 확인합니다
-            if (is_callable($callback)) {
-                $result = $callback();
-            }
-            DB::commit();
-            // transaction 중 에러 발생 시
-        } catch (Throwable $e) {
-            // DB rollback 을 실행합니다
-            DB::rollback();
-            // $errorCallback 이 함수인지 확인합니다
-            if (is_callable($errorCallback)) {
-                $result = $errorCallback($e);
-            } else {
-                // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
-                $result = new ResponseTemplate($e->getCode(), $e->getMessage(), [
-                    "line" => $e->getLine(),
-                    "string" => $e->getTraceAsString(),
-                ]);
             }
         }
         return $result;
     }
 
-    protected function transactionWithErrors(callable $callback)
+    protected function runTransactionWithErrors(callable $callback)
     {
         return $this->runTransaction($callback, function (Throwable $throwable) {
-            return back()->withInput()->withErrors(__('Error Occurred'));
+            return back()->withInput()->withErrors(
+                [
+                    'message' => $throwable->getMessage(),
+                ]);
         });
     }
 }
