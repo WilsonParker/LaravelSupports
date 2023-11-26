@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\Exceptions\Migrations;
+namespace LaravelSupports\Exceptions\Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use LaravelSupports\Database\Migrations\CreateMigration;

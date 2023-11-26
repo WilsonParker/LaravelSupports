@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use LaravelSupports\Exceptions\Contracts\Abortable;
-use LaravelSupports\Exceptions\Logs\ExceptionLogger;
 use LaravelSupports\Http\Responses\ResponseTemplate;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -16,8 +15,14 @@ use Throwable;
 trait TransactionTrait
 {
 
-    function runTransactionWithLock(string $lock = '', int $second = 5, callable $callback = null, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
-    {
+    function runTransactionWithLock(
+        string   $lock = '',
+        int      $second = 5,
+        callable $callback = null,
+        callable $errorCallback = null,
+        callable $validationCallback = null,
+        bool     $loggable = true,
+    ) {
         try {
             $lock = Cache::lock($lock, $second);
             if (!$lock->get()) {
@@ -47,16 +52,13 @@ trait TransactionTrait
         return $result;
     }
 
-    private function rollbackAction(Throwable $t, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
-    {
+    private function rollbackAction(
+        Throwable $t,
+        callable  $errorCallback = null,
+        callable  $validationCallback = null,
+    ) {
         // DB rollback 을 실행합니다
         DB::rollback();
-        if ($loggable) {
-            $logger = new ExceptionLogger();
-            $logger->report($t);
-        }
-
-        // not working
         if (is_callable($validationCallback) && $t instanceof ValidationException) {
             $result = $validationCallback($t);
             // $errorCallback 이 함수인지 확인합니다
@@ -66,7 +68,7 @@ trait TransactionTrait
             // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
             $result = new ResponseTemplate($t->getCode(), $t->getCode(), $t->getMessage(), [
                 "line" => $t->getLine(),
-                "string" => $t->getTraceAsString()
+                "string" => $t->getTraceAsString(),
             ]);
         }
         return $result;
@@ -83,10 +85,10 @@ trait TransactionTrait
     /**
      * $callback 을 실행시키면서 Exception 이 발생 시 Rollback 을 시키고 $errorCallback 을 실행합니다
      *
-     * @param callable $callback
+     * @param callable      $callback
      * @param callable|null $errorCallback
      * @param callable|null $validationCallback
-     * @param bool $loggable
+     * @param bool          $loggable
      * @return ResponseTemplate
      * @author  WilsonParker
      * @added   2019-08-27
@@ -96,8 +98,12 @@ trait TransactionTrait
      * @updated 2021-11-18
      * add abort
      */
-    function runTransaction(callable $callback, callable $errorCallback = null, callable $validationCallback = null, bool $loggable = true)
-    {
+    function runTransaction(
+        callable $callback,
+        callable $errorCallback = null,
+        callable $validationCallback = null,
+        bool     $loggable = true,
+    ) {
         $result = null;
         try {
             $result = $this->runAction($callback);
@@ -146,7 +152,7 @@ trait TransactionTrait
                 // $errorCallback 이 함수가 아닐 경우 에러를 JsonObject 로 생성하여 return 합니다
                 $result = new ResponseTemplate($e->getCode(), $e->getMessage(), [
                     "line" => $e->getLine(),
-                    "string" => $e->getTraceAsString()
+                    "string" => $e->getTraceAsString(),
                 ]);
             }
         }
