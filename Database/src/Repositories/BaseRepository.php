@@ -2,16 +2,22 @@
 
 namespace LaravelSupports\Database\Repositories;
 
-use LaravelSupports\Database\Repositories\Contracts\RepositoryContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use LaravelSupports\Database\Repositories\Contracts\RepositoryContract;
 
 class BaseRepository implements RepositoryContract
 {
+    protected Builder $model;
+
     /**
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $model
      */
-    public function __construct(protected Model $model) {}
+    public function __construct(protected string $modelCls)
+    {
+        $this->model = $modelCls::query();
+    }
 
     public function index(array $columns = ['*'], array $relations = []): Collection
     {
@@ -38,19 +44,14 @@ class BaseRepository implements RepositoryContract
         return $this->showById($model->getKey(), $with, $select);
     }
 
-    public function update(Model $model, array $attribute): bool
-    {
-        return $this->updateById($model->getKey(), $attribute);
-    }
-
-    public function delete(Model $model): bool
-    {
-        return $this->deleteById($model->getKey());
-    }
-
     public function showById($id, array|string $with = '', array|string $select = '*'): Model
     {
         return $this->model->with($with)->select($select)->findOrFail($id);
+    }
+
+    public function update(Model $model, array $attribute): bool
+    {
+        return $this->updateById($model->getKey(), $attribute);
     }
 
     public function updateById($id, array $attribute): bool
@@ -58,8 +59,23 @@ class BaseRepository implements RepositoryContract
         return $this->showById($id)->update($attribute);
     }
 
+    public function delete(Model $model): bool
+    {
+        return $this->deleteById($model->getKey());
+    }
+
     public function deleteById($id): bool
     {
         return $this->showById($id)->delete();
+    }
+
+    protected function getModelClass(): string
+    {
+        return $this->modelCls;
+    }
+
+    protected function getSearchQuery(Builder $builder, array $attributes): Builder
+    {
+        return $builder;
     }
 }
