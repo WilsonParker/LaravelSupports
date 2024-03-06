@@ -7,13 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 interface RepositoryContract
 {
-    public function index(): Collection;
+    public function list(): Collection;
 
-    public function store(array $attribute): Model;
-
-    public function show(Model $model): Model;
-
-    public function showById($id): Model;
+    public function create(array $attribute): Model;
 
     public function update(Model $model, array $attribute): bool;
 

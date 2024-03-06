@@ -17,6 +17,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 abstract class BaseResources extends JsonResource
 {
+    public static $wrap = null;
     protected bool $showDateFields = true;
     protected bool $showPrimaryField = true;
     protected string $format = 'Y-m-d H:i:s';

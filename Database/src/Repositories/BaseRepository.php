@@ -19,14 +19,9 @@ class BaseRepository implements RepositoryContract
         $this->model = $modelCls::query();
     }
 
-    public function index(array $columns = ['*'], array $relations = []): Collection
+    public function list(array $columns = ['*'], array $relations = []): Collection
     {
         return $this->model->with($relations)->get($columns);
-    }
-
-    public function store(array $attribute): Model
-    {
-        return $this->model->create($attribute);
     }
 
     public function storeIfNotExists($id, array $attribute): Model
@@ -39,14 +34,9 @@ class BaseRepository implements RepositoryContract
         }
     }
 
-    public function show(Model $model, array|string $with = '', array|string $select = '*'): Model
+    public function create(array $attribute): Model
     {
-        return $this->showById($model->getKey(), $with, $select);
-    }
-
-    public function showById($id, array|string $with = '', array|string $select = '*'): Model
-    {
-        return $this->model->with($with)->select($select)->findOrFail($id);
+        return $this->model->create($attribute);
     }
 
     public function update(Model $model, array $attribute): bool
