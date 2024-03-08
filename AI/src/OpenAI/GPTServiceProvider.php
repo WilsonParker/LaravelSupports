@@ -3,8 +3,8 @@
 namespace LaravelSupports\AI\OpenAI;
 
 use Illuminate\Support\ServiceProvider;
-use RecipeP\Models\OpenAI\OpenAiKey;
-use RecipeP\Models\OpenAI\OpenAiKeyStack;
+use LaravelSupports\AI\Models\OpenAiKey;
+use LaravelSupports\AI\Models\OpenAiKeyStack;
 use LaravelSupports\AI\OpenAI\Repositories\OpenAiKeyRepository;
 
 class GPTServiceProvider extends ServiceProvider
@@ -20,11 +20,11 @@ class GPTServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             OpenAiKeyRepository::class,
-            fn() => new OpenAiKeyRepository(OpenAIKey::class, OpenAiKeyStack::class)
+            fn() => new OpenAiKeyRepository(OpenAIKey::class, OpenAiKeyStack::class),
         );
 
         $this->app->singleton(Chat\ApiRecursiveService::class, fn($app) => new Chat\ApiRecursiveService(
-            $app->make(OpenAiKeyRepository::class)
+            $app->make(OpenAiKeyRepository::class),
         ));
     }
 }

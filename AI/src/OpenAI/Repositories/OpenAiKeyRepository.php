@@ -2,9 +2,9 @@
 
 namespace LaravelSupports\AI\OpenAI\Repositories;
 
-use RecipeP\Models\OpenAI\OpenAiKeyStack;
+use LaravelSupports\AI\Models\OpenAiKeyStack;
 use LaravelSupports\AI\OpenAI\Exceptions\NotFoundOpenAIStackException;
-use LaravelSupports\Repositories\BaseRepository;
+use LaravelSupports\Database\Repositories\BaseRepository;
 
 class OpenAiKeyRepository extends BaseRepository
 {
@@ -19,15 +19,15 @@ class OpenAiKeyRepository extends BaseRepository
     public function getOpenAiKeyStackModel(string $date, ?OpenAiKeyStack $except = null): OpenAiKeyStack
     {
         $model = $this->openAiKeyStackModel::where('date', $date)
-            ->whereHas('openAiKey', function ($query) {
-                $query->where('is_enabled', true);
-            })
-            ->when($except !== null, function ($query) use ($except) {
-                $query->where('id', '!=', $except->getKey());
-            })
-            ->lockForUpdate()
-            ->orderBy('call')
-            ->first();
+                                           ->whereHas('openAiKey', function ($query) {
+                                               $query->where('is_enabled', true);
+                                           })
+                                           ->when($except !== null, function ($query) use ($except) {
+                                               $query->where('id', '!=', $except->getKey());
+                                           })
+                                           ->lockForUpdate()
+                                           ->orderBy('call')
+                                           ->first();
         if ($model !== null) {
             return $model;
         }
@@ -38,8 +38,8 @@ class OpenAiKeyRepository extends BaseRepository
             $this->openAiKeyModel::all()->each(function ($key) use ($date, &$model) {
                 $model = $this->openAiKeyStackModel::create([
                     'open_ai_key_id' => $key->id,
-                    'call' => 0,
-                    'date' => $date,
+                    'call'           => 0,
+                    'date'           => $date,
                 ]);
             });
 
@@ -57,7 +57,7 @@ class OpenAiKeyRepository extends BaseRepository
     {
         $stack = $this->openAiKeyStackModel::find($id);
         return $stack->openAiKey->update([
-            'is_enabled' => false
+            'is_enabled' => false,
         ]);
     }
 }
