@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use LaravelSupports\Http\Requests\Exceptions\ValidationException;
 use LaravelSupports\Http\Responses\ResponseTemplate;
 
 abstract class BaseRequest extends FormRequest
@@ -146,15 +146,27 @@ abstract class BaseRequest extends FormRequest
      * message contains validation message
      *
      * @param Validator $validator
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      * @author  WilsonParker
      * @added   2020/04/27
      * @updated 2020/04/27
      */
     protected function failedValidationHttpResponse(Validator $validator)
     {
-        throw new HttpResponseException(new ResponseTemplate(Response::HTTP_BAD_REQUEST, "", $validator->getMessageBag()
-            ->first()));
+        throw new HttpResponseException(new ResponseTemplate(
+            message: $validator->getMessageBag()->first(),
+            status: Response::HTTP_UNPROCESSABLE_ENTITY,
+            errors: collect($validator->errors())->mapWithKeys(function ($errors, $key) {
+                return [$key => $errors[0]];
+            })->toArray()
+        ));
+        /*return ResponseTemplate::toJson(
+            message: $validator->getMessageBag()->first(),
+            status: Response::HTTP_UNPROCESSABLE_ENTITY,
+            errors: collect($validator->errors())->mapWithKeys(function ($errors, $key) {
+                return [$key => $errors[0]];
+            })->toArray()
+        );*/
     }
 
     /**

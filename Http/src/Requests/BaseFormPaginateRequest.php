@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Modules\Supports\Http\src\Requests;
-
-use LaravelSupports\Http\Requests\BaseRequest;
+namespace LaravelSupports\Http\Requests;
 
 abstract class BaseFormPaginateRequest extends BaseRequest
 {

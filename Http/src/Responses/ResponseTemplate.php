@@ -6,6 +6,7 @@ namespace LaravelSupports\Http\Responses;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 /**
@@ -16,7 +17,10 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
  */
 class ResponseTemplate extends JsonResponse implements Arrayable
 {
-    protected array $errors = [];
+    public function __construct(public $status = Response::HTTP_OK, public $data = null, public $message = "message", public $errors = [])
+    {
+        parent::__construct($data, $status);
+    }
 
     public function toJson(
         $data = null,
@@ -30,6 +34,7 @@ class ResponseTemplate extends JsonResponse implements Arrayable
         $this->message = $message;
         $this->data = $data;
         $this->errors = $errors;
+        $this->status = $status;
         return response()->json($this->toArray(), $status, $headers, $options);
     }
 
