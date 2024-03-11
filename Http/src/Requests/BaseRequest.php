@@ -29,48 +29,19 @@ abstract class BaseRequest extends FormRequest
         array $files = [],
         array $server = [],
               $content = null,
-    ) {
+    )
+    {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
         $this->init();
     }
 
-    protected function init() {}
+    protected function init()
+    {
+    }
 
     public function messages(): array
     {
         return $this->messages;
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        if ($this->isFailedRedirect) {
-            $this->failedValidationRedirectTo($validator);
-        } else {
-            $this->failedValidationHttpResponse($validator);
-        }
-    }
-
-    protected function failedValidationRedirectTo(Validator $validator)
-    {
-        throw (new ValidationException($validator))
-            ->errorBag($this->errorBag)
-            ->redirectTo($this->getRedirectUrl());
-    }
-
-    /**
-     * throw an error with ResponseTemplate
-     * message contains validation message
-     *
-     * @param Validator $validator
-     * @return void
-     * @author  WilsonParker
-     * @added   2020/04/27
-     * @updated 2020/04/27
-     */
-    protected function failedValidationHttpResponse(Validator $validator)
-    {
-        throw new HttpResponseException(new ResponseTemplate(Response::HTTP_BAD_REQUEST, "", $validator->getMessageBag()
-                                                                                                       ->first()));
     }
 
     /**
@@ -154,6 +125,38 @@ abstract class BaseRequest extends FormRequest
         return $pathFiltered['rules'];*/
     }
 
+    protected function failedValidation(Validator $validator)
+    {
+        if ($this->isFailedRedirect) {
+            $this->failedValidationRedirectTo($validator);
+        } else {
+            $this->failedValidationHttpResponse($validator);
+        }
+    }
+
+    protected function failedValidationRedirectTo(Validator $validator)
+    {
+        throw (new ValidationException($validator))
+            ->errorBag($this->errorBag)
+            ->redirectTo($this->getRedirectUrl());
+    }
+
+    /**
+     * throw an error with ResponseTemplate
+     * message contains validation message
+     *
+     * @param Validator $validator
+     * @return void
+     * @author  WilsonParker
+     * @added   2020/04/27
+     * @updated 2020/04/27
+     */
+    protected function failedValidationHttpResponse(Validator $validator)
+    {
+        throw new HttpResponseException(new ResponseTemplate(Response::HTTP_BAD_REQUEST, "", $validator->getMessageBag()
+            ->first()));
+    }
+
     /**
      * 중복 방지 validation callback 제공
      *
@@ -188,7 +191,8 @@ abstract class BaseRequest extends FormRequest
         string $route,
         bool   $isFailedRedirect = null,
         bool   $reg = false,
-    ) {
+    )
+    {
         if ($isFailedRedirect != null) {
             $this->isFailedRedirect = $isFailedRedirect;
         }
