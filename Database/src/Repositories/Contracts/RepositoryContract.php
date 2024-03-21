@@ -13,10 +13,6 @@ interface RepositoryContract
 
     public function update(Model $model, array $attribute): bool;
 
-    public function updateById($id, array $attribute): bool;
-
     public function delete(Model $model): bool;
-
-    public function deleteById($id): bool;
 
 }
