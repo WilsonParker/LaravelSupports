@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use LaravelSupports\Database\Repositories\Contracts\RepositoryContract;
+use Override;
 
 class BaseRepository implements RepositoryContract
 {
@@ -41,22 +42,7 @@ class BaseRepository implements RepositoryContract
 
     public function update(Model $model, array $attribute): bool
     {
-        return $this->updateById($model->getKey(), $attribute);
-    }
-
-    public function updateById($id, array $attribute): bool
-    {
-        return $this->showById($id)->update($attribute);
-    }
-
-    public function delete(Model $model): bool
-    {
-        return $this->deleteById($model->getKey());
-    }
-
-    public function deleteById($id): bool
-    {
-        return $this->showById($id)->delete();
+        return $model->update($attribute);
     }
 
     protected function getModelClass(): string
@@ -67,5 +53,11 @@ class BaseRepository implements RepositoryContract
     protected function getSearchQuery(Builder $builder, array $attributes): Builder
     {
         return $builder;
+    }
+
+    #[Override]
+    public function delete(Model $model): bool
+    {
+        return $model->delete();
     }
 }
