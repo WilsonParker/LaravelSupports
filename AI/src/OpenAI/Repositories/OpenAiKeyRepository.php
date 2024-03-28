@@ -2,8 +2,9 @@
 
 namespace LaravelSupports\AI\OpenAI\Repositories;
 
-use LaravelSupports\AI\Models\OpenAiKeyStack;
+use Illuminate\Support\Facades\DB;
 use LaravelSupports\AI\OpenAI\Exceptions\NotFoundOpenAIStackException;
+use LaravelSupports\AI\OpenAI\Models\OpenAiKeyStack;
 use LaravelSupports\Database\Repositories\BaseRepository;
 
 class OpenAiKeyRepository extends BaseRepository
@@ -31,19 +32,19 @@ class OpenAiKeyRepository extends BaseRepository
         if ($model !== null) {
             return $model;
         }
-
         if ($this->openAiKeyModel::where('is_enabled', true)->count() === 0) {
             throw new NotFoundOpenAIStackException();
-        } else {
-            $this->openAiKeyModel::all()->each(function ($key) use ($date, &$model) {
-                $model = $this->openAiKeyStackModel::create([
-                    'open_ai_key_id' => $key->id,
-                    'call'           => 0,
-                    'date'           => $date,
-                ]);
-            });
-
         }
+
+        $this->openAiKeyModel::all()->each(function ($key) use ($date, &$model) {
+            $model = $this->openAiKeyStackModel::createOrFirst([
+                'open_ai_key_id' => $key->id,
+                'date'           => $date,
+            ], [
+                'call' => 0,
+            ]);
+            DB::commit();
+        });
 
         return $this->getOpenAiKeyStackModel($date, $except);
     }

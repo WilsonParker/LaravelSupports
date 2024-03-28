@@ -13,7 +13,8 @@ return new class extends Migration {
         Schema::create('open_ai_keys', function (Blueprint $table) {
             $table->id();
             $table->string('key', 128)->nullable(false)->comment('api key');
-            $table->string('description', 128)->nullable(true)->comment('설명');
+            $table->string('description', 128)->nullable(true)->comment('설명명');
+            $table->boolean('is_enabled')->default(false)->nullable(false)->comment('활성화 여부');
             $table->timestamps();
             $table->softDeletes();
         });
