@@ -3,8 +3,8 @@
 namespace LaravelSupports\AI\OpenAI;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelSupports\AI\Models\OpenAiKey;
-use LaravelSupports\AI\Models\OpenAiKeyStack;
+use LaravelSupports\AI\OpenAI\Models\OpenAiKey;
+use LaravelSupports\AI\OpenAI\Models\OpenAiKeyStack;
 use LaravelSupports\AI\OpenAI\Repositories\OpenAiKeyRepository;
 
 class GPTServiceProvider extends ServiceProvider
