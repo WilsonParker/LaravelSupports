@@ -4,8 +4,8 @@ namespace LaravelSupports\AI\OpenAI\Abstracts;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
-use RecipeP\Models\OpenAI\OpenAiKeyStack;
 use LaravelSupports\AI\OpenAI\Contracts\ApiRecursiveContract;
+use LaravelSupports\AI\OpenAI\Models\OpenAiKeyStack;
 use LaravelSupports\AI\OpenAI\Repositories\OpenAiKeyRepository;
 use Throwable;
 
@@ -15,14 +15,12 @@ abstract class AbstractRecursiveApiService extends AbstractApiService implements
 
     public function __construct(
         private readonly OpenAiKeyRepository $openAiKeyRepository,
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param array                                      $attributes
-     * @param \RecipeP\Models\OpenAI\OpenAiKeyStack|null $key
-     * @param int|null                                   $try
+     * @param array                                                 $attributes
+     * @param \LaravelSupports\AI\OpenAI\Models\OpenAiKeyStack|null $key
+     * @param int|null                                              $try
      * @return array
      * @throws \Throwable
      * @author  allen
@@ -30,11 +28,10 @@ abstract class AbstractRecursiveApiService extends AbstractApiService implements
      * @updated 2023/08/24
      */
     public function callApiRecursive(
-        array           $attributes,
+        array $attributes,
         ?OpenAiKeyStack $key = null,
-        ?int            $try = 0
-    ): array
-    {
+        ?int $try = 0,
+    ): array {
         $keyModel = $this->changeApiKey($key);
         try {
             $this->getOpenAiKeyRepository()->incrementCall($keyModel->getKey());

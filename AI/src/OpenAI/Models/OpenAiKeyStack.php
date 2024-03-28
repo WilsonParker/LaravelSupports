@@ -1,7 +1,6 @@
 <?php
 
-namespace LaravelSupports\AI\Models;
-
+namespace LaravelSupports\AI\OpenAI\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use LaravelSupports\Models\Common\BaseModel;

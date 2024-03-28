@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSupports\AI\Models;
+namespace LaravelSupports\AI\OpenAI\Models;
 
 
 use LaravelSupports\Models\Common\BaseModel;

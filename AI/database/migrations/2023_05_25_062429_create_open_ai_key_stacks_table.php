@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use RecipeP\Models\OpenAI\OpenAiKey;
+use LaravelSupports\AI\OpenAI\Models\OpenAiKey;
 
 return new class extends Migration {
     /**

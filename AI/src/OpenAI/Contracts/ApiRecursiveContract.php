@@ -3,7 +3,7 @@
 namespace LaravelSupports\AI\OpenAI\Contracts;
 
 
-use RecipeP\Models\OpenAI\OpenAiKeyStack;
+use LaravelSupports\AI\OpenAI\Models\OpenAiKeyStack;
 
 interface ApiRecursiveContract extends ApiContract
 {
