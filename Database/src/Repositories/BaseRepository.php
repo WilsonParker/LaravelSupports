@@ -2,25 +2,27 @@
 
 namespace LaravelSupports\Database\Repositories;
 
-use LaravelSupports\Database\Repositories\Contracts\RepositoryContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use LaravelSupports\Database\Repositories\Contracts\RepositoryContract;
+use Override;
 
 class BaseRepository implements RepositoryContract
 {
-    /**
-     * @param \Illuminate\Database\Eloquent\Model $model
-     */
-    public function __construct(protected Model $model) {}
+    protected Builder $model;
 
-    public function index(array $columns = ['*'], array $relations = []): Collection
+    /**
+     * @param string $model
+     */
+    public function __construct(protected string $modelCls)
     {
-        return $this->model->with($relations)->get($columns);
+        $this->model = $modelCls::query();
     }
 
-    public function store(array $attribute): Model
+    public function list(array $columns = ['*'], array $relations = []): Collection
     {
-        return $this->model->create($attribute);
+        return $this->model->with($relations)->get($columns);
     }
 
     public function storeIfNotExists($id, array $attribute): Model
@@ -33,33 +35,29 @@ class BaseRepository implements RepositoryContract
         }
     }
 
-    public function show(Model $model, array|string $with = '', array|string $select = '*'): Model
+    public function create(array $attribute): Model
     {
-        return $this->showById($model->getKey(), $with, $select);
+        return $this->model->create($attribute);
     }
 
     public function update(Model $model, array $attribute): bool
     {
-        return $this->updateById($model->getKey(), $attribute);
+        return $model->update($attribute);
     }
 
+    protected function getModelClass(): string
+    {
+        return $this->modelCls;
+    }
+
+    protected function getSearchQuery(Builder $builder, array $attributes): Builder
+    {
+        return $builder;
+    }
+
+    #[Override]
     public function delete(Model $model): bool
     {
-        return $this->deleteById($model->getKey());
-    }
-
-    public function showById($id, array|string $with = '', array|string $select = '*'): Model
-    {
-        return $this->model->with($with)->select($select)->findOrFail($id);
-    }
-
-    public function updateById($id, array $attribute): bool
-    {
-        return $this->showById($id)->update($attribute);
-    }
-
-    public function deleteById($id): bool
-    {
-        return $this->showById($id)->delete();
+        return $model->delete();
     }
 }

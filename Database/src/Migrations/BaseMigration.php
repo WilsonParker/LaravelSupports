@@ -38,17 +38,15 @@ abstract class BaseMigration extends Migration
      * @param Blueprint $table
      * @return void
      */
-    protected function defaultDownTemplate(Blueprint $table): void
-    {
-    }
+    protected function defaultDownTemplate(Blueprint $table): void {}
 
     protected function defaultSet(Blueprint $table): void
     {
-//        $table->engine = 'InnoDB';
-//        $table->charset = 'utf8mb4';
-//        $table->collation = 'utf8mb4_unicode_ci';
-//        $table->charset = 'utf8';
-//        $table->collation = 'utf8_general_ci';
+        //        $table->engine = 'InnoDB';
+        //        $table->charset = 'utf8mb4';
+        //        $table->collation = 'utf8mb4_unicode_ci';
+        //        $table->charset = 'utf8';
+        //        $table->collation = 'utf8_general_ci';
     }
 
     protected function defaultTimestampTemplate(Blueprint $table): void
@@ -66,34 +64,39 @@ abstract class BaseMigration extends Migration
      * Foreign for table where pk is code
      *
      * @param \Illuminate\Database\Schema\Blueprint $blueprint
-     * @param array|string $columns
-     * @param string $table
-     * @param array|string $references
-     * @return \Illuminate\Database\Schema\ForeignKeyDefinition
+     * @param array|string                          $columns
+     * @param string                                $table
+     * @param array|string                          $references
+     * @param int                                   $size
+     * @param callable|null                         $columnCallback (\Illuminate\Database\Schema\ForeignKeyDefinition)
      * @author  WilsonParker
      * @added   2023/02/10
      * @updated 2023/02/10
      */
     protected function foreignCode(
-        Blueprint    $blueprint,
+        Blueprint $blueprint,
         array|string $columns,
-        string       $table,
+        string $table,
         array|string $references = 'code',
-        int          $size = 32,
-    ): ForeignKeyDefinition
-    {
+        int $size = 32,
+        callable $columnCallback = null,
+    ): ForeignKeyDefinition {
         /**
          * @var \Illuminate\Database\Eloquent\Model $referTable
          */
         $referTable = new $table;
-        $blueprint->string($columns, $size);
+        $columnDefinition = $blueprint->string($columns, $size);
+        if ($columnCallback) {
+            $columnCallback($columnDefinition);
+
+        }
         return $blueprint->foreign($columns)->references($references)->on($referTable->getTable());
     }
 
     /**
      * @param \Illuminate\Database\Schema\Blueprint $blueprint
-     * @param string $table
-     * @param string $name
+     * @param string                                $table
+     * @param string                                $name
      * @return \Illuminate\Database\Schema\ForeignKeyDefinition
      * @author  WilsonParker
      * @added   2023/02/12
@@ -101,10 +104,9 @@ abstract class BaseMigration extends Migration
      */
     protected function foreignIdForWithName(
         Blueprint $blueprint,
-        string    $table,
-        string    $name = ''
-    ): ForeignKeyDefinition
-    {
+        string $table,
+        string $name = '',
+    ): ForeignKeyDefinition {
         /**
          * @var \Illuminate\Database\Eloquent\Model $model
          */
@@ -116,18 +118,17 @@ abstract class BaseMigration extends Migration
      * Create a new unsigned big integer (8-byte) column on the table.
      *
      * @param \Illuminate\Database\Schema\Blueprint $blueprint
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $column
-     * @param string $index
+     * @param \Illuminate\Database\Eloquent\Model   $model
+     * @param string                                $column
+     * @param string                                $index
      * @return \Illuminate\Database\Schema\ForeignKeyDefinition
      */
     protected function foreignId(
         Blueprint $blueprint,
-        Model     $model,
-        string    $column,
-        string    $index
-    ): ForeignKeyDefinition
-    {
+        Model $model,
+        string $column,
+        string $index,
+    ): ForeignKeyDefinition {
         $blueprint->unsignedBigInteger($column)->nullable(false);
         return $blueprint->foreign($column, $index)->references($model->getKeyName())->on($model->getTable());
     }
