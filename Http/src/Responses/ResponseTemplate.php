@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
  */
 class ResponseTemplate extends JsonResponse implements Arrayable
 {
-    public function __construct(public $status = ResponseAlias::HTTP_OK, public $data = null, public $message = "message", public $errors = [])
+    public function __construct(public $status = ResponseAlias::HTTP_OK, public mixed $data = null, public $message = "message", public $errors = [])
     {
         parent::__construct($data, $status);
     }
@@ -27,7 +27,8 @@ class ResponseTemplate extends JsonResponse implements Arrayable
         array $headers = [],
         int $options = 0,
         array $errors = [],
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $this->message = $message;
         $this->data = $data;
         $this->errors = $errors;
@@ -39,8 +40,8 @@ class ResponseTemplate extends JsonResponse implements Arrayable
     {
         return [
             'message' => $this->message,
-            'data'    => $this->data,
-            'errors'  => $this->errors,
+            'data' => $this->data,
+            'errors' => $this->errors,
         ];
     }
 
