@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Modules\Supports\Controllers\src;
+namespace LaravelSupports\Controllers;
 
 use App\Models\User\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -9,7 +9,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Inertia\Inertia;
 use Inertia\Response;
 use LaravelSupports\Auth\Facades\AuthService;
-use LaravelSupports\Controllers\Controller;
 use LaravelSupports\Database\Traits\TransactionTrait;
 
 abstract class BaseInerTiaController extends Controller

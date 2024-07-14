@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Modules\Supports\Models\src\Common;
-
-use LaravelSupports\Models\Common\BaseModel;
+namespace LaravelSupports\Models\Common;
 
 abstract class BaseCodeModel extends BaseModel
 {
