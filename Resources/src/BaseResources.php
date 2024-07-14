@@ -19,8 +19,8 @@ abstract class BaseResources extends JsonResource
 {
     public static $wrap = null;
     protected bool $showDateFields = true;
-    protected bool $showPrimaryField = true;
     protected string $format = 'Y-m-d H:i:s';
+    protected array $field = [];
 
     public function toArray(Request $request)
     {
@@ -33,6 +33,7 @@ abstract class BaseResources extends JsonResource
             $dateFields = [];
         }
         return array_merge(
+            $this->bindFields($this->field),
             $this->appendsFields($request),
             $this->fields($request),
             $this->additionalFields($request),
@@ -48,9 +49,17 @@ abstract class BaseResources extends JsonResource
         return $date->format($this->format);
     }
 
+    protected function bindFields(array $fields): array
+    {
+        return collect($fields)->mapWithKeys(fn($field) => [$field => $this->{$field}])->toArray();
+    }
+
     abstract function appendsFields(Request $request): array;
 
-    abstract function fields(Request $request): array;
+    protected function fields(Request $request): array
+    {
+        return [];
+    }
 
     protected function additionalFields(Request $request): array
     {

@@ -18,7 +18,7 @@ abstract class BaseCodeResources extends BaseResources
 
     function appendsFields(Request $request): array
     {
-        return $this->showAppendFields ? ['id' => $this->code] : [];
+        return $this->showAppendFields ? ['id' => $this->getKey()] : [];
     }
 
 }
