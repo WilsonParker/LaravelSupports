@@ -17,13 +17,10 @@ abstract class BaseInerTiaController extends Controller
 
     protected array $params = [];
     protected string $lang = '';
-    protected string $title = 'V2Medi';
+    protected string $title = '';
     protected string $prefix = '';
     protected ?User $user;
 
-    /**
-     * @param array $params
-     */
     public function __construct()
     {
         $this->init();
@@ -40,9 +37,7 @@ abstract class BaseInerTiaController extends Controller
         $this->middleware('auth:web');
     }
 
-    protected function afterInit()
-    {
-    }
+    protected function afterInit(): void {}
 
     protected function buildView(string $view, array $params = [], string $prefix = null): Response
     {
