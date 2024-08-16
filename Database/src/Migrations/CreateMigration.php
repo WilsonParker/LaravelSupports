@@ -5,23 +5,22 @@ namespace LaravelSupports\Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Throwable;
 
 abstract class CreateMigration extends BaseMigration
 {
-    protected string $table;
-
     /**
      * @throws \Throwable
      */
-    public function up()
+    public function up(): void
     {
         try {
-            Schema::create($this->table, function (Blueprint $table) {
+            Schema::create($this->getTable(), function (Blueprint $table) {
                 $this->defaultUpTemplate($table);
                 $this->defaultTimestampTemplate($table);
                 $this->defaultSet($table);
             });
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             $this->down();
             throw $t;
         }
@@ -33,5 +32,5 @@ abstract class CreateMigration extends BaseMigration
      * @param Blueprint $table
      * @return void
      */
-    abstract protected function defaultUpTemplate(Blueprint $table);
+    abstract protected function defaultUpTemplate(Blueprint $table): void;
 }

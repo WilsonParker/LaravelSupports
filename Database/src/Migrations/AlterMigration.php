@@ -5,18 +5,19 @@ namespace LaravelSupports\Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Throwable;
 
 abstract class AlterMigration extends BaseMigration
 {
     protected bool $needDrop = false;
 
-    public function up()
+    public function up(): void
     {
         try {
-            Schema::table($this->table, function (Blueprint $table) {
+            Schema::table($this->getTable(), function (Blueprint $table) {
                 $this->defaultUpTemplate($table);
             });
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             $this->down();
             throw $t;
         }

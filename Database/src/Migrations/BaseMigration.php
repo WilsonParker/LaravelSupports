@@ -15,15 +15,14 @@ abstract class BaseMigration extends Migration
 {
     use HasRelationships;
 
-    protected string $table;
     protected bool $needDrop = true;
     protected bool $timestamp = true;
     protected bool $softDelete = true;
 
-    public function down()
+    public function down(): void
     {
-        Schema::table($this->table, function (Blueprint $table) {
-            if (Schema::hasTable($this->table)) {
+        Schema::table($this->getTable(), function (Blueprint $table) {
+            if (Schema::hasTable($this->getTable())) {
                 $this->defaultDownTemplate($table);
             }
             if ($this->needDrop) {
@@ -32,15 +31,15 @@ abstract class BaseMigration extends Migration
         });
     }
 
+    abstract public function getTable(): string;
+
     /**
      * Reverse the migrations.
      *
      * @param Blueprint $table
      * @return void
      */
-    protected function defaultDownTemplate(Blueprint $table): void
-    {
-    }
+    protected function defaultDownTemplate(Blueprint $table): void {}
 
     public function foreignCodeFor(Blueprint $table, $model, $column = null, int $size = 32, callable $columnCallback = null)
     {
@@ -91,14 +90,13 @@ abstract class BaseMigration extends Migration
      * @updated 2023/02/10
      */
     protected function foreignCode(
-        Blueprint    $blueprint,
+        Blueprint $blueprint,
         array|string $columns,
-        string       $table,
+        string $table,
         array|string $references = 'code',
-        int          $size = 32,
-        callable     $columnCallback = null,
-    ): ForeignKeyDefinition
-    {
+        int $size = 32,
+        callable $columnCallback = null,
+    ): ForeignKeyDefinition {
         /**
          * @var \Illuminate\Database\Eloquent\Model $referTable
          */
@@ -121,10 +119,9 @@ abstract class BaseMigration extends Migration
      */
     protected function foreignIdForWithName(
         Blueprint $blueprint,
-        string    $table,
-        string    $name = '',
-    ): ForeignKeyDefinition
-    {
+        string $table,
+        string $name = '',
+    ): ForeignKeyDefinition {
         /**
          * @var \Illuminate\Database\Eloquent\Model $model
          */
@@ -143,11 +140,10 @@ abstract class BaseMigration extends Migration
      */
     protected function foreignId(
         Blueprint $blueprint,
-        Model     $model,
-        string    $column,
-        string    $index,
-    ): ForeignKeyDefinition
-    {
+        Model $model,
+        string $column,
+        string $index,
+    ): ForeignKeyDefinition {
         $blueprint->unsignedBigInteger($column)->nullable(false);
         return $blueprint->foreign($column, $index)->references($model->getKeyName())->on($model->getTable());
     }
