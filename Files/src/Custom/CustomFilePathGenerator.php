@@ -19,7 +19,7 @@ class CustomFilePathGenerator extends DefaultPathGenerator
             $suffix = '';
         }
 
-        return Arr::join([$prefix, $suffix, $media->getKey()], '/');
+        return Arr::join(Arr::where([$prefix, $suffix, $media->getKey()], fn($item) => isset($item) && $item !== ''), '/');
     }
 
 }
