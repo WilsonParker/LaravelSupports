@@ -3,6 +3,7 @@
 
 namespace LaravelSupports\Controllers;
 
+use App\Http\Middleware\RedirectHttps;
 use App\Models\User\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -28,8 +29,16 @@ abstract class BaseInerTiaController extends Controller
 
     protected function init(): void
     {
+        $this->initMiddleware();
         $this->setMiddleware();
         $this->afterInit();
+    }
+
+    private function initMiddleware(): void
+    {
+        if (config('app.ssl')) {
+            $this->middleware(RedirectHttps::class);
+        }
     }
 
     protected function setMiddleware(): void
