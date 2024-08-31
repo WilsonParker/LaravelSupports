@@ -3,7 +3,6 @@
 
 namespace LaravelSupports\Controllers;
 
-use App\Http\Middleware\RedirectHttps;
 use App\Models\User\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -11,6 +10,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use LaravelSupports\Auth\Facades\AuthService;
 use LaravelSupports\Database\Traits\TransactionTrait;
+use LaravelSupports\Http\Middleware\RedirectHttps;
 
 abstract class BaseInerTiaController extends Controller
 {
