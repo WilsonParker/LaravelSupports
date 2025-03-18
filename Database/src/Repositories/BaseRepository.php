@@ -45,9 +45,10 @@ class BaseRepository implements RepositoryContract
         return $model->update($attribute);
     }
 
-    protected function getModelClass(): string
+    #[Override]
+    public function delete(Model $model): bool
     {
-        return $this->modelCls;
+        return $model->delete();
     }
 
     protected function getSearchQuery(Builder $builder, array $attributes): Builder
@@ -55,9 +56,13 @@ class BaseRepository implements RepositoryContract
         return $builder;
     }
 
-    #[Override]
-    public function delete(Model $model): bool
+    protected function getQuery(): Builder
     {
-        return $model->delete();
+        return $this->getModelClass()::query();
+    }
+
+    protected function getModelClass(): string
+    {
+        return $this->modelCls;
     }
 }
