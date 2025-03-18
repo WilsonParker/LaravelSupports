@@ -38,10 +38,11 @@ git pull origin master
 
 ```json
 "autoload": {
-"psr-4": {
-"App\\": "app/",
-"LaravelSupports\\Http\\": "app/Modules/Supports/Http/src/"
-...
+    "psr-4": {
+        "App\\": "app/",
+        "LaravelSupports\\Http\\": "app/Modules/Supports/Http/src/"
+        ...
+    }
 },
 ```
 
